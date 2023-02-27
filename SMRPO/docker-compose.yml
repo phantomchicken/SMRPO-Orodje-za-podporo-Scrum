@@ -1,0 +1,22 @@
+version: "3.5"
+services:
+  node-api:
+    container_name: smrpo-app
+    restart: always
+    ports:
+      - "3000:3000"
+    image: smrpo-server
+    build: ./
+    networks:
+      - smrpo-network
+  mongo-db:
+    image: mongo
+    container_name: smrpo-mongo-db
+    ports:
+      - "27017-27019:27017-27019"
+    networks:
+      - smrpo-network
+networks:
+  smrpo-network:
+    name: smrpo-network
+    driver: bridge

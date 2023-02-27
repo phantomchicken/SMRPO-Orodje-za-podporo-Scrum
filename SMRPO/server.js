@@ -1,4 +1,11 @@
 const express = require("express");
+const path = require("path");
+
+/**
+ * Database connection
+ */
+ require("./src/api/models/db.js");
+
 /**
  * Create server
  */
