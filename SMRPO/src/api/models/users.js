@@ -5,6 +5,10 @@ const userSchema = new mongoose.Schema({
         unique: true,
         required: true
     },
+    password: {
+        type: String,
+        required: true
+    },
     firstname: {
         type: String,
         required: true
@@ -21,26 +25,10 @@ const userSchema = new mongoose.Schema({
         unique: true,
         required: true
     },
-    consendedValue: {
+    privilege: {
         type: String,
-        required: true
-    },
-    randomValue: {
-        type: String,
-        required: true
-    },
-    profile_picture: {
-        type: String
-    },
-    location: {
-        type: String
-    },
-    favourite_vehicles_ids: {
-        type: [String]
-    },
-    is_admin: {
-        type: Boolean,
-        required: true
+        enum: ['normal', 'admin'],
+        default: 'normal'
     }
 });
 
