@@ -5,6 +5,7 @@ var router = express.Router();
 const ctrlDb = require('../controllers/db');
 
 router.route('/')
-    .get(ctrlDb.getData)
+    .get(ctrlDb.getUsers)
+    .post(ctrlDb.addUser)
 
 module.exports = router;
