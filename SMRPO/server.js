@@ -1,4 +1,5 @@
 const express = require("express");
+var bodyParser = require('body-parser')
 const path = require("path");
 var dbApi = require('./src/api/routes/db');
 /**
@@ -11,6 +12,10 @@ var dbApi = require('./src/api/routes/db');
  */
 const port = process.env.PORT || 3000;
 const app = express();
+
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+
 /**
  * Default response
  */
