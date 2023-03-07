@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
+import { AuthenticationService } from '../authentication.service';
 
 @Component({
   selector: 'app-template',
@@ -9,10 +10,32 @@ import {Router} from "@angular/router";
 
 
 export class TemplateComponent implements OnInit {
-  constructor(private router:Router) { }
-  ngOnInit(): void {
-    //console.log("template log")
+  constructor(private router:Router, private authenticationService: AuthenticationService) { }
+  
+  public user_id: string = "";
+  public username: string = "";
+
+  public is_user_logged(): boolean {
+    return this.authenticationService.is_logged();
   }
+
+  public get_user_id(): string {
+    return this.authenticationService.get_current_user()._id;
+  }
+  ngOnInit(): void {
+    if (this.is_user_logged()) {
+      this.user_id = this.authenticationService.get_current_user()._id;
+      this.username = this.authenticationService.get_current_user().username;
+      console.log(this.user_id)
+      console.log(this.username)
+    }
+  }
+
+  logout():void{
+    this.authenticationService.logout();
+    this.router.navigateByUrl("/login");
+  }
+
   navto(url:string) {
     this.router.navigate([url])
     this.closeNav()

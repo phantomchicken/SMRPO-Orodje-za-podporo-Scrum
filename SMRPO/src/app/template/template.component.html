@@ -28,6 +28,7 @@
     <div class="collapse navbar-collapse" id="navbarMain">
       <ul class="navbar-nav mr-auto">
         <li class="navbar-nav">
+          <a class="nav-link" (click)="navto('login')">Login</a>
           <a class="nav-link" (click)="navto('articles')">Test1</a>
           <a class="nav-link" (click)="navto('articles')">Test2</a>
         </li>
@@ -45,10 +46,13 @@
             <div class="sidenav bg-dark" id="mySidenav">
               <div id="items" style="margin-left: 20px">
                 <a href ="javascript:void(0)" class="closebtn nav-link" (click)="closeNav()">&times;</a>
-                <div class="dropdown-name nav-link">
-                    <a class="dropdown-item nav-link" (click)="openBol()">My profile</a>
-                    <a style="font-size: 20px; padding-top:0px;padding-left: 0px">Test1</a>
-                  <a style="font-size: 20px; padding-top:0px;padding-left: 0px">Test2</a>
+                <div class="dropdown-name nav-link text-center">
+                    <a *ngIf="is_user_logged()" class="dropdown-item nav-link">Welcome {{username}}!</a>
+                    <div *ngIf="is_user_logged()" class="dropdown-divider"></div>  
+                    <a *ngIf="is_user_logged()" class="dropdown-item nav-link" (click)="openBol()">My profile</a>
+                    <a >Test1</a>
+                    <a >Test2</a>
+                    <button type="button" class="btn btn-danger btn-block" (click)="logout()">Log out</button>
                 </div>
                 </div>
             </div>
