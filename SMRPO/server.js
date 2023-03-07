@@ -3,6 +3,8 @@ const express = require("express");
 var bodyParser = require('body-parser')
 const path = require("path");
 var dbApi = require('./src/api/routes/db');
+var passport = require('passport');
+require('./src/api/configuration/passport');
 /**
  * Database connection
  */
@@ -47,5 +49,6 @@ app.use('/api', (req, res, next) => {
   });
 
 app.use('/api/db', dbApi);
+app.use(passport.initialize());
 
 module.exports = app;

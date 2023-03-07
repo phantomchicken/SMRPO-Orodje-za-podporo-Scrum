@@ -7,9 +7,13 @@ const userSchema = new mongoose.Schema({
         unique: true,
         required: true
     },
-    password: {
+    condensedValue: {
         type: String,
-        //required: true
+        required: true
+    },
+    randomValue: {
+        type: String,
+        required: true
     },
     firstname: {
         type: String,
@@ -33,7 +37,7 @@ const userSchema = new mongoose.Schema({
 
 userSchema.methods.setPassword = function (geslo) {
     this.randomValue = crypto.randomBytes(16).toString('hex');
-    this.consendedValue = crypto
+    this.condensedValue = crypto
         .pbkdf2Sync(geslo, this.randomValue, 1000, 64, 'sha512')
         .toString('hex');
 };
@@ -42,7 +46,7 @@ userSchema.methods.checkPassword = function (geslo) {
     let zgoscenaVrednost = crypto
         .pbkdf2Sync(geslo, this.randomValue, 1000, 64, 'sha512')
         .toString('hex');
-    return this.consendedValue == zgoscenaVrednost;
+    return this.condensedValue == zgoscenaVrednost;
 };
 
 userSchema.methods.generateJwt = function () {

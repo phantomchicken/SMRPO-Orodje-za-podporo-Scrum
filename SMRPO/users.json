@@ -1,52 +1,46 @@
 [
         {
-                "firstname": "Branko",
-                "lastname": "Jurisic",
-                "username": "Brankec",
-                "email": "bj1234@gmail.com",
-                "password": "Brankojelep1!"
+                "_id": "640757877743325ce858c336",
+                "privilege": "normal",
+                "username": "nino",
+                "firstname": "nino",
+                "lastname": "brezac",
+                "email": "nino@gmail.com",
+                "randomValue": "6fd909dd1b7a71a840125fad0408f70c",
+                "condensedValue": "a3fecc4ede7ce2b9ea5a24eba48fc88b6b83cf54280224ec56cbe950292fd8b4a280c3e883f62c5fb7e4cbc462cf4b8dcdc44d3a03b2a7e8f9b672818207a55b",
+                "__v": 0
         },
         {
-                "firstname": "Josh",
-                "lastname": "Smith",
-                "username": "JoshSmith213",
-                "email": "josh_smith@gmail.com",
-                "password": "J0shsmith"
+                "_id": "640758547743325ce858c33d",
+                "privilege": "normal",
+                "username": "bojan",
+                "firstname": "bojan",
+                "lastname": "ilic",
+                "email": "bojan@gmail.com",
+                "randomValue": "eaba92f4164ae6d18cfaa75bffefba83",
+                "condensedValue": "9e60beaaedc5f598cdd2f3404b9e181e03951be89db08fb0abf4ca21a23b732bb5f72c3b3e9d347992ab71e709f81cb2d695ec45ff266255629215dc37b1b1a3",
+                "__v": 0
         },
         {
-                "firstname": "Greta",
-                "lastname": "Garbo",
-                "username": "Gretica",
-                "email": "greta-ceta@gmail.com",
-                "password": "G0retica"
+                "_id": "640758707743325ce858c340",
+                "privilege": "normal",
+                "username": "marko",
+                "firstname": "marko",
+                "lastname": "adzaga",
+                "email": "marko@gmail.com",
+                "randomValue": "eb477f40295b8403df1dbe28f143673c",
+                "condensedValue": "4f3d19ce9f5e8446dc7ecd4126e0682d37b74fe67f4768aa423b69272927c68e5297fcb5c9413ecb4c7ae9649a2f63dc6137ae12e231c1c8861bc11314fad734",
+                "__v": 0
         },
         {
-                "firstname": "Tatjana",
-                "lastname": "Aleksic",
-                "username": "tanja",
-                "email": "tatjana@gmail.com",
-                "password": "T0atjana"
-        },
-        {
-                "firstname": "Alan",
-                "lastname": "Turing",
-                "username": "alance",
-                "email": "turing@gmail.com",
-                "password": "T0uring"
-        },
-        {
-                "firstname": "Ada",
-                "lastname": "Lovelace",
-                "username": "ada.byron",
-                "email": "ada@gmail.com",
-                "password": "A0Byron"
-        },
-        {
-                "firstname": "Charles",
-                "lastname": "Babbage",
-                "username": "ch.babage",
-                "email": "ch@gmail.com",
-                "password": "C0harles"
+                "_id": "6407588a7743325ce858c343",
+                "privilege": "normal",
+                "username": "miha",
+                "firstname": "miha",
+                "lastname": "kranjec",
+                "email": "miha@gmail.com",
+                "randomValue": "28c09ecd02d7e4818aaf51e7e969448b",
+                "condensedValue": "c278ed228b7108ff1f4e7b9e154bc1caad65780385280831c6076ad7afc5ee82674a4c0b8ad387cf36eea0136530d0e2de2fe234df45ffa79e3249e00819bdcb",
+                "__v": 0
         }
-
 ]

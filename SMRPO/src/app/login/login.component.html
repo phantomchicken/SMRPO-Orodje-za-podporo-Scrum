@@ -1,0 +1,43 @@
+<div class="container">
+    <div class="row mt-5 justify-content-center">
+        <div class="col-sm-10 col-md-8 col-lg-6">
+            <div class="card text-white bg-dark text-center">
+                <div class="card-body mx-auto">
+                    <h5 class="card-title mb-3">Log in</h5>
+                    <form (ngSubmit)="login()">
+                        <div class="form-row align-items-center mt-3">
+                            <div class="col-auto">
+                                <label class="sr-only" for="inlineFormInputGroup">Username</label>
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Username</div>
+                                    </div>
+                                    <input [(ngModel)]="user.username" type="text" class="form-control"
+                                        id="inlineFormInputGroup" placeholder="Username" name="username">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row align-items-center mt-3">
+                            <div class="col-auto">
+                                <label class="sr-only" for="inlineFormInputGroup">Password</label>
+                                <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Password &nbsp;</div>
+                                    </div>
+                                    <input [(ngModel)]="user.password" type="password" class="form-control"
+                                        id="inlineFormInputGroup" placeholder="Password" name="password">
+                                </div>
+                            </div>
+                        </div>
+
+                        <input id="submit-login" type="submit" class="btn btn-primary w-50 m-3"
+                            value="Log in">
+                        <div class="login-el">
+                            <a routerLink="/register">Don't have an account?</a>
+                            <a routerLink="/users/forgot_password">Forgot password?</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>

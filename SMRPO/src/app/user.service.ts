@@ -61,7 +61,7 @@ export class UsersDataService {
   }
 
   public login(user: User): Promise<AuthenticationResult> {
-    return this.authentication('users/login', user);
+    return this.authentication('user/login', user);
   }
 
   public register(user: User): Promise<AuthenticationResult> {

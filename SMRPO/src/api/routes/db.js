@@ -11,4 +11,7 @@ router.route('/')
 router.route('/user')
     .post(ctrlDb.register)
 
+router.route('/user/login')
+    .post(ctrlDb.login)
+
 module.exports = router;
