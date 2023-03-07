@@ -2,7 +2,7 @@
 cd ./SMRPO
 docker-compose up mongo-db --no-start
 docker exec -it smrpo-mongo-db mongosh
-docker exec -it smrpo-mongo-db bash -c "mongo SMRPO --eval 'db.SMRPO.remove({})'"
+docker exec -it smrpo-mongo-db bash -c "mongo SMRPO --eval 'db.Users.deleteMany({})'"
 
 // Add sample data
 cd ./SMRPO

@@ -11,7 +11,7 @@ import {Router} from "@angular/router";
 export class TemplateComponent implements OnInit {
   constructor(private router:Router) { }
   ngOnInit(): void {
-    console.log("template log")
+    //console.log("template log")
   }
   navto(url:string) {
     this.router.navigate([url])

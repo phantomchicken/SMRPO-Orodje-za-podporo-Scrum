@@ -3,7 +3,6 @@
                 "firstname": "Branko",
                 "lastname": "Jurisic",
                 "username": "Brankec",
-                "phone_number": "3478198984",
                 "email": "bj1234@gmail.com",
                 "password": "Brankojelep1!"
         },
@@ -11,7 +10,6 @@
                 "firstname": "Josh",
                 "lastname": "Smith",
                 "username": "JoshSmith213",
-                "phone_number": "+38670789654",
                 "email": "josh_smith@gmail.com",
                 "password": "J0shsmith"
         },
@@ -19,7 +17,6 @@
                 "firstname": "Greta",
                 "lastname": "Garbo",
                 "username": "Gretica",
-                "phone_number": "+386707895454",
                 "email": "greta-ceta@gmail.com",
                 "password": "G0retica"
         },
@@ -27,7 +24,6 @@
                 "firstname": "Tatjana",
                 "lastname": "Aleksic",
                 "username": "tanja",
-                "phone_number": "+3861235454",
                 "email": "tatjana@gmail.com",
                 "password": "T0atjana"
         },
@@ -35,7 +31,6 @@
                 "firstname": "Alan",
                 "lastname": "Turing",
                 "username": "alance",
-                "phone_number": "+32135235454",
                 "email": "turing@gmail.com",
                 "password": "T0uring"
         },
@@ -43,7 +38,6 @@
                 "firstname": "Ada",
                 "lastname": "Lovelace",
                 "username": "ada.byron",
-                "phone_number": "+321352345454",
                 "email": "ada@gmail.com",
                 "password": "A0Byron"
         },
@@ -51,7 +45,6 @@
                 "firstname": "Charles",
                 "lastname": "Babbage",
                 "username": "ch.babage",
-                "phone_number": "+321345675454",
                 "email": "ch@gmail.com",
                 "password": "C0harles"
         }

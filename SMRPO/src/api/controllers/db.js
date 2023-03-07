@@ -21,6 +21,48 @@ const getUsers = (req, res) => {
     });
 }
 
+const register = (req, res) => {
+    console.log(req.body);
+    if(req.body === undefined){
+        res.status(500).send('Internal error')
+        return;
+    }
+
+    if(! ('firstname' in req.body &&
+          'lastname' in req.body && 
+          'username' in req.body &&
+          'password' in req.body &&
+          'email' in req.body))        
+        {
+            res.status(500).send('Missing argument')
+            return;
+        }
+
+        const new_user = new User();
+        new_user.username = req.body.username;
+        new_user.firstname = req.body.firstname;
+        new_user.lastname = req.body.lastname;
+        new_user.email = req.body.email;
+        new_user.setPassword(req.body.password);
+        new_user.privilege = "normal";
+
+        new_user.save(error => {
+            if (error) {
+                if (error.name == "MongoError" && error.code == 11000) {
+                    res.status(409).json({
+                        "message": "User with that email already exists"
+                    });
+                } else {
+                    res.status(500).json(error);
+                }
+            } else {
+                res.status(201).json({
+                    "token": new_user.generateJwt()
+                });
+            }
+        });
+}
+
 const addUser = (req, res) => {
     console.log(req.body);
     if(req.body === undefined){
@@ -51,5 +93,6 @@ const addUser = (req, res) => {
 module.exports = 
 {
     getUsers: getUsers, 
-    addUser: addUser
+    addUser: addUser,
+    register: register
 }

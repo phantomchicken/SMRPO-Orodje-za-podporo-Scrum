@@ -8,4 +8,7 @@ router.route('/')
     .get(ctrlDb.getUsers)
     .post(ctrlDb.addUser)
 
+router.route('/user')
+    .post(ctrlDb.register)
+
 module.exports = router;
