@@ -4,6 +4,7 @@ import {RouterModule, Routes} from '@angular/router'
 import { HomeComponent } from '../home/home.component';
 import { RegisterComponent } from '../register/register.component';
 import { LoginComponent } from '../login/login.component';
+import { AdminViewComponent } from '../admin-view/admin-view.component';
 
 
 const paths: Routes = [
@@ -18,7 +19,12 @@ const paths: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'admin',
+    component: AdminViewComponent
   }
+  
 ]
 
 @NgModule({

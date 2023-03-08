@@ -47,10 +47,11 @@ const register = (req, res) => {
     new_user.privilege = "normal";
 
     new_user.save(error => {
+        console.log(error)
         if (error) {
-            if (error.name == "MongoError" && error.code == 11000) {
+            if (error.name == "MongoServerError" && error.code == 11000) {
                 res.status(409).json({
-                    "message": "User with that email already exists"
+                    "message": "User with that username already exists!"
                 });
             } else {
                 res.status(500).json(error);
@@ -88,12 +89,13 @@ const addUser = (req, res) => {
         'lastname' in req.body &&
         'username' in req.body &&
         'password' in req.body &&
+        'privilege' in req.body &&
         'email' in req.body)) {
         res.status(500).send('Missing argument')
         return;
     }
 
-    User.insertMany([{ firstname: req.body.firstname, lastname: req.body.lastname, username: req.body.username, password: req.body.password, email: req.body.email }],
+    User.insertMany([{ privilege: req.body.privilege, firstname: req.body.firstname, lastname: req.body.lastname, username: req.body.username, password: req.body.password, email: req.body.email }],
         function (error, result) {
             if (error) {
                 return res.status(500).json(error);

@@ -37,10 +37,21 @@
                 "privilege": "normal",
                 "username": "miha",
                 "firstname": "miha",
-                "lastname": "kranjec",
+                "lastname": "krajnc",
                 "email": "miha@gmail.com",
                 "randomValue": "28c09ecd02d7e4818aaf51e7e969448b",
                 "condensedValue": "c278ed228b7108ff1f4e7b9e154bc1caad65780385280831c6076ad7afc5ee82674a4c0b8ad387cf36eea0136530d0e2de2fe234df45ffa79e3249e00819bdcb",
+                "__v": 0
+        },
+        {
+                "_id": "6408cade21d8ab15fcafb602",
+                "privilege": "admin",
+                "username": "admin",
+                "firstname": "admin",
+                "lastname": "admin",
+                "email": "admin@gmail.com",
+                "randomValue": "54bb4fc2f7cf0004827ae508909bb34b",
+                "condensedValue": "5ccbb6acbbff9df8006548abcb5b40fce54b29911fe6118b36cada535583e08428a0639788f3a531aa92e53512786c593c37b42fbdfed732701611a5d1c6f757",
                 "__v": 0
         }
 ]

@@ -23,15 +23,17 @@ export class LoginComponent implements OnInit {
       !this.user.username ||
       !this.user.password
     ) {
-      console.log("bad")
+      //console.log("bad")
     } else {
       this.authenticationService
         .login(this.user)
         .then(() => {
-          this.router.navigateByUrl("/");
+          this.router.navigate(['/']); // have to reload because of sidebar! more elegant solution probably exists
+          //this.router.navigateByUrl('/', {skipLocationChange: true}).then(()=> 
+          //this.router.navigate(['/']));
         })
         .catch(message => {
-          console.log(message)
+          //console.log(message)
         });
     }
   }
