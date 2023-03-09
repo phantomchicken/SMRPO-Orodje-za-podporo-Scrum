@@ -7,7 +7,7 @@
                     <h5 class="card-title mb-3">Add user</h5>
                     <form (ngSubmit)="addUser()">
                         <div class="form-row align-items-center mt-3">
-                            <div class="col-auto">
+                            
                                 <label class="sr-only" for="inlineFormInputGroup1">First name</label>
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
@@ -15,11 +15,11 @@
                                     </div>
                                     <input [(ngModel)]="user.firstname" type="text" class="form-control"
                                         id="inlineFormInputGroup1" placeholder="First name" name="firstname">
-                                </div>
+                                
                             </div>
                         </div>
                         <div class="form-row align-items-center mt-3">
-                            <div class="col-auto">
+                            
                                 <label class="sr-only" for="inlineFormInputGroup2">Last name</label>
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
@@ -28,10 +28,10 @@
                                     <input [(ngModel)]="user.lastname" type="text" class="form-control"
                                         id="inlineFormInputGroup2" placeholder="Last name" name="lastname">
                                 </div>
-                            </div>
+                            
                         </div>
                         <div class="form-row align-items-center mt-3">
-                            <div class="col-auto">
+                            
                                 <label class="sr-only" for="inlineFormInputGroup3">Username</label>
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
@@ -40,10 +40,10 @@
                                     <input [(ngModel)]="user.username" type="text" class="form-control"
                                         id="inlineFormInputGroup3" placeholder="Username" name="username">
                                 </div>
-                            </div>
+                            
                         </div>
                         <div class="form-row align-items-center mt-3">
-                            <div class="col-auto">
+                            
                                 <label class="sr-only" for="inlineFormInputGroup4">Username</label>
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
@@ -52,19 +52,21 @@
                                     <input [(ngModel)]="user.email" type="text" class="form-control"
                                         id="inlineFormInputGroup4" placeholder="E-mail" name="email">
                                 </div>
-                            </div>
+                            
                         </div>
-                        <div class="form-row align-items-center mt-3">
-                            <div class="col-auto">
+                        <div class="form-group-row align-items-center mt-3">
+                            
                                 <label class="sr-only" for="inlineFormInputGroup5">Password</label>
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Password</div>
                                     </div>
                                     <input [(ngModel)]="user.password" type="password" class="form-control"
-                                        id="inlineFormInputGroup5" placeholder="Password" name="password">
+                                        id="inlineFormInputGroup5" placeholder="Password" name="password" id="password">
                                 </div>
-                            </div>
+                                <password-strength-meter [password]="user.password"></password-strength-meter>
+                                <small>The password should be 8-20 characters long, contain letters and numbers.</small>
+                            
                         </div>
                         <div class="form-group-row align-items-center mt-3">
                             <div class="form-check form-check-inline">
@@ -75,7 +77,8 @@
                                 <input [(ngModel)]="user.privilege" type="radio" class="form-check-input" id="radio2" name="optradio" value="admin">Admin
                                 <label class="form-check-label" for="radio2"></label>
                               </div>
-                        </div>                        
+                        </div>
+                                                
                         <input id="submit-login" type="submit" class="btn btn-primary w-50 m-3"
                             value="Add user">
                     </form>

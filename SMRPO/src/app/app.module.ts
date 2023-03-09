@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { PasswordStrengthMeterModule } from 'angular-password-strength-meter';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
@@ -25,7 +26,8 @@ import { AdminViewComponent } from './admin-view/admin-view.component';
     RouterModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    PasswordStrengthMeterModule.forRoot()
   ],
   providers: [],
   bootstrap: [TemplateComponent]

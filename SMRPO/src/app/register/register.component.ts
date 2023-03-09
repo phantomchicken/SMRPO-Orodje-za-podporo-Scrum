@@ -17,6 +17,15 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  public passwordVisible:boolean = false;
+
+  public showPassword():void {
+    if (this.passwordVisible) 
+      this.passwordVisible = false
+    else
+      this.passwordVisible = true;
+  };
+
   public register = (): void => {
     if (!this.user.email || !this.user.password || !this.user.firstname || !this.user.lastname || !this.user.username) {
       //console.log("bad")

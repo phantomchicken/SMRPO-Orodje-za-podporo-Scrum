@@ -1,1 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+.login-form-input {
+    border-radius: 15px !important;
+    box-shadow: rgb(99 99 99 / 20%) 0px 2px 8px 0px !important;
+    border: solid 1px #FFB703 !important;
+}
