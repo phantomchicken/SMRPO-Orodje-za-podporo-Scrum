@@ -5,6 +5,7 @@ import { HomeComponent } from '../home/home.component';
 import { RegisterComponent } from '../register/register.component';
 import { LoginComponent } from '../login/login.component';
 import { AdminViewComponent } from '../admin-view/admin-view.component';
+import { ResetPasswordComponent } from '../reset-password/reset-password.component';
 
 
 const paths: Routes = [
@@ -23,6 +24,10 @@ const paths: Routes = [
   {
     path: 'admin',
     component: AdminViewComponent
+  },
+  {
+    path: 'reset-password',
+    component: ResetPasswordComponent
   }
   
 ]

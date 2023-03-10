@@ -57,7 +57,7 @@
                     <!--<a *ngIf="is_user_logged()" class="dropdown-item nav-link">Welcome {{username}}!</a>-->
                     
                     <div *ngIf="is_user_logged()" class="dropdown-divider"></div>  
-                    <a *ngIf="is_user_logged()" class="dropdown-item nav-link" (click)="openBol()">My profile</a>
+                    <a *ngIf="is_user_logged()" class="dropdown-item nav-link" (click)="navto('reset-password')">My profile</a>
                     <a *ngIf="is_user_logged() && isAdmin" class="dropdown-item nav-link" (click)="navto('admin')">Admin view</a>
                     <a >Test1</a>
                     <a >Test2</a>

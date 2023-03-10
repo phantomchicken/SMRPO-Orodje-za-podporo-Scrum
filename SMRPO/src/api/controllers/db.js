@@ -6,17 +6,33 @@ const User = require('../models/users')
 //const User = mongoose.model("User");
 
 
+const getUser = (req, res) => {
+    //console.log(req.params)
+    User.findById(req.params.idUser).exec((error, user) => {
+        console.log(user)
+        if (!user) {
+            return res.status(404).json({
+                "message": "User not found."
+            });
+        } else if (error) {
+            return res.status(500).json(error);
+        } else {
+            res.status(200).json(user);
+        }
+    });
+}
+
 const getUsers = (req, res) => {
     User.find({}, function (error, users) {
         if (error) {
             return res.status(500).json(error);
         } else {
-            console.log(users)
+            //console.log(users)
             users.map((user) => {
                 user.password = undefined;
                 return user;
             });
-            console.log(users)
+            //console.log(users)
             res.status(200).json(users);
         }
     });
@@ -105,10 +121,53 @@ const addUser = (req, res) => {
         });
 }
 
+const updateUser = (req, res) => {
+    //console.log(req.body)
+    //console.log(req.params)
+    User.findById(req.params.idUser).exec((error, user) => {
+        if (!user) {
+            return res.status(404).json({
+                "message": "No user found."
+            });
+        } else if (error) {
+            return res.status(500).json(error);
+        } else {
+            console.log(user)
+            user.firstname = req.body.firstname;
+            user.username = req.body.username;
+            user.lastname = req.body.lastname;
+            user.email = req.body.email;
+            user.privilege = req.body.privilege
+            if (req.body.password != null) user.setPassword(req.body.password);
+
+            user.save((error, updated_user) => {
+                if (error) {
+                    res.status(500).json(error);
+                } else {
+                    res.status(200).json(updated_user);
+                }
+            });
+        }
+    });
+}
+
+const deleteUser = (req, res) => {
+    User.findByIdAndRemove(req.params.idUser).exec((error) => {
+        if (error) {
+            return res.status(500).json(error);
+        } else {
+            return res.status(204).json(null);
+        }
+    });
+}
+
 module.exports =
 {
+    getUser: getUser,
     getUsers: getUsers,
     addUser: addUser,
     register: register,
-    login: login
+    login: login,
+    updateUser: updateUser,
+    deleteUser: deleteUser
 }

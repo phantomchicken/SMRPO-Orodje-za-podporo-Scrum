@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { AdminViewComponent } from './admin-view/admin-view.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { AdminViewComponent } from './admin-view/admin-view.component';
     HomeComponent,
     RegisterComponent,
     LoginComponent,
-    AdminViewComponent
+    AdminViewComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,

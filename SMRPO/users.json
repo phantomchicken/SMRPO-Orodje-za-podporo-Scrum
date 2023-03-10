@@ -1,57 +1,47 @@
 [
         {
-                "_id": "640757877743325ce858c336",
                 "privilege": "normal",
                 "username": "nino",
                 "firstname": "nino",
                 "lastname": "brezac",
                 "email": "nino@gmail.com",
-                "randomValue": "6fd909dd1b7a71a840125fad0408f70c",
-                "condensedValue": "a3fecc4ede7ce2b9ea5a24eba48fc88b6b83cf54280224ec56cbe950292fd8b4a280c3e883f62c5fb7e4cbc462cf4b8dcdc44d3a03b2a7e8f9b672818207a55b",
-                "__v": 0
+                "randomValue": "75b8eaca6813a0744adf3171048b8405",
+                "condensedValue": "22a24013082012a9867cf43b9b9dd8d2effecd9e577eaecb60a4cb332962d97711b2a6b09a384cbf14110d448c9ec231e087464916c4b2bc6b44d6f908c72869"
         },
         {
-                "_id": "640758547743325ce858c33d",
                 "privilege": "normal",
                 "username": "bojan",
                 "firstname": "bojan",
                 "lastname": "ilic",
                 "email": "bojan@gmail.com",
-                "randomValue": "eaba92f4164ae6d18cfaa75bffefba83",
-                "condensedValue": "9e60beaaedc5f598cdd2f3404b9e181e03951be89db08fb0abf4ca21a23b732bb5f72c3b3e9d347992ab71e709f81cb2d695ec45ff266255629215dc37b1b1a3",
-                "__v": 0
+                "randomValue": "e5f79f73a50e6f59bdbd8d9d1f59ed7d",
+                "condensedValue": "383d83cc7c3b09dca251c7e2c6f6e672ff2150895650bb9d7ab8b4597564f566d6186b75d4e6bdec2c1fadb1c3f838a71e36e0421e042d231a00a8424cb57ec9"
         },
         {
-                "_id": "640758707743325ce858c340",
-                "privilege": "normal",
-                "username": "marko",
-                "firstname": "marko",
-                "lastname": "adzaga",
-                "email": "marko@gmail.com",
-                "randomValue": "eb477f40295b8403df1dbe28f143673c",
-                "condensedValue": "4f3d19ce9f5e8446dc7ecd4126e0682d37b74fe67f4768aa423b69272927c68e5297fcb5c9413ecb4c7ae9649a2f63dc6137ae12e231c1c8861bc11314fad734",
-                "__v": 0
-        },
-        {
-                "_id": "6407588a7743325ce858c343",
                 "privilege": "normal",
                 "username": "miha",
                 "firstname": "miha",
                 "lastname": "krajnc",
                 "email": "miha@gmail.com",
-                "randomValue": "28c09ecd02d7e4818aaf51e7e969448b",
-                "condensedValue": "c278ed228b7108ff1f4e7b9e154bc1caad65780385280831c6076ad7afc5ee82674a4c0b8ad387cf36eea0136530d0e2de2fe234df45ffa79e3249e00819bdcb",
-                "__v": 0
+                "randomValue": "739c1f7e35921588340a8e78c7844339",
+                "condensedValue": "452f1728bd022cc08eff0eb2955875d89f093d0c62811eabe21795385bc4ad612dfad85fd8e73322090a0485a94f59614f363f76914d3c03dc5efc09d3e664ba"
         },
         {
-                "_id": "6408cade21d8ab15fcafb602",
+                "privilege": "normal",
+                "username": "marko",
+                "firstname": "marko",
+                "lastname": "adzaga",
+                "email": "marko@gmail.com",
+                "randomValue": "82463ab50baa61cf48b7b0450a317d66",
+                "condensedValue": "ff4075d221f1e0be8c8f6526e3dd1f3843eba0d1f7e60da8ee5895db04432e237a790dba0ac90ebb7687deeebc513b57162849dc901523fad3f038098f959515"
+        },
+        {
                 "privilege": "admin",
                 "username": "admin",
                 "firstname": "admin",
                 "lastname": "admin",
                 "email": "admin@gmail.com",
                 "randomValue": "54bb4fc2f7cf0004827ae508909bb34b",
-                "condensedValue": "5ccbb6acbbff9df8006548abcb5b40fce54b29911fe6118b36cada535583e08428a0639788f3a531aa92e53512786c593c37b42fbdfed732701611a5d1c6f757",
-                "__v": 0
+                "condensedValue": "5ccbb6acbbff9df8006548abcb5b40fce54b29911fe6118b36cada535583e08428a0639788f3a531aa92e53512786c593c37b42fbdfed732701611a5d1c6f757"
         }
 ]

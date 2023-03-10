@@ -14,50 +14,50 @@ export class UsersDataService {
   private apiUrl = environment.apiUrl;
 
   public createUser(data:any): Promise<User> {
-    const url: string = `${this.apiUrl}/users/`;
+    const url: string = `${this.apiUrl}/user/`;
     return this.http
       .post(url, data)
       .toPromise()
       .then(response => response as User)
-      .catch(this.procesError);
+      .catch(this.processError);
   }
 
   public getUser(id_of_user:any): Promise<User> {
-    const url: string = `${this.apiUrl}/users/${id_of_user}`;
+    const url: string = `${this.apiUrl}/db/user/${id_of_user}`;
     return this.http
       .get(url)
       .toPromise()
       .then(response => response as User)
-      .catch(this.procesError);
+      .catch(this.processError);
   }
 
 
-  public updateUserData(user: User): Promise<User> {
-    const url: string = `${this.apiUrl}/users/${user._id}`;
+  public updateUser(user: User): Promise<User> {
+    const url: string = `${this.apiUrl}/db/user/${user._id}`;
     const httpLastnosti = {
       headers: new HttpHeaders({
-        'Authorization': `Bearer ${this.storage.getItem('rentdrive-token')}`
+        'Authorization': `Bearer ${this.storage.getItem('SMRPO-token')}`
       })
     };
     return this.http
       .put(url, user, httpLastnosti)
       .toPromise()
       .then(response => response as User)
-      .catch (this.procesError);
+      .catch (this.processError);
   }
 
   public deleteUser(user: User): Promise<void> {
-    const url: string = `${this.apiUrl}/users/${user._id}`;
+    const url: string = `${this.apiUrl}/db/user/${user._id}`;
     const httpLastnosti = {
       headers: new HttpHeaders({
-        'Authorization': `Bearer ${this.storage.getItem('rentdrive-token')}`
+        'Authorization': `Bearer ${this.storage.getItem('SMRPO-token')}`
       })
     };
     return this.http
       .delete(url, httpLastnosti)
       .toPromise()
       .then()
-      .catch(this.procesError);
+      .catch(this.processError);
   }
 
   public login(user: User): Promise<AuthenticationResult> {
@@ -75,11 +75,11 @@ export class UsersDataService {
       .post(url, user)
       .toPromise()
       .then(rezultat => rezultat as AuthenticationResult)
-      .catch(this.procesError);
+      .catch(this.processError);
   }
 
 
-  private procesError(napaka: any): Promise<any> {
+  private processError(napaka: any): Promise<any> {
     return Promise.reject(napaka.error.message || napaka);
   }
 }
