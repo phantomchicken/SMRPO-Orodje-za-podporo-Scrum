@@ -6,6 +6,8 @@ import { RegisterComponent } from '../register/register.component';
 import { LoginComponent } from '../login/login.component';
 import { AdminViewComponent } from '../admin-view/admin-view.component';
 import { ResetPasswordComponent } from '../reset-password/reset-password.component';
+import { AddProjectComponent } from '../add-project/add-project.component';
+import { ProjectsComponent } from '../projects/projects.component';
 
 
 const paths: Routes = [
@@ -28,6 +30,12 @@ const paths: Routes = [
   {
     path: 'reset-password',
     component: ResetPasswordComponent
+  },{
+    path: 'projects/add',
+    component: AddProjectComponent
+  },{
+    path: 'projects',
+    component: ProjectsComponent
   }
   
 ]

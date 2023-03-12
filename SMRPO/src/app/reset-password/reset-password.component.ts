@@ -73,12 +73,9 @@ export class ResetPasswordComponent implements OnInit {
       !this.newPassword1 || !this.newPassword2
     ) {
       this.error = "Please fill in all fields!"
-      console.log(1)
     } else if ((this.newPassword1 != this.newPassword2)) {
       this.error = "New passwords must match!"
-      console.log(2)
     } else {
-      console.log(3)
       this.userDataService
         .getUser(this.authenticationService.get_current_user()._id)
         .then((data: User) => {
