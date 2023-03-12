@@ -161,6 +161,17 @@ const deleteUser = (req, res) => {
     });
 }
 
+const checkPassword = (req, res) => {
+    if (!req.body.username || !req.body.password)
+      return res.status(400).json({ message: "All fields required." });
+    else
+      passport.authenticate("local", (err, user, info) => {
+        if (err) return res.status(500).json({ message: err.message });
+        if (user) return res.status(200).json({ authorization: true });
+        else return res.status(401).json({ message: info.message });
+      })(req, res);
+  };
+
 module.exports =
 {
     getUser: getUser,
@@ -169,5 +180,6 @@ module.exports =
     register: register,
     login: login,
     updateUser: updateUser,
-    deleteUser: deleteUser
+    deleteUser: deleteUser,
+    checkPassword: checkPassword
 }

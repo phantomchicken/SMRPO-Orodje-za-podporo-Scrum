@@ -24,7 +24,7 @@ export class AdminViewComponent implements OnInit {
   public addUser():void {
     console.log(this.user.privilege)
     if (!this.user.email || !this.user.password || !this.user.firstname || !this.user.lastname || !this.user.username || !this.user.privilege) {
-      console.log("bad")
+      this.error = "Please fill in all fields!"
     } else {
       this.userService.register(this.user)
       .then(() => {
@@ -44,6 +44,11 @@ export class AdminViewComponent implements OnInit {
       if (this.authenticationService.get_current_user().privilege == "admin")
         this.isAdmin = true
     }
+  }
+
+  hide():void{
+    this.error=""
+    this.success=false;
   }
 
   public user: User = {

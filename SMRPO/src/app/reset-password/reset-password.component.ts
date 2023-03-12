@@ -21,6 +21,8 @@ export class ResetPasswordComponent implements OnInit {
     this.isLogged = this.authenticationService.is_logged();
   }
 
+  public error:string = "";
+  //public success:boolean = false; 
   public isLogged: boolean = false
   protected oldPassword: string = "";
   public newPassword1: string = "";
@@ -59,27 +61,42 @@ export class ResetPasswordComponent implements OnInit {
       });
   }
 
+  hide():void{
+    this.error=""
+  }
+
   resetPassword(): void {
     if (!this.isLogged) return
 
     if (
       !this.oldPassword ||
-      !this.newPassword1 || !this.newPassword2 || (this.newPassword1 != this.newPassword2)
+      !this.newPassword1 || !this.newPassword2
     ) {
-      console.log("bad")
+      this.error = "Please fill in all fields!"
+      console.log(1)
+    } else if ((this.newPassword1 != this.newPassword2)) {
+      this.error = "New passwords must match!"
+      console.log(2)
     } else {
-      
+      console.log(3)
       this.userDataService
         .getUser(this.authenticationService.get_current_user()._id)
         .then((data: User) => {
           this.user = data
-          this.user.password = this.newPassword1
-          this.userDataService.updateUser(this.user).then(() => {
-            this.router.navigate(['/']); // have to reload because of sidebar! more elegant solution probably exists
-          })
-            .catch(message => {
-              console.log(message)
-            });
+          this.user.password = this.oldPassword
+          this.authenticationService.checkPassword(this.user).then((authenticationSuccess) => {
+            if (authenticationSuccess) {
+              this.user.password = this.newPassword1
+              this.userDataService.updateUser(this.user).then(() => {
+                this.error=""
+                this.router.navigate(['/']); // have to reload because of sidebar! more elegant solution probably exists
+              }).catch(message => {
+                this.error = message
+              });
+            }
+          }).catch(message => {
+            this.error = message
+          });
         });
       //console.log("hey", this.user)
 

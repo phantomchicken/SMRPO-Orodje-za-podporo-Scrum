@@ -59,6 +59,17 @@ export class AuthenticationService {
       });
   }
 
+  public async checkPassword(user: User): Promise<any> {
+    return this.userDataService
+      .login(user)
+      .then((rezultatAvtentikacije: AuthenticationResult) => {
+        if(rezultatAvtentikacije["token"])
+          return true
+        else 
+          return false
+      });
+  }
+
   public async register(user: User): Promise<any> {
     console.log("authService")
     return this.userDataService
