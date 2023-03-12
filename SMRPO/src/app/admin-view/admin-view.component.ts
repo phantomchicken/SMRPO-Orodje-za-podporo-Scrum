@@ -16,7 +16,16 @@ export class AdminViewComponent implements OnInit {
 
   public isAdmin:boolean = false;
   public error:string = "";
-  public success:boolean = false;  
+  public success:boolean = false;
+  public passwordVisible:boolean = false;
+
+  public showPassword():void {
+    if (this.passwordVisible) 
+      this.passwordVisible = false
+    else
+      this.passwordVisible = true;
+  };
+
   public is_user_logged(): boolean {
     return this.authenticationService.is_logged();
   }
@@ -34,7 +43,6 @@ export class AdminViewComponent implements OnInit {
       })
       .catch(error => {
         this.error = error;
-        console.log(error)
       })
     }
   }
@@ -46,7 +54,7 @@ export class AdminViewComponent implements OnInit {
     }
   }
 
-  hide():void{
+  public hide():void{
     this.error=""
     this.success=false;
   }

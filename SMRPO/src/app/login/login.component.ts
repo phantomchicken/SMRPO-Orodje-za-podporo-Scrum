@@ -12,8 +12,21 @@ import { User } from '../classes/user';
 export class LoginComponent implements OnInit {
 
   constructor(
-    private authenticationService: AuthenticationService, 
+    private authenticationService: AuthenticationService,
     private router: Router) { }
+
+  public passwordVisible: boolean = false;
+  public error:string = "";
+  public hide():void{
+    this.error=""
+  }
+
+  public showPassword(): void {
+    if (this.passwordVisible)
+      this.passwordVisible = false
+    else
+      this.passwordVisible = true;
+  };
 
   ngOnInit(): void {
   }
@@ -23,7 +36,7 @@ export class LoginComponent implements OnInit {
       !this.user.username ||
       !this.user.password
     ) {
-      //console.log("bad")
+      this.error = "Please fill in all fields!"
     } else {
       this.authenticationService
         .login(this.user)
@@ -33,7 +46,8 @@ export class LoginComponent implements OnInit {
           //this.router.navigate(['/']));
         })
         .catch(message => {
-          //console.log(message)
+          //this.error = message
+          this.error = "Username or password wrong!"
         });
     }
   }

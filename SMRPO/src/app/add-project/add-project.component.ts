@@ -11,7 +11,7 @@ export class AddProjectComponent implements OnInit {
   constructor() { }
   public error:string ="";
   
-  hide():void{
+  public hide():void{
     this.error=""
   }
 

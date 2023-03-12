@@ -61,7 +61,7 @@ export class ResetPasswordComponent implements OnInit {
       });
   }
 
-  hide():void{
+  public hide():void{
     this.error=""
   }
 
@@ -76,7 +76,10 @@ export class ResetPasswordComponent implements OnInit {
     } else if ((this.newPassword1 != this.newPassword2)) {
       this.error = "New passwords must match!"
     } else {
-      this.userDataService
+      if (this.authenticationService.validatePassword(this.newPassword1)!=""){
+        this.error = this.authenticationService.validatePassword(this.newPassword1)
+      } else {
+        this.userDataService
         .getUser(this.authenticationService.get_current_user()._id)
         .then((data: User) => {
           this.user = data
@@ -95,7 +98,7 @@ export class ResetPasswordComponent implements OnInit {
             this.error = message
           });
         });
-      //console.log("hey", this.user)
+      } 
 
     }
   }

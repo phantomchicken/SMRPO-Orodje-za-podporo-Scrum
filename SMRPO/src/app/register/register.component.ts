@@ -17,6 +17,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  public error:string = "";
   public passwordVisible:boolean = false;
 
   public showPassword():void {
@@ -26,18 +27,28 @@ export class RegisterComponent implements OnInit {
       this.passwordVisible = true;
   };
 
+  public hide():void{
+    this.error=""
+  }
+
   public register = (): void => {
     if (!this.user.email || !this.user.password || !this.user.firstname || !this.user.lastname || !this.user.username) {
-      //console.log("bad")
+      this.error = "Please fill in all fields!"
+    } else if (!this.authenticationService.validateEmail(this.user.email)) {
+      this.error = "Please enter valid email!"
     } else {
-      this.authenticationService.register(this.user)
+      if (this.authenticationService.validatePassword(this.user.password)!=""){
+        this.error = this.authenticationService.validatePassword(this.user.password)
+      } else {
+        this.authenticationService.register(this.user)
       .then(() => {
         //console.log("success")
         this.router.navigateByUrl("/" );
       })
-      .catch(sporocilo => {
-        console.log(sporocilo)
+      .catch(message => {
+        this.error = message
       })
+      }
     }
   }
 
