@@ -29,8 +29,8 @@
         <li class="navbar-nav">
           <a *ngIf="!is_user_logged()" class="nav-link" (click)="navto('login')">Login</a>
           <a class="nav-link" (click)="navto('projects')">Projects</a>
+          <a class="nav-link" (click)="navto('add-sprint')">Sprint</a>
           <a *ngIf="authenticationService.is_admin()" class="nav-link" (click)="navto('admin')">Admin</a>
-          <a class="nav-link" (click)="navto('sprint')">Sprint</a>
           <a class="nav-link" (click)="navto('articles')">Test2</a>
         </li>
       </ul>
