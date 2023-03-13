@@ -14,6 +14,7 @@ import { AdminViewComponent } from './admin-view/admin-view.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { AddProjectComponent } from './add-project/add-project.component';
 import { ProjectsComponent } from './projects/projects.component';
+import { SprintComponent } from './sprint/sprint.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ProjectsComponent } from './projects/projects.component';
     AdminViewComponent,
     ResetPasswordComponent,
     AddProjectComponent,
-    ProjectsComponent
+    ProjectsComponent,
+    SprintComponent
   ],
   imports: [
     BrowserModule,
