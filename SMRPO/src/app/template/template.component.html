@@ -3,7 +3,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>SMRPO</title>
     <base href="/">
-    <script src="https://kit.fontawesome.com/b1b4a222c5.js" crossorigin="anonymous"></script>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="/assets/stylesheets/bootstrap.lux.min.css">
     <link rel="stylesheet" href="/assets/stylesheets/bootstrap.min.css">
@@ -31,6 +30,7 @@
           <a *ngIf="!is_user_logged()" class="nav-link" (click)="navto('login')">Login</a>
           <a class="nav-link" (click)="navto('projects')">Projects</a>
           <a *ngIf="authenticationService.is_admin()" class="nav-link" (click)="navto('admin')">Admin</a>
+          <a class="nav-link" (click)="navto('sprint')">Sprint</a>
           <a class="nav-link" (click)="navto('articles')">Test2</a>
         </li>
       </ul>
@@ -85,4 +85,3 @@
   </main>
   <script src="/assets/javascripts/sidebarlogic.js"></script>
   </body>
-  
