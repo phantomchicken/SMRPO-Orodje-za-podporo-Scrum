@@ -8,6 +8,7 @@ import { AdminViewComponent } from '../admin-view/admin-view.component';
 import { ResetPasswordComponent } from '../reset-password/reset-password.component';
 import { AddProjectComponent } from '../add-project/add-project.component';
 import { ProjectsComponent } from '../projects/projects.component';
+import {SprintComponent} from "../sprint/sprint.component";
 
 
 const paths: Routes = [
@@ -36,6 +37,9 @@ const paths: Routes = [
   },{
     path: 'projects',
     component: ProjectsComponent
+  },{
+    path: 'sprint/add',
+    component: SprintComponent
   }
   
 ]
