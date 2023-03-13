@@ -7,10 +7,18 @@ import { Component, OnInit } from '@angular/core';
   ]
 })
 export class SprintComponent implements OnInit {
+  sprint: any;
+  public error:string ="";
 
   constructor() { }
 
-  ngOnInit(): void {
+  addSprint(): void {
   }
 
+  hide() {
+    this.error=""
+  }
+
+  ngOnInit(): void {
+  }
 }
