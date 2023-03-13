@@ -38,6 +38,13 @@ export class AuthenticationService {
     }
   }
 
+  public is_admin():boolean {
+    const user:User = this.get_current_user()
+    if (user.privilege=="admin")
+      return true
+    else return false
+  }
+
   public get_current_user(): User {
     if (this.is_logged()) {
       const token: string = this.returnToken();

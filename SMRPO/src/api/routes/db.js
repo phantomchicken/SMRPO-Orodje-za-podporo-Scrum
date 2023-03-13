@@ -25,4 +25,7 @@ router.route('/user/:idUser')
     .put(authentication, ctrlDb.updateUser)
     .delete(authentication, ctrlDb.deleteUser)
 
+router.route('/users')
+    .get(ctrlDb.getUsers)
+
 module.exports = router;

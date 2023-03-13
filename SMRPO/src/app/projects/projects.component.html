@@ -89,6 +89,6 @@
     </div>
   </div>
   <div class="form-row align-items-center justify-content-center mt-3">
-    <a *ngIf="isLogged" routerLink="/projects/add" type="submit" class="btn btn-success w-25 m-3">Add project</a>
+    <a *ngIf="authenticationService.is_logged()" routerLink="/projects/add" type="submit" class="btn btn-success w-25 m-3">Add project</a>
 </div>
   

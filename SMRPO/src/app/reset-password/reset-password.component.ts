@@ -13,17 +13,15 @@ import { UsersDataService } from '../user.service';
 export class ResetPasswordComponent implements OnInit {
 
   constructor(
-    private authenticationService: AuthenticationService,
+    protected authenticationService: AuthenticationService,
     private router: Router,
     private userDataService: UsersDataService) { }
 
   ngOnInit(): void {
-    this.isLogged = this.authenticationService.is_logged();
   }
 
   public error:string = "";
   //public success:boolean = false; 
-  public isLogged: boolean = false
   protected oldPassword: string = "";
   public newPassword1: string = "";
   public newPassword2: string = "";
@@ -66,7 +64,7 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   resetPassword(): void {
-    if (!this.isLogged) return
+    if (!this.authenticationService.is_logged()) return
 
     if (
       !this.oldPassword ||

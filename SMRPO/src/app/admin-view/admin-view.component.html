@@ -1,5 +1,48 @@
-<h1 *ngIf="!isAdmin">Sorry, this page is for admin users only!</h1>
-<div *ngIf="isAdmin" class="container">
+<h1 *ngIf="!authenticationService.is_admin()">Sorry, this page is for admin users only!</h1>
+<div *ngIf="authenticationService.is_admin()" class="container">
+    <div class="row mt-5 justify-content-center text-center">
+        <div class="col-auto">
+            <div *ngIf="dataSource" class="user-table-container text-center">
+                <table class="table-hover" mat-table [dataSource]="dataSource">
+                    <td mat-cell *matCellDef="let element; let i = index;"> {{i+1}} </td>
+                    <ng-container matColumnDef="username">
+                        <th mat-header-cell *matHeaderCellDef>Username</th>
+                        <td mat-cell *matCellDef="let user">{{ user.username }}</td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="firstname">
+                        <th mat-header-cell *matHeaderCellDef>First name</th>
+                        <td mat-cell *matCellDef="let user">{{ user.firstname }}</td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="lastname">
+                        <th mat-header-cell *matHeaderCellDef>Last name</th>
+                        <td mat-cell *matCellDef="let user">{{ user.lastname }}</td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="email">
+                        <th mat-header-cell *matHeaderCellDef>Email</th>
+                        <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="privilege">
+                        <th mat-header-cell *matHeaderCellDef >Privilege</th>
+                        <td mat-cell *matCellDef="let user">{{ user.privilege }}</td>
+                    </ng-container>
+                    
+                     <!--<ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef>ID</th>
+                        <td mat-cell *matCellDef="let user">{{ user._id }}</td>
+                    </ng-container>-->
+    
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+        </div>
+        
+    </div>
+
     <div class="row mt-5 justify-content-center">
         <div class="col-sm-10 col-md-8 col-lg-6">
             <div class="card text-white bg-dark text-center">
@@ -7,98 +50,98 @@
                     <h5 class="card-title mb-3">Add user</h5>
                     <form (ngSubmit)="addUser()">
                         <div class="form-row align-items-center mt-3">
-                            
-                                <label class="sr-only" for="inlineFormInputGroup1">First name</label>
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">First name</div>
-                                    </div>
-                                    <input [(ngModel)]="user.firstname" type="text" class="form-control"
-                                        id="inlineFormInputGroup1" placeholder="First name" name="firstname">
-                                
+
+                            <label class="sr-only" for="inlineFormInputGroup1">First name</label>
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">First name</div>
+                                </div>
+                                <input [(ngModel)]="user.firstname" type="text" class="form-control"
+                                    id="inlineFormInputGroup1" placeholder="First name" name="firstname">
+
                             </div>
                         </div>
                         <div class="form-row align-items-center mt-3">
-                            
-                                <label class="sr-only" for="inlineFormInputGroup2">Last name</label>
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">Last name</div>
-                                    </div>
-                                    <input [(ngModel)]="user.lastname" type="text" class="form-control"
-                                        id="inlineFormInputGroup2" placeholder="Last name" name="lastname">
+
+                            <label class="sr-only" for="inlineFormInputGroup2">Last name</label>
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Last name</div>
                                 </div>
-                            
+                                <input [(ngModel)]="user.lastname" type="text" class="form-control"
+                                    id="inlineFormInputGroup2" placeholder="Last name" name="lastname">
+                            </div>
+
                         </div>
                         <div class="form-row align-items-center mt-3">
-                            
-                                <label class="sr-only" for="inlineFormInputGroup3">Username</label>
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">Username</div>
-                                    </div>
-                                    <input [(ngModel)]="user.username" type="text" class="form-control"
-                                        id="inlineFormInputGroup3" placeholder="Username" name="username">
+
+                            <label class="sr-only" for="inlineFormInputGroup3">Username</label>
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Username</div>
                                 </div>
-                            
+                                <input [(ngModel)]="user.username" type="text" class="form-control"
+                                    id="inlineFormInputGroup3" placeholder="Username" name="username">
+                            </div>
+
                         </div>
                         <div class="form-row align-items-center mt-3">
-                            
-                                <label class="sr-only" for="inlineFormInputGroup4">Username</label>
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">E-mail &nbsp; &nbsp; </div>
-                                    </div>
-                                    <input [(ngModel)]="user.email" type="text" class="form-control"
-                                        id="inlineFormInputGroup4" placeholder="E-mail" name="email">
+
+                            <label class="sr-only" for="inlineFormInputGroup4">Username</label>
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">E-mail &nbsp; &nbsp; </div>
                                 </div>
-                            
+                                <input [(ngModel)]="user.email" type="text" class="form-control"
+                                    id="inlineFormInputGroup4" placeholder="E-mail" name="email">
+                            </div>
+
                         </div>
                         <div class="form-group-row align-items-center mt-3">
-                            
-                                <label class="sr-only" for="inlineFormInputGroup5">Password</label>
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">Password</div>
-                                    </div>
-                                    <input [type]="passwordVisible ? 'text' : 'password'" [(ngModel)]="user.password" type="password" class="form-control"
-                                        id="inlineFormInputGroup5" placeholder="Password" name="password" id="password">
-                                        <div class="input-group-append">
-                                            <span class="input-group-text">
-                                                <a href="javascript:void(0)" (click)="showPassword()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16"><path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" /><path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" /></svg></a>
-                                            </span>
-                                        </div>
+
+                            <label class="sr-only" for="inlineFormInputGroup5">Password</label>
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Password</div>
                                 </div>
-                                
-                                <password-strength-meter [password]="user.password"></password-strength-meter>
-                                <small>The password should be 12-20 characters long, contain letters and numbers.</small>
-                            
+                                <input [type]="passwordVisible ? 'text' : 'password'" [(ngModel)]="user.password"
+                                    type="password" class="form-control" id="inlineFormInputGroup5"
+                                    placeholder="Password" name="password" id="password">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">
+                                                <a href="javascript:void(0)" (click)="showPassword()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16"><path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" /><path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" /></svg></a>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <password-strength-meter [password]="user.password"></password-strength-meter>
+                            <small>The password should be 12-20 characters long, contain letters and numbers.</small>
+
                         </div>
                         <div class="form-group-row align-items-center mt-3">
                             <div class="form-check form-check-inline">
                                 <input [(ngModel)]="user.privilege" type="radio" class="form-check-input" id="radio1" name="optradio" value="normal" checked>Normal
                                 <label class="form-check-label" for="radio1"></label>
-                              </div>
-                              <div class="form-check form-check-inline">
+                            </div>
+                            <div class="form-check form-check-inline">
                                 <input [(ngModel)]="user.privilege" type="radio" class="form-check-input" id="radio2" name="optradio" value="admin">Admin
                                 <label class="form-check-label" for="radio2"></label>
-                              </div>
+                            </div>
                         </div>
-                                                
-                        <input id="submit-login" type="submit" class="btn btn-primary w-50 m-3"
-                            value="Add user">
+
+                        <input id="submit-login" type="submit" class="btn btn-primary w-50 m-3" value="Add user">
                     </form>
                     <div *ngIf="error" class="alert alert-danger alert-dismissible" role="alert">
                         {{error}}
                         <button type="button" class="close" (click)="hide()" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
+                            <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div *ngIf="success" class="alert alert-success alert-dismissible" role="alert">
                         User successfully added!
                         <button type="button" class="close" (click)="hide()" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
-                          </button>
+                        </button>
                     </div>
                 </div>
             </div>

@@ -12,15 +12,9 @@ export class ProjectsComponent implements OnInit {
 
   //TODO: fetch projects from project service, populate cards 
 
-  constructor(private authenticationService: AuthenticationService) { }
-  public isLogged: boolean = false
-
-  public is_user_logged(): void {
-    this.isLogged = this.authenticationService.is_logged();
-  }
+  constructor(protected authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
-    this.is_user_logged()
   }
 
 }

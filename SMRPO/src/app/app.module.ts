@@ -14,6 +14,7 @@ import { AdminViewComponent } from './admin-view/admin-view.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { AddProjectComponent } from './add-project/add-project.component';
 import { ProjectsComponent } from './projects/projects.component';
+import { MatTableModule} from '@angular/material/table'
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { ProjectsComponent } from './projects/projects.component';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    PasswordStrengthMeterModule.forRoot()
+    PasswordStrengthMeterModule.forRoot(),
+    MatTableModule
   ],
   providers: [],
   bootstrap: [TemplateComponent]

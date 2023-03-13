@@ -60,6 +60,15 @@ export class UsersDataService {
       .catch(this.processError);
   }
 
+  public getUsers(): Promise<User[]> {
+    const url: string = `${this.apiUrl}/db/users`;
+    return this.http
+      .get(url)
+      .toPromise()
+      .then(response => response as User[])
+      .catch(this.processError);
+  }
+
   public login(user: User): Promise<AuthenticationResult> {
     return this.authentication('user/login', user);
   }

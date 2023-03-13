@@ -10,11 +10,10 @@ import { AuthenticationService } from '../authentication.service';
 
 
 export class TemplateComponent implements OnInit {
-  constructor(private router:Router, private authenticationService: AuthenticationService) { }
+  constructor(private router:Router, public authenticationService: AuthenticationService) { }
   
   public user_id: string = "";
   public username: string = "";
-  public isAdmin:boolean = false;
 
   public is_user_logged(): boolean {
     return this.authenticationService.is_logged();
@@ -27,8 +26,6 @@ export class TemplateComponent implements OnInit {
     if (this.is_user_logged()) {
       this.user_id = this.authenticationService.get_current_user()._id;
       this.username = this.authenticationService.get_current_user().username;
-      if (this.authenticationService.get_current_user().privilege == "admin")
-        this.isAdmin = true
       console.log(this.user_id)
       console.log(this.username)
       console.log(this.authenticationService.get_current_user().privilege)

@@ -3,18 +3,21 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
 import { User } from '../classes/user';
 import { UsersDataService } from '../user.service';
+import { MatTableDataSource } from '@angular/material/table'
 
 @Component({
   selector: 'app-admin-view',
   templateUrl :'admin-view.component.html',
-  styles: [
+  styles: ['th.mat-header-cell {text-align: center !important;}'
   ]
 })
 export class AdminViewComponent implements OnInit {
 
-  constructor(private authenticationService: AuthenticationService, private router:Router, private userService: UsersDataService) { }
+  constructor(protected authenticationService: AuthenticationService, private router:Router, private userService: UsersDataService) { }
 
-  public isAdmin:boolean = false;
+  public dataSource: MatTableDataSource<User> = new MatTableDataSource();
+  public users:User[]=[]
+  public displayedColumns = ['username', 'firstname', 'lastname', 'email', 'privilege']; //id
   public error:string = "";
   public success:boolean = false;
   public passwordVisible:boolean = false;
@@ -39,6 +42,8 @@ export class AdminViewComponent implements OnInit {
       .then(() => {
         //console.log("success")
         this.success = true;
+        this.users.push(this.user)
+        this.dataSource.data = this.users
         //this.router.navigateByUrl("/");
       })
       .catch(error => {
@@ -48,10 +53,10 @@ export class AdminViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.is_user_logged()) {
-      if (this.authenticationService.get_current_user().privilege == "admin")
-        this.isAdmin = true
-    }
+    this.userService.getUsers().then((data: User[]) => {
+      this.users = data;
+      this.dataSource = new MatTableDataSource(this.users);
+    })
   }
 
   public hide():void{
