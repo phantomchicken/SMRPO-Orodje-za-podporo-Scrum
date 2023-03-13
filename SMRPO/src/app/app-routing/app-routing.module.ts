@@ -38,7 +38,7 @@ const paths: Routes = [
     path: 'projects',
     component: ProjectsComponent
   },{
-    path: 'sprint/add',
+    path: 'sprint',
     component: SprintComponent
   }
   
