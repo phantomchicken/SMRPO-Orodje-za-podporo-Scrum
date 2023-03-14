@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { SprintDataService } from '../sprint.service';
+import {Sprint} from '../classes/sprint';
 
 @Component({
   selector: 'app-add-sprint',
@@ -9,7 +11,7 @@ import { Component, OnInit } from '@angular/core';
 export class AddSprintComponent implements OnInit {
   public error:string ="";
 
-  constructor() { }
+  constructor(private sprintService: SprintDataService) { }
 
   addSprint(): void {
     this.sprint.project = 0; //TODO: IMPLEMENT PROJECT REF
@@ -21,7 +23,13 @@ export class AddSprintComponent implements OnInit {
       this.error = "Sprint velocity is invalid!"
     } else{
       // add backend call
-  
+      this.sprintService.createSprint(this.sprint)
+        .then((sprint: Sprint) => {
+          console.log('Sprint added!'); //TODO: redirect
+        })
+        .catch((error) => {
+          console.error(error);
+        });
       this.error = "";
     }
   }
