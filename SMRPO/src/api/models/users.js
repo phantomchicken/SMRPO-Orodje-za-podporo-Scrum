@@ -36,6 +36,10 @@ const userSchema = new mongoose.Schema({
     timestamp: {
         type: Date,
         default: ''
+    },
+    login_counter: {
+        type: Number,
+        default: 0
     }
 });
 
@@ -63,6 +67,7 @@ userSchema.methods.generateJwt = function () {
         username: this.username,
         privilege: this.privilege,
         timestamp: this.timestamp,
+        login_counter: this.login_counter,
         exp: parseInt(datumPoteka.getTime() / 1000, 10)
     }, process.env.JWT_PASSWORD);
 };
@@ -70,6 +75,10 @@ userSchema.methods.generateJwt = function () {
 userSchema.statics.updateTimestamp = function updateTimestamp(id, callback) {
     return this.findByIdAndUpdate(id, { 'timestamp' : Date.now() }, { new : true }, callback);
  };
+
+ userSchema.statics.incrementCounter = function updateTimestamp(id, callback) {
+    return this.findByIdAndUpdate(id, { $inc: { "login_counter": 1 } }, { new : true }, callback);
+ }
 
 var User = mongoose.model('User', userSchema, "Users");
 module.exports = User;

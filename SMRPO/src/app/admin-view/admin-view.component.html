@@ -50,8 +50,12 @@
         </div>
         
     </div>
-
-    <div class="row mt-5 justify-content-center">
+    <div class="row mt-2 justify-content-center">
+        <input type="submit" class="btn btn-primary w-25 m-3" value="Toggle add user form" (click)="toggleAddUser()">
+        <input type="submit" class="btn btn-success w-25 m-3" value="Add sample data" (click)="addSampleData()">
+        <input type="submit" class="btn btn-danger w-25 m-3" value="Delete all data" (click)="deleteAllData()">
+    </div>
+    <div *ngIf="showForm" class="row mt-2 justify-content-center">
         <div class="col-sm-10 col-md-8 col-lg-6">
             <div class="card text-white bg-dark text-center">
                 <div class="card-body mx-auto">
@@ -153,10 +157,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row mt-5 justify-content-center">
-            <input type="submit" class="btn btn-success w-25 m-3" value="Add sample data" (click)="addSampleData()">
-            <input type="submit" class="btn btn-danger w-25 m-3" value="Delete all data" (click)="deleteAllData()">
         </div>
     </div>
     

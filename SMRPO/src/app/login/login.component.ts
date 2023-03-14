@@ -57,7 +57,8 @@ export class LoginComponent implements OnInit {
     email: "",
     password: "",
     privilege: "",
-    timestamp: new Date()
+    timestamp: new Date(),
+    login_counter: 0
   };
 
 }

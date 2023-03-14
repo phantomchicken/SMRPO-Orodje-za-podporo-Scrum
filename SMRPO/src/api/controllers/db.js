@@ -71,7 +71,7 @@ const register = (req, res) => {
         if (error) {
             if (error.name == "MongoServerError" && error.code == 11000) {
                 res.status(409).json({
-                    "message": "User with that username already exists!"
+                    "message": "User with that username/e-mail already exists!"
                 });
             } else {
                 res.status(500).json(error);
@@ -90,13 +90,15 @@ const login = (req, res) => {
             return res.status(500).json(error);
         else if (user) {
             User.updateTimestamp(user._id, function (err, user) {
-                if (err) {
-                    return res.status(500).json("Server error!");
-                    console.log(err)
-                }
+                if (err) return res.status(500).json("Server error!");               
                 else {
-                    return res.status(201).json({
-                        "token": user.generateJwt()
+                    User.incrementCounter(user._id, function (err, user) {
+                        if (err) return res.status(500).json("Server error!");
+                        else {
+                            return res.status(201).json({
+                                "token": user.generateJwt()
+                            });
+                        }
                     });
                 }
             });
@@ -304,7 +306,6 @@ const deleteAllData = (req, res) => {
 };
 
 const addSampleData = (req, res) => {
-    console.log("test")
     var message = "Sample data is successfully added.";
     var barrier = new Latch(usersData.length);
 
