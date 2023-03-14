@@ -37,7 +37,12 @@ export class AdminViewComponent implements OnInit {
     console.log(this.user.privilege)
     if (!this.user.email || !this.user.password || !this.user.firstname || !this.user.lastname || !this.user.username || !this.user.privilege) {
       this.error = "Please fill in all fields!"
-    } else {
+    } else if (!this.authenticationService.validateEmail(this.user.email)){
+      this.error = "Please enter a valid email!"
+    } else if (this.authenticationService.validatePassword(this.user.password) != ""){
+      this.error = "Please enter a valid password!"
+    } 
+    else {
       this.userService.register(this.user)
       .then(() => {
         //console.log("success")
