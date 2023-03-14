@@ -39,7 +39,7 @@ export class AdminViewComponent implements OnInit {
       this.error = "Please fill in all fields!"
     } else if (!this.authenticationService.validateEmail(this.user.email)){
       this.error = "Please enter a valid email!"
-    } else if (this.authenticationService.validatePassword(this.user.password) != ""){
+    } else if (this.authenticationService.validatePassword(this.user.password) != ""  ){
       this.error = "Please enter a valid password!"
     } 
     else {
