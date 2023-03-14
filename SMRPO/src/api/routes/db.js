@@ -28,4 +28,7 @@ router.route('/user/:idUser')
 router.route('/users')
     .get(ctrlDb.getUsers)
 
+router.route('/sprint')
+    .post(ctrlDb.createSprint)
+
 module.exports = router;

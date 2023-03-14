@@ -4,6 +4,7 @@ const LokalnaStrategija = require('passport-local').Strategy;
 require('./db');
 const User = require('../models/users')
 //const User = mongoose.model("User");
+const Sprint = require('../models/sprints')
 
 
 const getUser = (req, res) => {
@@ -172,6 +173,37 @@ const checkPassword = (req, res) => {
       })(req, res);
   };
 
+  const createSprint = (req, res) => {
+    if (req.body === undefined) {
+        res.status(500).send('Internal error')
+        return;
+    }
+
+    if (!('startDate' in req.body 
+        && 'endDate' in req.body
+        && 'velocity' in req.body 
+        //&& 'project' in req.body
+    )) {
+        res.status(500).send('Missing argument')
+        return;
+    }
+
+    const new_sprint = new Sprint();
+    new_sprint.startDate = req.body.startDate;
+    new_sprint.endDate = req.body.endDate;
+    new_sprint.velocity = req.body.velocity;
+    new_sprint.project = undefined; //req.body.project;
+
+    new_sprint.save(error => {
+        console.log(error)
+        if (error) {
+            res.status(500).json(error);
+        } else {
+            res.status(201).json(new_sprint);
+        }
+    });
+}
+
 module.exports =
 {
     getUser: getUser,
@@ -181,5 +213,6 @@ module.exports =
     login: login,
     updateUser: updateUser,
     deleteUser: deleteUser,
-    checkPassword: checkPassword
+    checkPassword: checkPassword,
+    createSprint: createSprint
 }
