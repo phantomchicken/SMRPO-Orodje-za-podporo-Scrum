@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ProjectDataService } from '../project.service';
+import {Project} from '../classes/project';
 
 @Component({
   selector: 'app-add-project',
@@ -8,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddProjectComponent implements OnInit {
 
-  constructor() { }
+  constructor(private projectService: ProjectDataService) { }
   public error:string ="";
   
   public hide():void{
@@ -20,13 +22,22 @@ export class AddProjectComponent implements OnInit {
       this.error = "Please enter all fields!"
     } else if (this.project.scrum_master == this.project.product_owner) {
       this.error = "Scrum master and product owner can't be the same person!"
+    }else{
+      this.projectService.createProject(this.project)
+        .then((project: Project) => {
+          console.log('Project added!'); //TODO: redirect
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      this.error = "";
     }
   }
 
   ngOnInit(): void {
   }
 
-  public project: any = {
+  public project: Project = {
     _id: "",
     name: "",
     description: "",

@@ -5,6 +5,7 @@ require('./db');
 const User = require('../models/users')
 //const User = mongoose.model("User");
 const Sprint = require('../models/sprints')
+const Project = require('../models/projects')
 
 
 const getUser = (req, res) => {
@@ -204,6 +205,39 @@ const checkPassword = (req, res) => {
     });
 }
 
+const createProject = (req, res) => {
+    if (req.body === undefined) {
+        res.status(500).send('Internal error')
+        return;
+    }
+
+    if (!('name' in req.body 
+        && 'description' in req.body
+        && 'developers' in req.body 
+        && 'scrum_master' in req.body 
+        && 'product_owner' in req.body 
+    )) {
+        res.status(500).send('Missing argument')
+        return;
+    }
+
+    const new_project = new Project();
+    new_project.name = req.body.name;
+    new_project.description = req.body.description;
+    new_project.developers = req.body.developers;
+    new_project.scrum_master = req.body.scrum_master;
+    new_project.product_owner = req.body.product_owner;
+
+    new_project.save(error => {
+        console.log(error)
+        if (error) {
+            res.status(500).json(error);
+        } else {
+            res.status(201).json(new_project);
+        }
+    });
+}
+
 module.exports =
 {
     getUser: getUser,
@@ -214,5 +248,6 @@ module.exports =
     updateUser: updateUser,
     deleteUser: deleteUser,
     checkPassword: checkPassword,
-    createSprint: createSprint
+    createSprint: createSprint,
+    createProject: createProject
 }

@@ -31,4 +31,7 @@ router.route('/users')
 router.route('/sprint')
     .post(ctrlDb.createSprint)
 
+router.route('/project')
+    .post(ctrlDb.createProject)
+
 module.exports = router;
