@@ -14,7 +14,7 @@ export class AddSprintComponent implements OnInit {
   constructor(private sprintService: SprintDataService) { }
 
   addSprint(): void {
-    this.sprint.project = 0; //TODO: IMPLEMENT PROJECT REF
+    this.sprint.project = ""; //TODO: IMPLEMENT PROJECT REF
     if (!this.sprint.startDate || !this.sprint.endDate || !this.sprint.velocity) {
       this.error = "Please enter all fields!"
     } else if (this.sprint.startDate > this.sprint.endDate){
@@ -41,11 +41,11 @@ export class AddSprintComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  public sprint: any = {
-    _id: undefined,
-    startDate: undefined,
-    endDate: undefined,
-    velocity: undefined,
-    project: undefined
+  public sprint: Sprint = {
+    _id: "",
+    startDate: new Date(),
+    endDate: new Date(),
+    velocity: -1,
+    project: ""
   };
 }

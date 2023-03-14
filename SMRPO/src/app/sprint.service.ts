@@ -13,7 +13,7 @@ export class SprintDataService {
   private apiUrl = environment.apiUrl;
 
   public createSprint(data:any): Promise<Sprint> {
-    const url: string = `${this.apiUrl}/sprint/`;
+    const url: string = `${this.apiUrl}/db/sprint`;
     return this.http
       .post(url, data)
       .toPromise()
