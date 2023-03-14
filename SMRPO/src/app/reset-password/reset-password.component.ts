@@ -108,7 +108,8 @@ export class ResetPasswordComponent implements OnInit {
     lastname: "",
     email: "",
     password: "",
-    privilege: ""
+    privilege: "",
+    timestamp: new Date()
   };
 
 }

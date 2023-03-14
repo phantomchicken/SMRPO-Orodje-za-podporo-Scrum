@@ -48,8 +48,8 @@ export class AuthenticationService {
   public get_current_user(): User {
     if (this.is_logged()) {
       const token: string = this.returnToken();
-      const { email, username, _id, privilege } = JSON.parse(this.b64Utf8(token.split('.')[1]));
-      return { email, username, _id, privilege } as User;
+      const { email, username, _id, privilege, timestamp } = JSON.parse(this.b64Utf8(token.split('.')[1]));
+      return { email, username, _id, privilege, timestamp } as User;
     } else return new User // TODO
   }
 
@@ -78,7 +78,6 @@ export class AuthenticationService {
   }
 
   public async register(user: User): Promise<any> {
-    console.log("authService")
     return this.userDataService
       .register(user)
       .then((rezultatAvtentikacije: AuthenticationResult) => {

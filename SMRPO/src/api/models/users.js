@@ -32,6 +32,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['normal', 'admin'],
         default: 'normal'
+    },
+    timestamp: {
+        type: Date,
+        default: ''
     }
 });
 
@@ -58,9 +62,14 @@ userSchema.methods.generateJwt = function () {
         email: this.email,
         username: this.username,
         privilege: this.privilege,
+        timestamp: this.timestamp,
         exp: parseInt(datumPoteka.getTime() / 1000, 10)
     }, process.env.JWT_PASSWORD);
 };
+
+userSchema.statics.updateTimestamp = function updateTimestamp(id, callback) {
+    return this.findByIdAndUpdate(id, { 'timestamp' : Date.now() }, { new : true }, callback);
+ };
 
 var User = mongoose.model('User', userSchema, "Users");
 module.exports = User;
