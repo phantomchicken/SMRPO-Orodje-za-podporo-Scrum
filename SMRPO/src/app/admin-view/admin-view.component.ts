@@ -16,13 +16,14 @@ import { MatPaginator } from '@angular/material/paginator';
 export class AdminViewComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator // TODO null assertion
   constructor(protected authenticationService: AuthenticationService, private router: Router, private userService: UsersDataService, private dbService: DbService) { }
-
+  
   public dataSource: MatTableDataSource<User> = new MatTableDataSource();
   public users: User[] = []
   public displayedColumns = ['#','username', 'firstname', 'lastname', 'email', 'privilege']; //id
   public error: string = "";
   public success: boolean = false;
   public passwordVisible: boolean = false;
+  public showForm: boolean = false
 
   public showPassword(): void {
     if (this.passwordVisible)
@@ -36,18 +37,20 @@ export class AdminViewComponent implements OnInit {
   }
 
   public addUser(): void {
-    console.log(this.user.privilege)
+    this.success = false
+    this.error=""
     if (!this.user.email || !this.user.password || !this.user.firstname || !this.user.lastname || !this.user.username || !this.user.privilege) {
       this.error = "Please fill in all fields!"
     } else if (!this.authenticationService.validateEmail(this.user.email)) {
       this.error = "Please enter a valid email!"
     } else if (this.authenticationService.validatePassword(this.user.password) != "") {
-      this.error = "Please enter a valid password!"
+      this.error = this.authenticationService.validatePassword(this.user.password)
     }
     else {
       this.userService.register(this.user)
         .then(() => {
           //console.log("success")
+          this.error =""
           this.success = true;
           this.users.push(this.user)
           this.dataSource.data = this.users
@@ -75,6 +78,9 @@ export class AdminViewComponent implements OnInit {
     })
   }
 
+  toggleAddUser(): void {
+    this.showForm = this.showForm ? false : true
+  }
   
   ngOnInit(): void {
     this.userService.getUsers().then((data: User[]) => {
@@ -102,6 +108,7 @@ export class AdminViewComponent implements OnInit {
     password: "",
     privilege: "",
     timestamp: new Date(),
+    login_counter: 0
 };
 
 }

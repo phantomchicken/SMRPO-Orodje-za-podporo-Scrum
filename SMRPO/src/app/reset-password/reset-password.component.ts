@@ -89,11 +89,11 @@ export class ResetPasswordComponent implements OnInit {
                 this.error=""
                 this.router.navigate(['/']); // have to reload because of sidebar! more elegant solution probably exists
               }).catch(message => {
-                this.error = message
+                this.error = "Password update failed!"
               });
             }
           }).catch(message => {
-            this.error = message
+            this.error = "Current password not valid!"
           });
         });
       } 
@@ -109,7 +109,8 @@ export class ResetPasswordComponent implements OnInit {
     email: "",
     password: "",
     privilege: "",
-    timestamp: new Date()
+    timestamp: new Date(),
+    login_counter: 0
   };
 
 }

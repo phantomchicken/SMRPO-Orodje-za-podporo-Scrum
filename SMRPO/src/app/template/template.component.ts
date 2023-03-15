@@ -28,7 +28,7 @@ export class TemplateComponent implements OnInit {
       this.username = this.authenticationService.get_current_user().username;
       console.log(this.user_id)
       console.log(this.username)
-      console.log(this.authenticationService.get_current_user().privilege)
+      console.log(this.authenticationService.get_current_user())
     }
   }
 

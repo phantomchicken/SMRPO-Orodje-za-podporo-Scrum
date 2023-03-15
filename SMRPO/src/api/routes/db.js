@@ -37,4 +37,7 @@ router.route('/sprint')
 
 router.route('/project')
     .post(ctrlDb.createProject)
+router.route('/story')
+    .post(ctrlDb.createStory)
+
 module.exports = router;

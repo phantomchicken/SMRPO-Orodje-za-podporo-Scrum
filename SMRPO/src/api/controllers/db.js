@@ -6,6 +6,7 @@ const User = require('../models/users')
 //const User = mongoose.model("User");
 const Sprint = require('../models/sprints')
 const Project = require('../models/projects')
+const Story = require('../models/stories')
 
 const usersData = require('../../../users.json');
 var userArray = new Array();
@@ -71,7 +72,7 @@ const register = (req, res) => {
         if (error) {
             if (error.name == "MongoServerError" && error.code == 11000) {
                 res.status(409).json({
-                    "message": "User with that username already exists!"
+                    "message": "User with that username/e-mail already exists!"
                 });
             } else {
                 res.status(500).json(error);
@@ -90,13 +91,15 @@ const login = (req, res) => {
             return res.status(500).json(error);
         else if (user) {
             User.updateTimestamp(user._id, function (err, user) {
-                if (err) {
-                    return res.status(500).json("Server error!");
-                    console.log(err)
-                }
+                if (err) return res.status(500).json("Server error!");               
                 else {
-                    return res.status(201).json({
-                        "token": user.generateJwt()
+                    User.incrementCounter(user._id, function (err, user) {
+                        if (err) return res.status(500).json("Server error!");
+                        else {
+                            return res.status(201).json({
+                                "token": user.generateJwt()
+                            });
+                        }
                     });
                 }
             });
@@ -248,6 +251,49 @@ const createProject = (req, res) => {
     });
 }
 
+const createStory = (req, res) => {
+    if (req.body === undefined) {
+        res.status(500).send('Internal error')
+        return;
+    }
+
+    if (!('name' in req.body 
+        && 'description' in req.body
+        && 'storyPoints' in req.body 
+        && 'priority' in req.body 
+        && 'acceptanceCriteria' in req.body 
+        && 'businessValue' in req.body 
+        && 'status' in req.body 
+        && 'project' in req.body
+        && 'sprint' in req.body
+        && 'assignee' in req.body
+    )) {
+        res.status(500).send('Missing argument')
+        return;
+    }
+
+    const new_story = new Story();
+    new_story.name = req.body.name;
+    new_story.description = req.body.description;
+    new_story.storyPoints = req.body.storyPoints;
+    new_story.priority = req.body.priority;
+    new_story.acceptanceCriteria = req.body.acceptanceCriteria;
+    new_story.businessValue = req.body.businessValue;
+    new_story.status = req.body.status;
+    new_story.project = req.body.project;
+    new_story.sprint = req.body.sprint;
+    new_story.assignee = req.body.assignee;
+
+    new_story.save(error => {
+        console.log(error)
+        if (error) {
+            res.status(500).json(error);
+        } else {
+            res.status(201).json(new_project);
+        }
+    });
+}
+
 function Latch(limit) {
     this.limit = limit;
     this.count = 0;
@@ -304,7 +350,6 @@ const deleteAllData = (req, res) => {
 };
 
 const addSampleData = (req, res) => {
-    console.log("test")
     var message = "Sample data is successfully added.";
     var barrier = new Latch(usersData.length);
 
@@ -361,6 +406,7 @@ module.exports =
     checkPassword: checkPassword,
     createSprint: createSprint,
     createProject: createProject,
+    createStory: createStory,
     deleteAllData: deleteAllData,
     addSampleData: addSampleData
 }
