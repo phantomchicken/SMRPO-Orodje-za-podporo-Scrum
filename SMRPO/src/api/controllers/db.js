@@ -6,6 +6,7 @@ const User = require('../models/users')
 //const User = mongoose.model("User");
 const Sprint = require('../models/sprints')
 const Project = require('../models/projects')
+const Story = require('../models/stories')
 
 
 const getUser = (req, res) => {
@@ -238,6 +239,49 @@ const createProject = (req, res) => {
     });
 }
 
+const createStory = (req, res) => {
+    if (req.body === undefined) {
+        res.status(500).send('Internal error')
+        return;
+    }
+
+    if (!('name' in req.body 
+        && 'description' in req.body
+        && 'storyPoints' in req.body 
+        && 'priority' in req.body 
+        && 'acceptanceCriteria' in req.body 
+        && 'businessValue' in req.body 
+        && 'status' in req.body 
+        && 'project' in req.body
+        && 'sprint' in req.body
+        && 'assignee' in req.body
+    )) {
+        res.status(500).send('Missing argument')
+        return;
+    }
+
+    const new_story = new Story();
+    new_story.name = req.body.name;
+    new_story.description = req.body.description;
+    new_story.storyPoints = req.body.storyPoints;
+    new_story.priority = req.body.priority;
+    new_story.acceptanceCriteria = req.body.acceptanceCriteria;
+    new_story.businessValue = req.body.businessValue;
+    new_story.status = req.body.status;
+    new_story.project = req.body.project;
+    new_story.sprint = req.body.sprint;
+    new_story.assignee = req.body.assignee;
+
+    new_story.save(error => {
+        console.log(error)
+        if (error) {
+            res.status(500).json(error);
+        } else {
+            res.status(201).json(new_project);
+        }
+    });
+}
+
 module.exports =
 {
     getUser: getUser,
@@ -249,5 +293,6 @@ module.exports =
     deleteUser: deleteUser,
     checkPassword: checkPassword,
     createSprint: createSprint,
-    createProject: createProject
+    createProject: createProject,
+    createStory: createStory
 }
