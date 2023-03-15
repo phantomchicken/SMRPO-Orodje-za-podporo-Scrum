@@ -54,10 +54,7 @@
                                     <div class="input-group-text">Developer &nbsp; &nbsp; &nbsp; &nbsp;</div>
                                 </div>
                                 <select [(ngModel)]="project.developers" class="form-control" id="exampleFormControlSelect1" name="developers">
-                                    <option>Nino</option>
-                                    <option selected>Bojan</option>
-                                    <option>Marko</option>
-                                    <option>Miha</option>
+                                    <option *ngFor="let user of users; index as i">{{users[i].firstname}}</option>
                                 </select>
                             </div>
                         </div>

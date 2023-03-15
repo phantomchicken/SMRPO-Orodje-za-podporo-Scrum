@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectDataService } from '../project.service';
 import {Project} from '../classes/project';
+import { UsersDataService } from '../user.service';
+import { User } from '../classes/user';
 
 @Component({
   selector: 'app-add-project',
@@ -10,14 +12,17 @@ import {Project} from '../classes/project';
 })
 export class AddProjectComponent implements OnInit {
 
-  constructor(private projectService: ProjectDataService) { }
+  constructor(private projectService: ProjectDataService,
+              private userService: UsersDataService) { }
   public error:string ="";
   
+  public users: User[] = [];
+
   public hide():void{
     this.error=""
   }
 
-  addProject(): void { //TODO: error checking and BE
+  addProject(): void {
     if (!this.project.name || !this.project.description || !this.project.scrum_master || !this.project.product_owner || !this.project.developers) {
       this.error = "Please enter all fields!"
     } else if (this.project.scrum_master == this.project.product_owner) {
@@ -34,7 +39,15 @@ export class AddProjectComponent implements OnInit {
     }
   }
 
+  dropdownList = [];
+  selectedItems = [];
+  dropdownSettings = {};
+
   ngOnInit(): void {
+     this.userService.getUsers().then((users: User[]) => {
+      this.users = users;
+      console.log(users);
+     });
   }
 
   public project: Project = {
