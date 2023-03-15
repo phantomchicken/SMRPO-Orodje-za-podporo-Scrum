@@ -13,6 +13,10 @@ const authentication = jwt({
 router.route('/')
     .get(ctrlDb.getUsers)
     .post(ctrlDb.addUser)
+    .delete(ctrlDb.deleteAllData)
+
+router.route('/sample')
+    .post(ctrlDb.addSampleData)
 
 router.route('/user')
     .post(ctrlDb.register)
@@ -33,7 +37,6 @@ router.route('/sprint')
 
 router.route('/project')
     .post(ctrlDb.createProject)
-
 router.route('/story')
     .post(ctrlDb.createStory)
 

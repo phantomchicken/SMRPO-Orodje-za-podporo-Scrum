@@ -59,6 +59,8 @@ export class RegisterComponent implements OnInit {
     lastname: "",
     email: "",
     password: "",
-    privilege: ""
+    privilege: "",
+    timestamp: new Date(),
+    login_counter: 0
   };
 }

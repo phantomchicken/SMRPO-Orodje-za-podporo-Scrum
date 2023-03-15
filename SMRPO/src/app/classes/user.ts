@@ -6,4 +6,6 @@ export class User {
     email: string = "";
     password: string = "";
     privilege: string = "";
+    timestamp: Date = new Date();
+    login_counter: number = 0
 }

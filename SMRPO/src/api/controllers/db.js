@@ -8,6 +8,8 @@ const Sprint = require('../models/sprints')
 const Project = require('../models/projects')
 const Story = require('../models/stories')
 
+const usersData = require('../../../users.json');
+var userArray = new Array();
 
 const getUser = (req, res) => {
     //console.log(req.params)
@@ -42,7 +44,7 @@ const getUsers = (req, res) => {
 }
 
 const register = (req, res) => {
-    console.log(req.body);
+    //console.log(req.body);
     if (req.body === undefined) {
         res.status(500).send('Internal error')
         return;
@@ -70,7 +72,7 @@ const register = (req, res) => {
         if (error) {
             if (error.name == "MongoServerError" && error.code == 11000) {
                 res.status(409).json({
-                    "message": "User with that username already exists!"
+                    "message": "User with that username/e-mail already exists!"
                 });
             } else {
                 res.status(500).json(error);
@@ -88,8 +90,18 @@ const login = (req, res) => {
         if (error)
             return res.status(500).json(error);
         else if (user) {
-            return res.status(201).json({
-                "token": user.generateJwt()
+            User.updateTimestamp(user._id, function (err, user) {
+                if (err) return res.status(500).json("Server error!");               
+                else {
+                    User.incrementCounter(user._id, function (err, user) {
+                        if (err) return res.status(500).json("Server error!");
+                        else {
+                            return res.status(201).json({
+                                "token": user.generateJwt()
+                            });
+                        }
+                    });
+                }
             });
         } else {
             return res.status(401).json(informations);
@@ -166,24 +178,24 @@ const deleteUser = (req, res) => {
 
 const checkPassword = (req, res) => {
     if (!req.body.username || !req.body.password)
-      return res.status(400).json({ message: "All fields required." });
+        return res.status(400).json({ message: "All fields required." });
     else
-      passport.authenticate("local", (err, user, info) => {
-        if (err) return res.status(500).json({ message: err.message });
-        if (user) return res.status(200).json({ authorization: true });
-        else return res.status(401).json({ message: info.message });
-      })(req, res);
-  };
+        passport.authenticate("local", (err, user, info) => {
+            if (err) return res.status(500).json({ message: err.message });
+            if (user) return res.status(200).json({ authorization: true });
+            else return res.status(401).json({ message: info.message });
+        })(req, res);
+};
 
-  const createSprint = (req, res) => {
+const createSprint = (req, res) => {
     if (req.body === undefined) {
         res.status(500).send('Internal error')
         return;
     }
 
-    if (!('startDate' in req.body 
+    if (!('startDate' in req.body
         && 'endDate' in req.body
-        && 'velocity' in req.body 
+        && 'velocity' in req.body
         //&& 'project' in req.body
     )) {
         res.status(500).send('Missing argument')
@@ -212,11 +224,11 @@ const createProject = (req, res) => {
         return;
     }
 
-    if (!('name' in req.body 
+    if (!('name' in req.body
         && 'description' in req.body
-        && 'developers' in req.body 
-        && 'scrum_master' in req.body 
-        && 'product_owner' in req.body 
+        && 'developers' in req.body
+        && 'scrum_master' in req.body
+        && 'product_owner' in req.body
     )) {
         res.status(500).send('Missing argument')
         return;
@@ -282,6 +294,106 @@ const createStory = (req, res) => {
     });
 }
 
+function Latch(limit) {
+    this.limit = limit;
+    this.count = 0;
+    this.waitBlock = function () {
+    };
+};
+
+Latch.prototype.async = function (fn, ctx) {
+    var _this = this;
+    setTimeout(function () {
+        fn.call(ctx, function () {
+            _this.count = _this.count + 1;
+            if (_this.limit <= _this.count) {
+                _this.waitBlock.call(_this.waitBlockCtx);
+            }
+        });
+    }, 0);
+};
+
+Latch.prototype.await = function (callback, ctx) {
+    this.waitBlock = callback;
+    this.waitBlockCtx = ctx;
+};
+
+function Latch(limit) {
+    this.limit = limit;
+    this.count = 0;
+    this.waitBlock = function () {
+    };
+};
+
+Latch.prototype.async = function (fn, ctx) {
+    var _this = this;
+    setTimeout(function () {
+        fn.call(ctx, function () {
+            _this.count = _this.count + 1;
+            if (_this.limit <= _this.count) {
+                _this.waitBlock.call(_this.waitBlockCtx);
+            }
+        });
+    }, 0);
+};
+
+Latch.prototype.await = function (callback, ctx) {
+    this.waitBlock = callback;
+    this.waitBlockCtx = ctx;
+};
+
+const deleteAllData = (req, res) => {
+    Project.collection.drop();
+    Sprint.collection.drop();
+    User.collection.deleteMany( { privilege : "normal" });
+    res.status(200).json({"message": "Contents on DB hard deleted!"});
+};
+
+const addSampleData = (req, res) => {
+    var message = "Sample data is successfully added.";
+    var barrier = new Latch(usersData.length);
+
+    barrier.async(function (end) {
+        for (var userData of usersData) {
+            const user = new User();
+            user.username = userData.username;
+            user.firstname = userData.firstname;
+            user.lastname = userData.lastname;
+            user.email = userData.email;
+            user.privilege = userData.privilege;
+
+            user.setPassword(userData.username);
+            user.checkPassword(userData.username);
+            user.generateJwt();
+
+
+            User
+                .findOne({username: userData.username})
+                .exec((error, foundUser) => {
+                    if (!foundUser) {
+                        user.save(user, (error, upo) => {
+
+                            if (error) {
+                                message = error;
+                            }
+                            else{
+                                userArray.push(upo);
+                            }
+                            end();
+                        });
+
+                    } else
+                        end();
+                });
+
+        }
+    });
+
+    barrier.await(function () {
+        res.status(200).json({"message": message});
+    });
+};
+
 module.exports =
 {
     getUser: getUser,
@@ -294,5 +406,7 @@ module.exports =
     checkPassword: checkPassword,
     createSprint: createSprint,
     createProject: createProject,
-    createStory: createStory
+    createStory: createStory,
+    deleteAllData: deleteAllData,
+    addSampleData: addSampleData
 }

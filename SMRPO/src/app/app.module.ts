@@ -16,6 +16,8 @@ import { AddProjectComponent } from './add-project/add-project.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { MatTableModule} from '@angular/material/table'
 import { AddSprintComponent } from './add-sprint/add-sprint.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,9 @@ import { AddSprintComponent } from './add-sprint/add-sprint.component';
     HttpClientModule,
     FormsModule,
     PasswordStrengthMeterModule.forRoot(),
-    MatTableModule
+    MatTableModule,
+    MatPaginatorModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [TemplateComponent]

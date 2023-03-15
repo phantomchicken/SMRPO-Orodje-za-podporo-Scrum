@@ -41,13 +41,10 @@ export class LoginComponent implements OnInit {
       this.authenticationService
         .login(this.user)
         .then(() => {
-          this.router.navigate(['/']); // have to reload because of sidebar! more elegant solution probably exists
-          //this.router.navigateByUrl('/', {skipLocationChange: true}).then(()=> 
-          //this.router.navigate(['/']));
+          this.router.navigate(['/']);
         })
         .catch(message => {
-          //this.error = message
-          this.error = "Username or password wrong!"
+          this.error = "Username or password wrong!" //this.error = message
         });
     }
   }
@@ -59,7 +56,9 @@ export class LoginComponent implements OnInit {
     lastname: "",
     email: "",
     password: "",
-    privilege: ""
+    privilege: "",
+    timestamp: new Date(),
+    login_counter: 0
   };
 
 }

@@ -4,7 +4,11 @@
         <div class="col-auto">
             <div *ngIf="dataSource" class="user-table-container text-center">
                 <table class="table-hover" mat-table [dataSource]="dataSource">
-                    <td mat-cell *matCellDef="let element; let i = index;"> {{i+1}} </td>
+                    <ng-container matColumnDef="#">
+                        <th mat-header-cell *matHeaderCellDef>#</th>
+                        <td mat-cell *matCellDef="let element; let i = index;"> {{i+1}} </td>
+                    </ng-container>
+                    
                     <ng-container matColumnDef="username">
                         <th mat-header-cell *matHeaderCellDef>Username</th>
                         <td mat-cell *matCellDef="let user">{{ user.username }}</td>
@@ -38,12 +42,20 @@
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 </table>
+                <mat-paginator [pageSizeOptions]="[4, 8, 12]"
+                 showFirstLastButtons
+                 aria-label="Select page of periodic elements">
+                </mat-paginator>
             </div>
         </div>
         
     </div>
-
-    <div class="row mt-5 justify-content-center">
+    <div class="row mt-2 justify-content-center">
+        <input type="submit" class="btn btn-primary w-25 m-3" value="Toggle add user form" (click)="toggleAddUser()">
+        <input type="submit" class="btn btn-success w-25 m-3" value="Add sample data" (click)="addSampleData()">
+        <input type="submit" class="btn btn-danger w-25 m-3" value="Delete all data" (click)="deleteAllData()">
+    </div>
+    <div *ngIf="showForm" class="row mt-2 justify-content-center">
         <div class="col-sm-10 col-md-8 col-lg-6">
             <div class="card text-white bg-dark text-center">
                 <div class="card-body mx-auto">
@@ -147,3 +159,4 @@
             </div>
         </div>
     </div>
+    

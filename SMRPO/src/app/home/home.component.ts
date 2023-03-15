@@ -23,7 +23,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.dbService.getData().then((data: User[]) => {
-      console.log(data);
       this.users = data;
     })
   }

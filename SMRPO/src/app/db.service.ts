@@ -14,7 +14,7 @@ export class DbService {
   constructor(private http: HttpClient) { }
 
   public addSampleData(): Promise<any> {
-    const url: string = `${this.apiUrl}/db/`;
+    const url: string = `${this.apiUrl}/db/sample`; // change to only db in the future
     return this.http
       .post(url, null)
       .toPromise()
@@ -23,7 +23,7 @@ export class DbService {
   }
 
   public deleteAllData(): Promise<any> {
-    const url: string = `${this.apiUrl}/db/`;
+    const url: string = `${this.apiUrl}/db/`; // db deleted!
     return this.http
       .delete(url)
       .toPromise()
