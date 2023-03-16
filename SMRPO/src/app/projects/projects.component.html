@@ -1,88 +1,11 @@
 <div class="container">
     <div class="row">
-      <div class="col-md-4 mt-4"> <!-- *ngFor -->
+      <div *ngFor="let project of projects" class="col-md-4 mt-4"> <!-- *ngFor -->
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Project 1</h5>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            <a class="stretched-link" routerLink="/"></a>
-        </div>
-        </div>
-      </div>
-      <div class="col-md-4 mt-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Project 2</h5>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            <a class="stretched-link" routerLink="/"></a>
-        </div>
-        </div>
-      </div>
-      <div class="col-md-4 mt-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Project 3</h5>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            <a class="stretched-link" routerLink="/"></a>
-        </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-4 mt-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Project 4</h5>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            <a class="stretched-link" routerLink="/"></a>
-        </div>
-        </div>
-      </div>
-      <div class="col-md-4 mt-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Project 5</h5>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            <a class="stretched-link" routerLink="/"></a>
-        </div>
-        </div>
-      </div>
-      <div class="col-md-4 mt-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Project 6</h5>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            <a class="stretched-link" routerLink="/"></a>
-        </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-4 mt-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Project 7</h5>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            <a class="stretched-link" routerLink="/"></a>
-        </div>
-        </div>
-      </div>
-      <div class="col-md-4 mt-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Project 8</h5>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            <a class="stretched-link" routerLink="/"></a>
-        </div>
-        </div>
-      </div>
-      
-      <div class="col-md-4 mt-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Project 9</h5>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            <a class="stretched-link" routerLink="/"></a>
+            <h5 class="card-title">{{project.name}}</h5>
+            <p class="card-text">{{project.description}}</p>
+            <a class="stretched-link" routerLink="/project/{{project._id}}"></a>
         </div>
         </div>
       </div>

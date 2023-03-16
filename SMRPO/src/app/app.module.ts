@@ -20,6 +20,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
+import { ProjectComponent } from './project/project.component';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import {MatSelectModule} from '@angular/material/select';
     ResetPasswordComponent,
     AddProjectComponent,
     ProjectsComponent,
-    AddSprintComponent
+    AddSprintComponent,
+    ProjectComponent
   ],
   imports: [
     BrowserModule,

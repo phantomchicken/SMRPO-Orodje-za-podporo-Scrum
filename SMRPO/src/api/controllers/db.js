@@ -187,7 +187,7 @@ const checkPassword = (req, res) => {
         })(req, res);
 };
 
-const createSprint = (req, res) => {
+const addSprint = (req, res) => {
     if (req.body === undefined) {
         res.status(500).send('Internal error')
         return;
@@ -218,7 +218,37 @@ const createSprint = (req, res) => {
     });
 }
 
-const createProject = (req, res) => {
+const getProject = (req, res) => {
+    //console.log(req.params)
+    Project.findById(req.params.idProject).exec((error, project) => {
+        console.log(project)
+        if (!project) {
+            return res.status(404).json({
+                "message": "Project not found."
+            });
+        } else if (error) {
+            return res.status(500).json(error);
+        } else {
+            res.status(200).json(project);
+        }
+    });
+}
+
+const getProjects = (req, res) => {
+    Project.find({}, function (error, projects) {
+        if (error) {
+            return res.status(500).json(error);
+        } else {
+            //console.log(projects)
+            //console.log(projects)
+            res.status(200).json(projects);
+        }
+    });
+}
+
+
+const addProject = (req, res) => {
+    console.log(req.body)
     if (req.body === undefined) {
         res.status(500).send('Internal error')
         return;
@@ -247,6 +277,45 @@ const createProject = (req, res) => {
             res.status(500).json(error);
         } else {
             res.status(201).json(new_project);
+        }
+    });
+}
+
+const updateProject = (req, res) => {
+    //console.log(req.body)
+    //console.log(req.params)
+    Project.findById(req.params.idProject).exec((error, project) => {
+        if (!project) {
+            return res.status(404).json({
+                "message": "No project found."
+            });
+        } else if (error) {
+            return res.status(500).json(error);
+        } else {
+            console.log(project)
+            project.name = req.body.name;
+            project.description = req.body.description;
+            project.scrum_master = req.body.scrum_master;
+            project.product_owner = req.body.product_owner;
+            project.developers = req.body.developers
+
+            project.save((error, updated_project) => {
+                if (error) {
+                    res.status(500).json(error);
+                } else {
+                    res.status(200).json(updated_project);
+                }
+            });
+        }
+    });
+}
+
+const deleteProject = (req, res) => {
+    Project.findByIdAndRemove(req.params.idProject).exec((error) => {
+        if (error) {
+            return res.status(500).json(error);
+        } else {
+            return res.status(204).json(null);
         }
     });
 }
@@ -404,8 +473,12 @@ module.exports =
     updateUser: updateUser,
     deleteUser: deleteUser,
     checkPassword: checkPassword,
-    createSprint: createSprint,
-    createProject: createProject,
+    addSprint: addSprint,
+    getProject: getProject,
+    updateProject: updateProject,
+    deleteProject: deleteProject,
+    getProjects: getProjects,
+    addProject: addProject,
     createStory: createStory,
     deleteAllData: deleteAllData,
     addSampleData: addSampleData
