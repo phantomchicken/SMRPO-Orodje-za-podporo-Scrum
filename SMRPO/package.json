@@ -24,6 +24,7 @@
     "@zxcvbn-ts/core": "^2.2.1",
     "@zxcvbn-ts/language-en": "^2.1.0",
     "angular-password-strength-meter": "^5.0.1",
+    "bootstrap": "^5.2.3",
     "dotenv": "^16.0.3",
     "express": "~4.18.2",
     "express-jwt": "^8.4.1",

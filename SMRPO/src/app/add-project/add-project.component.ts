@@ -3,6 +3,7 @@ import { ProjectDataService } from '../project.service';
 import {Project} from '../classes/project';
 import { UsersDataService } from '../user.service';
 import { User } from '../classes/user';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-add-project',
@@ -42,10 +43,10 @@ export class AddProjectComponent implements OnInit {
   dropdownList = [];
   selectedItems = [];
   dropdownSettings = {};
-
+  usersFormControl = new FormControl('white');
   ngOnInit(): void {
      this.userService.getUsers().then((users: User[]) => {
-      this.users = users;
+      this.users = users;      
       console.log(users);
      });
   }

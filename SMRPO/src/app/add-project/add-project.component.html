@@ -28,10 +28,7 @@
                                     <div class="input-group-text bg-warning text-white">Product owner</div>
                                 </div>
                                 <select [(ngModel)]="project.product_owner" class="form-control" id="exampleFormControlSelect1" name="product_owner">
-                                    <option selected>Nino</option>
-                                    <option>Bojan</option>
-                                    <option>Marko</option>
-                                    <option>Miha</option>
+                                    <option *ngFor="let user of users">{{user.firstname}}</option>
                                 </select>
                             </div>
                         </div>
@@ -41,10 +38,7 @@
                                     <div class="input-group-text bg-success text-white">Scrum master &nbsp;</div>
                                 </div>
                                 <select [(ngModel)]="project.scrum_master" class="form-control" id="exampleFormControlSelect1" name="scrum_master">
-                                    <option>Nino</option>
-                                    <option>Bojan</option>
-                                    <option selected>Marko</option>
-                                    <option>Miha</option>
+                                    <option *ngFor="let user of users">{{user.firstname}}</option>
                                 </select>
                             </div>
                         </div>
@@ -53,9 +47,13 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Developer &nbsp; &nbsp; &nbsp; &nbsp;</div>
                                 </div>
-                                <select [(ngModel)]="project.developers" class="form-control" id="exampleFormControlSelect1" name="developers">
-                                    <option *ngFor="let user of users; index as i">{{users[i].firstname}}</option>
-                                </select>
+                                <mat-form-field appearance="fill" style="background-color: white;">
+                                    <mat-label>Users</mat-label>
+                                    <mat-select [formControl]="usersFormControl" multiple panelClass="example-panel-white" >
+                                      <mat-option *ngFor="let user of users" [value]="user">{{user.firstname}}</mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+                                
                             </div>
                         </div>
                         <div class="form-row align-items-center mt-3">
