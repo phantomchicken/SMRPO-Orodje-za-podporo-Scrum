@@ -12,13 +12,31 @@ export class ProjectDataService {
 
   private apiUrl = environment.apiUrl;
 
-  public createProject(data:any): Promise<Project> {
+  public addProject(data:any): Promise<Project> {
     console.log(data)
     const url: string = `${this.apiUrl}/db/project/`;
     return this.http
       .post(url, data)
       .toPromise()
       .then(response => response as Project)
+      .catch(this.processError);
+  }
+
+  public getProject(id_of_project:any): Promise<Project> {
+    const url: string = `${this.apiUrl}/db/project/${id_of_project}`;
+    return this.http
+      .get(url)
+      .toPromise()
+      .then(response => response as Project)
+      .catch(this.processError);
+  }
+
+  public getProjects(): Promise<Project[]> {
+    const url: string = `${this.apiUrl}/db/projects`;
+    return this.http
+      .get(url)
+      .toPromise()
+      .then(response => response as Project[])
       .catch(this.processError);
   }
 

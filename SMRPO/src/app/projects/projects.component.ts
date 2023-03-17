@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
+import { Project } from '../classes/project';
+import { ProjectDataService } from '../project.service';
 
 @Component({
   selector: 'app-projects',
@@ -12,9 +14,13 @@ export class ProjectsComponent implements OnInit {
 
   //TODO: fetch projects from project service, populate cards 
 
-  constructor(protected authenticationService: AuthenticationService) { }
-
+  constructor(protected authenticationService: AuthenticationService, private projectDataService: ProjectDataService) { }
+  public projects: Project[] = []
   ngOnInit(): void {
+    if (!this.authenticationService.is_logged()) return
+    this.projectDataService.getProjects().then((data: Project[]) => {
+      this.projects = data;
+    })
   }
 
 }

@@ -28,10 +28,7 @@
                                     <div class="input-group-text bg-warning text-white">Product owner</div>
                                 </div>
                                 <select [(ngModel)]="project.product_owner" class="form-control" id="exampleFormControlSelect1" name="product_owner">
-                                    <option selected>Nino</option>
-                                    <option>Bojan</option>
-                                    <option>Marko</option>
-                                    <option>Miha</option>
+                                    <option *ngFor="let user of users" [ngValue]="user">{{user.firstname}}</option>
                                 </select>
                             </div>
                         </div>
@@ -41,10 +38,7 @@
                                     <div class="input-group-text bg-success text-white">Scrum master &nbsp;</div>
                                 </div>
                                 <select [(ngModel)]="project.scrum_master" class="form-control" id="exampleFormControlSelect1" name="scrum_master">
-                                    <option>Nino</option>
-                                    <option>Bojan</option>
-                                    <option selected>Marko</option>
-                                    <option>Miha</option>
+                                    <option *ngFor="let user of users" [ngValue]="user">{{user.firstname}}</option>
                                 </select>
                             </div>
                         </div>
@@ -53,26 +47,27 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Developer &nbsp; &nbsp; &nbsp; &nbsp;</div>
                                 </div>
-                                <select [(ngModel)]="project.developers" class="form-control" id="exampleFormControlSelect1" name="developers">
-                                    <option>Nino</option>
-                                    <option selected>Bojan</option>
-                                    <option>Marko</option>
-                                    <option>Miha</option>
-                                </select>
+                                <mat-form-field appearance="fill" style="background-color: white;">
+                                    <mat-label>Users</mat-label>
+                                    <mat-select [(ngModel)]="project.developers" [formControl]="usersFormControl" multiple panelClass="example-panel-white" >
+                                      <mat-option *ngFor="let user of users" [value]="user">{{user.firstname}}</mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+                                
                             </div>
                         </div>
                         <div class="form-row align-items-center mt-3">
-                            <span
+                            <span *ngIf="project.product_owner.firstname"
                                 class="avatar rounded-circle bg-warning d-flex justify-content-center align-items-center mr-3 p-2 col-1 mt-1">
-                                <span class="text-uppercase font-weight-bold">N</span>
+                                <span class="text-uppercase font-weight-bold">{{project.product_owner.firstname | slice:0:1}}</span>
                             </span>
-                            <span
+                            <span *ngIf="project.scrum_master.firstname"
                                 class="avatar rounded-circle bg-success d-flex justify-content-center align-items-center mr-3 p-2 col-1 mt-1">
-                                <span class="text-uppercase font-weight-bold">M</span>
+                                <span class="text-uppercase font-weight-bold">{{project.scrum_master.firstname | slice:0:1}}</span>
                             </span>
-                            <span
+                            <span *ngFor="let developer of project.developers"
                                 class="avatar rounded-circle bg-secondary d-flex justify-content-center align-items-center mr-3 p-2 col-1 mt-1">
-                                <span class="text-uppercase font-weight-bold">B</span>
+                                <span class="text-uppercase font-weight-bold">{{developer.firstname | slice:0:1}}</span>
                             </span>
                         </div>
                         <div class="form-row align-items-center justify-content-center mt-3">

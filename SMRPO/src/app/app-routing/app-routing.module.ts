@@ -9,6 +9,7 @@ import { ResetPasswordComponent } from '../reset-password/reset-password.compone
 import { AddProjectComponent } from '../add-project/add-project.component';
 import { ProjectsComponent } from '../projects/projects.component';
 import {AddSprintComponent} from "../add-sprint/add-sprint.component";
+import { ProjectComponent } from '../project/project.component';
 
 
 const paths: Routes = [
@@ -40,6 +41,9 @@ const paths: Routes = [
   },{
     path: 'add-sprint',
     component: AddSprintComponent
+  },{
+    path: 'project/:id',
+    component: ProjectComponent
   }
   
 ]

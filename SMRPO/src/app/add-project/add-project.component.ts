@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectDataService } from '../project.service';
 import {Project} from '../classes/project';
+import { UsersDataService } from '../user.service';
+import { User } from '../classes/user';
+import {FormControl} from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-project',
@@ -10,22 +14,30 @@ import {Project} from '../classes/project';
 })
 export class AddProjectComponent implements OnInit {
 
-  constructor(private projectService: ProjectDataService) { }
+  constructor(private router: Router,
+              private projectService: ProjectDataService,
+              private userService: UsersDataService) { }
   public error:string ="";
   
+  public users: User[] = [];
+
   public hide():void{
     this.error=""
   }
 
-  addProject(): void { //TODO: error checking and BE
+  addProject(): void {
+    this.error =""
     if (!this.project.name || !this.project.description || !this.project.scrum_master || !this.project.product_owner || !this.project.developers) {
       this.error = "Please enter all fields!"
     } else if (this.project.scrum_master == this.project.product_owner) {
       this.error = "Scrum master and product owner can't be the same person!"
     }else{
-      this.projectService.createProject(this.project)
+      console.log(this.project)
+      this.projectService.addProject(this.project)
         .then((project: Project) => {
-          console.log('Project added!'); //TODO: redirect
+          this.error =""
+          console.log('Project added!'); 
+          this.router.navigateByUrl('/projects')//TODO: redirect
         })
         .catch((error) => {
           console.error(error);
@@ -34,7 +46,15 @@ export class AddProjectComponent implements OnInit {
     }
   }
 
+  dropdownList = [];
+  selectedItems = [];
+  dropdownSettings = {};
+  usersFormControl = new FormControl('white');
   ngOnInit(): void {
+     this.userService.getUsers().then((users: User[]) => {
+      this.users = users;      
+      console.log(users);
+     });
   }
 
   public project: Project = {
@@ -42,8 +62,8 @@ export class AddProjectComponent implements OnInit {
     name: "",
     description: "",
     developers: [], // can have more!
-    scrum_master: "",
-    product_owner: ""
+    scrum_master: new User,
+    product_owner: new User
   };
 
 }

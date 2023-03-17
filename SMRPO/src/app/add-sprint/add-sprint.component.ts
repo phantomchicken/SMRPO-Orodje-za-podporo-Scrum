@@ -23,7 +23,7 @@ export class AddSprintComponent implements OnInit {
       this.error = "Sprint velocity is invalid!"
     } else{
       // add backend call
-      this.sprintService.createSprint(this.sprint)
+      this.sprintService.addSprint(this.sprint)
         .then((sprint: Sprint) => {
           console.log('Sprint added!'); //TODO: redirect
         })

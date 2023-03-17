@@ -7,7 +7,7 @@ import { TemplateComponent } from './template/template.component';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { AdminViewComponent } from './admin-view/admin-view.component';
@@ -18,6 +18,10 @@ import { MatTableModule} from '@angular/material/table'
 import { AddSprintComponent } from './add-sprint/add-sprint.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import { ProjectComponent } from './project/project.component';
+
 
 @NgModule({
   declarations: [
@@ -30,7 +34,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ResetPasswordComponent,
     AddProjectComponent,
     ProjectsComponent,
-    AddSprintComponent
+    AddSprintComponent,
+    ProjectComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +46,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     PasswordStrengthMeterModule.forRoot(),
     MatTableModule,
     MatPaginatorModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [TemplateComponent]
