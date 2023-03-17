@@ -4,12 +4,17 @@ const LokalnaStrategija = require('passport-local').Strategy;
 require('./db');
 const User = require('../models/users')
 //const User = mongoose.model("User");
-const Sprint = require('../models/sprints')
 const Project = require('../models/projects')
+const Sprint = require('../models/sprints')
 const Story = require('../models/stories')
 
 const usersData = require('../../../users.json');
+const projectsData = require('../../../projects.json');
+const sprintsData = require('../../../sprints.json');
+
 var userArray = new Array();
+var projectArray = new Array();
+var sprintArray = new Array();
 
 const getUser = (req, res) => {
     //console.log(req.params)
@@ -318,30 +323,6 @@ Latch.prototype.await = function (callback, ctx) {
     this.waitBlockCtx = ctx;
 };
 
-function Latch(limit) {
-    this.limit = limit;
-    this.count = 0;
-    this.waitBlock = function () {
-    };
-};
-
-Latch.prototype.async = function (fn, ctx) {
-    var _this = this;
-    setTimeout(function () {
-        fn.call(ctx, function () {
-            _this.count = _this.count + 1;
-            if (_this.limit <= _this.count) {
-                _this.waitBlock.call(_this.waitBlockCtx);
-            }
-        });
-    }, 0);
-};
-
-Latch.prototype.await = function (callback, ctx) {
-    this.waitBlock = callback;
-    this.waitBlockCtx = ctx;
-};
-
 const deleteAllData = (req, res) => {
     Project.collection.drop();
     Sprint.collection.drop();
@@ -372,25 +353,97 @@ const addSampleData = (req, res) => {
                 .exec((error, foundUser) => {
                     if (!foundUser) {
                         user.save(user, (error, upo) => {
-
-                            if (error) {
+                            if (error)
                                 message = error;
-                            }
-                            else{
+                            else
                                 userArray.push(upo);
-                            }
                             end();
                         });
 
-                    } else
+                    } else{
+                        userArray.push(foundUser);
                         end();
+                    }
                 });
-
         }
     });
 
     barrier.await(function () {
+        addProjectData();
         res.status(200).json({"message": message});
+    });
+};
+
+const addProjectData = () => {
+    var barrier = new Latch(projectsData.length);
+
+    barrier.async(function (end) {
+        for (var projectData of projectsData) {
+            const project = new Project();
+            project.name = projectData.name;
+            project.description = projectData.description;
+            project.developers = userArray
+                                    .filter(user => (projectData.developers.indexOf(user.username) >= 0))
+                                    .map(user => user._id);
+            var scrumQuery = userArray
+                                .filter(user => (user.username == projectData.scrum_master))
+                                .map(user => user._id);
+            project.scrum_master = scrumQuery[0];
+            var productQuery = userArray
+                                .filter(user => (user.username == projectData.product_owner))
+                                .map(user => user._id);
+            project.product_owner = productQuery[0];
+            
+            Project
+                .findOne({name: projectData.name})
+                .exec((error, foundProject) => {
+                    if (!foundProject) {
+                        project.save(project, (error, pro) => {
+                            if (error) 
+                                message = error;
+                            else
+                                projectArray.push(pro);
+                            end();
+                        });
+                    } else{
+                        projectArray.push(foundProject);
+                        end();
+                    }
+                });
+        }
+    });
+
+    barrier.await(function () {
+        addSprintData();
+    });
+};
+
+const addSprintData = () => {
+    var barrier = new Latch(projectsData.length);
+
+    barrier.async(function (end) {
+        for (var sprintData of sprintsData) {
+            const sprint = new Sprint();
+            sprint.startDate = sprintData.startDate;
+            sprint.endDate = sprintData.endDate;
+            sprint.velocity = sprintData.velocity;
+            var projectQuery = projectArray
+                                    .filter(project => (project.name == sprintData.project))
+                                    .map(project => project._id);
+            sprint.project = projectQuery[0];
+
+            sprint.save(sprint, (error, spr) => {
+                if (error) 
+                    message = error;
+                else
+                    sprintArray.push(spr);
+                end();
+            });
+        }
+    });
+
+    barrier.await(function () {
+        console.log(sprintArray)
     });
 };
 

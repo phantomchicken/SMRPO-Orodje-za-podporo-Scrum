@@ -1,0 +1,9 @@
+[
+        {
+                "name": "Sample Project #1",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras lacinia neque at lacus varius auctor eu id nibh. In sed neque ipsum. Curabitur a nibh fringilla, tempor mi convallis, pretium neque. Donec ut rutrum lorem. Praesent a mollis dui. Cras elementum sem ac nisi consectetur auctor et vel augue. Pellentesque mi nunc, mattis id facilisis blandit, sagittis eget ligula. Duis facilisis rhoncus eros. Quisque eu lorem massa. Nunc sed egestas nequ. Nullam maximus ultricies justo, ultricies bibendum elit luctus quis. Aliquam enim orci, sagittis id risus ac, hendrerit hendrerit eros. In non hendrerit orci, ac laoreet sapien. Maecenas id odio nec nunc blandit fringilla ut nec turpis. Ut non tellus neque. Vivamus viverra ultricies nulla eu cursus. Sed vel mauris lobortis, cursus nisi id, suscipit nisl. Quisque elit ipsum, ultricies vitae eros a, aliquam sodales quam. Donec vitae diam neque. Nulla pretium euismod commodo. Mauris metus ex, ultrices ac risus non, pretium sodales lectus. Maecenas convallis pretium ipsum at vulputate. Aliquam mollis magna ut nunc aliquet, ac facilisis nisl dictum. Vivamus sed tortor et justo lobortis rhoncus eu sit amet elit. Duis fringilla, quam eget bibendum congue, nibh est molestie quam, in sodales purus est egestas lacus. Curabitur vehicula cursus turpis id dictum.",
+                "developers": ["miha", "marko"],
+                "scrum_master": "nino",
+                "product_owner": "bojan"
+        }
+]
