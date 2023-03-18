@@ -5,7 +5,7 @@ import {Sprint} from '../classes/sprint';
 @Component({
   selector: 'app-add-sprint',
   templateUrl: `add-sprint.component.html`,
-  styles: ['.card:hover {box-shadow: 0 0 10px orange;}'
+  styles: [''
   ]
 })
 export class AddSprintComponent implements OnInit {

@@ -1,5 +1,43 @@
-<h6 *ngIf="project">name: {{project.name}}</h6>
-<h6 *ngIf="project">description: {{project.description}}</h6>
-<h6 *ngIf="project">scrum_master: {{project.scrum_master}}</h6>
-<h6 *ngIf="project">product_owner: {{project.product_owner}}</h6>
-<h6 *ngIf="project">developers: {{project.developers}}</h6>
+<div class="container-fluid p-t-md">
+    <div class="row">
+        <div class="card col-md-4 mt-4">
+            <div class="card-body"  >
+              <h5 class="card-title">Project details</h5>
+              <h6 class="card-subtitle mt-4 mb-2 text-muted">Project name</h6>
+              <p class="card-text">{{project.name}}</p>
+              <h6 class="card-subtitle mb-2 text-muted ">Project description</h6>
+              <p class="card-text text-justify">{{project.description}}</p>
+              <h6 class="card-subtitle mt-4 mb-2 text-muted">Scrum master</h6>
+              <p class="card-text" [ngClass]="authenticationService.get_current_user()._id == scrum_master_id ? 'font-weight-bold text-success' : ''">{{scrum_master.firstname}} {{scrum_master.lastname}}</p>
+              <h6 class="card-subtitle mt-4 mb-2 text-muted">Product owner</h6>
+              <p class="card-text" [ngClass]="authenticationService.get_current_user()._id == product_owner_id ? 'font-weight-bold text-warning' : ''">{{product_owner.firstname}} {{product_owner.lastname}}</p>
+              <h6 class="card-subtitle mt-4 mb-2 text-muted">Developers</h6>
+              <p *ngFor="let developer of developers" class="card-text" [ngClass]="authenticationService.get_current_user()._id == developer._id ? 'font-weight-bold' : ''">{{developer.firstname}} {{developer.lastname}}</p>
+          </div>
+        </div>
+        <div class="col-md-8 mt-4">
+            <nav class="m-3">
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-backlog-tab" data-bs-toggle="tab" data-bs-target="#nav-backlog"
+                        type="button" role="tab" aria-controls="nav-backlog" aria-selected="true" href="#nav-backlog" 
+                        data-toggle="tab">Backlog</button>
+                    <button class="nav-link" id="nav-sprints-tab" data-bs-toggle="tab" data-bs-target="#nav-sprints"
+                        type="button" role="tab" aria-controls="nav-sprints" aria-selected="false" href="#nav-sprints" 
+                        data-toggle="tab">Sprints</button>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-backlog" role="tabpanel" aria-labelledby="nav-backlog-tab">
+                    <div class="d-flex justify-content-center">
+                        <button type="button" class="btn btn-dark w-25">Add story</button>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="nav-sprints" role="tabpanel" aria-labelledby="nav-sprints-tab">
+                    <div class="d-flex justify-content-center">
+                        <button type="button" class="btn btn-dark w-25">Add sprint</button>
+                    </div>
+                </div>
+            </div>
+        </div>       
+    </div>
+</div>

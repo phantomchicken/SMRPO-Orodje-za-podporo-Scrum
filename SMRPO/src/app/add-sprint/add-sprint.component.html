@@ -5,7 +5,7 @@
                 <div class="card-body mx-auto">
                     <h5 class="card-title text-center mb-3">Add sprint</h5>
                     <form (ngSubmit)="addSprint()">
-                        <div class="form-row align-items-center mt-3">
+                        <div class="form-row align-items-center justify-content-center mt-3">
                             <label class="sr-only" for="inlineFormInputGroup1">Start date</label>
                             <div class="form-group">
                                 <label>Start date</label>
@@ -26,7 +26,7 @@
                             </div>
                         </div>
                         <div class="form-row align-items-center justify-content-center mt-3">
-                            <input id="submit-login" type="submit" class="btn btn-primary w-75 m-3" value="Add sprint">
+                            <input id="submit-login" type="submit" class="btn btn-primary w-50 m-3" value="Add sprint">
                         </div>
                     </form>
                     <div *ngIf="error" class="alert alert-danger alert-dismissible" role="alert">

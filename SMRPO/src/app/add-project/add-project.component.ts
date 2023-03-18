@@ -27,12 +27,12 @@ export class AddProjectComponent implements OnInit {
 
   addProject(): void {
     this.error =""
-    if (!this.project.name || !this.project.description || !this.project.scrum_master || !this.project.product_owner || !this.project.developers) {
+    if (!this.project.name || !this.project.description || !this.project.scrum_master || !this.project.product_owner || this.project.developers.length == 0) {
       this.error = "Please enter all fields!"
     } else if (this.project.scrum_master == this.project.product_owner) {
       this.error = "Scrum master and product owner can't be the same person!"
     }else{
-      console.log(this.project)
+      //console.log(this.project)
       this.projectService.addProject(this.project)
         .then((project: Project) => {
           this.error =""
@@ -40,7 +40,8 @@ export class AddProjectComponent implements OnInit {
           this.router.navigateByUrl('/projects')//TODO: redirect
         })
         .catch((error) => {
-          console.error(error);
+          if (error.error.code==11000) this.error = "Project with this name already exists!";
+          else console.error(error);
         });
       this.error = "";
     }
