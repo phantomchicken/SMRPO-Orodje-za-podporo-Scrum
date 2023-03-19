@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { SprintDataService } from '../sprint.service';
 import {Sprint} from '../classes/sprint';
 
@@ -10,11 +10,13 @@ import {Sprint} from '../classes/sprint';
 })
 export class AddSprintComponent implements OnInit {
   public error:string ="";
+  public success:boolean = false;
+  @Input() project:string = "";
 
   constructor(private sprintService: SprintDataService) { }
 
   addSprint(): void {
-    this.sprint.project = ""; //TODO: IMPLEMENT PROJECT REF
+    this.sprint.project = this.project;
     if (!this.sprint.startDate || !this.sprint.endDate || !this.sprint.velocity) {
       this.error = "Please enter all fields!"
     } else if (this.sprint.startDate > this.sprint.endDate){
@@ -25,6 +27,7 @@ export class AddSprintComponent implements OnInit {
       // add backend call
       this.sprintService.addSprint(this.sprint)
         .then((sprint: Sprint) => {
+          this.success = true;
           console.log('Sprint added!'); //TODO: redirect
         })
         .catch((error) => {
@@ -36,6 +39,7 @@ export class AddSprintComponent implements OnInit {
 
   hide() {
     this.error=""
+    this.success=false
   }
 
   ngOnInit(): void {

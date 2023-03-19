@@ -211,7 +211,7 @@ const addSprint = (req, res) => {
     new_sprint.startDate = req.body.startDate;
     new_sprint.endDate = req.body.endDate;
     new_sprint.velocity = req.body.velocity;
-    new_sprint.project = undefined; //req.body.project;
+    new_sprint.project = req.body.project;
 
     new_sprint.save(error => {
         console.log(error)
