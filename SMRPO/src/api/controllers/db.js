@@ -462,6 +462,44 @@ const updateStory = (req, res) => {
     });
 }
 
+const getStories = (req, res) => {
+    Story.find({}, function (error, stories) {
+        if (error) {
+            return res.status(500).json(error);
+        } else {
+            //console.log(projects)
+            //console.log(projects)
+            res.status(200).json(stories);
+        }
+    });
+}
+
+const getStory = (req, res) => {
+    //console.log(req.params)
+    Story.findById(req.params.idStory).exec((error, story) => {
+        console.log(story)
+        if (!story) {
+            return res.status(404).json({
+                "message": "Story not found."
+            });
+        } else if (error) {
+            return res.status(500).json(error);
+        } else {
+            res.status(200).json(story);
+        }
+    });
+}
+
+const deleteStory = (req, res) => {
+    Story.findByIdAndRemove(req.params.idStory).exec((error) => {
+        if (error) {
+            return res.status(500).json(error);
+        } else {
+            return res.status(204).json(null);
+        }
+    });
+}
+
 function Latch(limit) {
     this.limit = limit;
     this.count = 0;
@@ -631,7 +669,10 @@ module.exports =
     getProjects: getProjects,
     addProject: addProject,
     createStory: createStory,
+    getStories: getStories,
+    getStory: getStory,
     updateStory : updateStory,
+    deleteStory: deleteStory,
     deleteAllData: deleteAllData,
     addSampleData: addSampleData
 }
