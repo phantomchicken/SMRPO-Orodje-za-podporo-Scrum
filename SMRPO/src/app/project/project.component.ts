@@ -42,6 +42,7 @@ export class ProjectComponent implements OnInit {
         }
        });
     });
+    this.project_ref = this.project._id;
   }
 
 
@@ -53,4 +54,5 @@ export class ProjectComponent implements OnInit {
     scrum_master: new User,
     product_owner: new User
   };
+  public project_ref: string;
 }
