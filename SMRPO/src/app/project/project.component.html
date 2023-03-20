@@ -29,11 +29,19 @@
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="nav-backlog" role="tabpanel" aria-labelledby="nav-backlog-tab">
                     <div class="d-flex justify-content-center">
-                        <button type="button" class="btn btn-dark w-25">Add story</button>
+                        <button *ngIf="!addStoryVisible" (click)="showAddStory()" type="button" class="btn btn-dark w-25">Add story</button>
+                        <button *ngIf="addStoryVisible" (click)="hideAddStory()" type="button" class="btn btn-dark w-25">Hide Form</button>
+                    </div>
+                    <div *ngIf="addStoryVisible">
+                        <app-add-story></app-add-story>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="nav-sprints" role="tabpanel" aria-labelledby="nav-sprints-tab">
                     <div class="d-flex justify-content-center">
+                        <button *ngIf="!addSprintVisible" (click)="showAddSprint()" type="button" class="btn btn-dark w-25">Add sprint</button>
+                        <button *ngIf="addSprintVisible" (click)="hideAddSprint()" type="button" class="btn btn-dark w-25">Hide Form</button>
+                    </div>
+                    <div *ngIf="addSprintVisible">
                         <app-add-sprint [project]="project._id"></app-add-sprint>
                     </div>
                 </div>

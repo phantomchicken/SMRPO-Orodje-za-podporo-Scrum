@@ -14,6 +14,8 @@ import { UsersDataService } from '../user.service';
   ]
 })
 export class ProjectComponent implements OnInit {
+  public addStoryVisible: boolean = false;
+  public addSprintVisible: boolean = false;
 
   constructor(private route: ActivatedRoute, private projectDataService: ProjectDataService, private usersDataService: UsersDataService, protected authenticationService: AuthenticationService) { }
   private routeSub!: Subscription;
@@ -22,6 +24,10 @@ export class ProjectComponent implements OnInit {
   public product_owner: User = new User
   public scrum_master: User = new User
   public developers: User[] = []
+
+  showAddStory() {
+    this.addStoryVisible = true;
+  }
 
   ngOnInit(): void {
     this.routeSub = this.route.params.subscribe(params => {
@@ -55,4 +61,16 @@ export class ProjectComponent implements OnInit {
     product_owner: new User
   };
   public project_ref: string;
+
+  showAddSprint() {
+    this.addSprintVisible = true;
+  }
+
+  hideAddSprint() {
+    this.addSprintVisible = false;
+  }
+
+  hideAddStory() {
+    this.addStoryVisible = false;
+  }
 }

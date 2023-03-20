@@ -1,4 +1,4 @@
-export class Sprint {
+export class Story {
     _id: string  = "";
     name: string  = "";
     description: string  = "";

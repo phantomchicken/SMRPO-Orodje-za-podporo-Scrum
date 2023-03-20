@@ -21,6 +21,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import { ProjectComponent } from './project/project.component';
+import { AddStoryComponent } from './add-story/add-story.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { ProjectComponent } from './project/project.component';
     AddProjectComponent,
     ProjectsComponent,
     AddSprintComponent,
-    ProjectComponent
+    ProjectComponent,
+    AddStoryComponent
   ],
   imports: [
     BrowserModule,
