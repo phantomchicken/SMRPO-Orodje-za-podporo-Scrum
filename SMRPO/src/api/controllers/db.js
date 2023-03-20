@@ -222,7 +222,6 @@ const addSprint = (req, res) => {
         }
     });
 }
-
 const getProject = (req, res) => {
     //console.log(req.params)
     Project.findById(req.params.idProject).exec((error, project) => {
@@ -239,6 +238,70 @@ const getProject = (req, res) => {
     });
 }
 
+const getSprints = (req, res) => {
+    Sprint.find({}, function (error, sprints) {
+        if (error) {
+            return res.status(500).json(error);
+        } else {
+            //console.log(projects)
+            //console.log(projects)
+            res.status(200).json(sprints);
+        }
+    });
+}
+
+const getSprint = (req, res) => {
+    //console.log(req.params)
+    Sprint.findById(req.params.idSprint).exec((error, sprint) => {
+        console.log(sprint)
+        if (!sprint) {
+            return res.status(404).json({
+                "message": "Sprint not found."
+            });
+        } else if (error) {
+            return res.status(500).json(error);
+        } else {
+            res.status(200).json(sprint);
+        }
+    });
+}
+
+const updateSprint = (req, res) => {
+    //console.log(req.body)
+    //console.log(req.params)
+    Sprint.findById(req.params.idSprint).exec((error, sprint) => {
+        if (!project) {
+            return res.status(404).json({
+                "message": "No sprint found."
+            });
+        } else if (error) {
+            return res.status(500).json(error);
+        } else {
+            sprint.startDate = req.body.startDate;
+            sprint.endDate = req.body.endDate;
+            sprint.velocity = req.body.velocity;
+
+            sprint.save((error, updated_sprint) => {
+                if (error) {
+                    res.status(500).json(error);
+                } else {
+                    res.status(200).json(updated_sprint);
+                }
+            });
+        }
+    });
+}
+
+const deleteSprint = (req, res) => {
+    Sprint.findByIdAndRemove(req.params.idSprint).exec((error) => {
+        if (error) {
+            return res.status(500).json(error);
+        } else {
+            return res.status(204).json(null);
+        }
+    });
+}
+
 const getProjects = (req, res) => {
     Project.find({}, function (error, projects) {
         if (error) {
@@ -250,7 +313,6 @@ const getProjects = (req, res) => {
         }
     });
 }
-
 
 const addProject = (req, res) => {
     console.log(req.body)
@@ -396,6 +458,44 @@ const updateStory = (req, res) => {
                     res.status(200).json(updated_story);
                 }
             });
+        }
+    });
+}
+
+const getStories = (req, res) => {
+    Story.find({}, function (error, stories) {
+        if (error) {
+            return res.status(500).json(error);
+        } else {
+            //console.log(projects)
+            //console.log(projects)
+            res.status(200).json(stories);
+        }
+    });
+}
+
+const getStory = (req, res) => {
+    //console.log(req.params)
+    Story.findById(req.params.idStory).exec((error, story) => {
+        console.log(story)
+        if (!story) {
+            return res.status(404).json({
+                "message": "Story not found."
+            });
+        } else if (error) {
+            return res.status(500).json(error);
+        } else {
+            res.status(200).json(story);
+        }
+    });
+}
+
+const deleteStory = (req, res) => {
+    Story.findByIdAndRemove(req.params.idStory).exec((error) => {
+        if (error) {
+            return res.status(500).json(error);
+        } else {
+            return res.status(204).json(null);
         }
     });
 }
@@ -559,13 +659,20 @@ module.exports =
     deleteUser: deleteUser,
     checkPassword: checkPassword,
     addSprint: addSprint,
+    getSprints: getSprints,
+    getSprint: getSprint,
+    updateSprint: updateSprint,
+    deleteSprint: deleteSprint,
     getProject: getProject,
     updateProject: updateProject,
     deleteProject: deleteProject,
     getProjects: getProjects,
     addProject: addProject,
     createStory: createStory,
+    getStories: getStories,
+    getStory: getStory,
     updateStory : updateStory,
+    deleteStory: deleteStory,
     deleteAllData: deleteAllData,
     addSampleData: addSampleData
 }

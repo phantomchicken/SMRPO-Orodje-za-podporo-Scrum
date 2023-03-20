@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Sprint } from './classes/sprint';
+import { Story } from './classes/story';
 import { Storage_Browser } from './classes/storage';
 import { environment } from '../environments/environment';
 
@@ -12,30 +12,30 @@ export class SprintDataService {
 
   private apiUrl = environment.apiUrl;
 
-  public addSprint(data:any): Promise<Sprint> {
-    const url: string = `${this.apiUrl}/db/sprint`;
+  public addStory(data:any): Promise<Story> {
+    const url: string = `${this.apiUrl}/db/story`;
     return this.http
       .post(url, data)
       .toPromise()
-      .then(response => response as Sprint)
+      .then(response => response as Story)
       .catch(this.processError);
   }
 
-  public getSprint(id_of_sprint:any): Promise<Sprint> {
-    const url: string = `${this.apiUrl}/db/sprint/${id_of_sprint}`;
+  public getStory(id_of_story:any): Promise<Story> {
+    const url: string = `${this.apiUrl}/db/story/${id_of_story}`;
     return this.http
       .get(url)
       .toPromise()
-      .then(response => response as Sprint)
+      .then(response => response as Story)
       .catch(this.processError);
   }
 
-  public getSprints(): Promise<Sprint[]> {
-    const url: string = `${this.apiUrl}/db/sprints`;
+  public getStories(): Promise<Story[]> {
+    const url: string = `${this.apiUrl}/db/stories`;
     return this.http
       .get(url)
       .toPromise()
-      .then(response => response as Sprint[])
+      .then(response => response as Story[])
       .catch(this.processError);
   }
 
