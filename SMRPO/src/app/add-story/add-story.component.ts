@@ -31,6 +31,7 @@ export class AddStoryComponent implements OnInit {
     this.error =""
     this.storyService.addStory(this.story)
         .then((story: Story) => {
+          this.success = true;
           this.error = ""
           console.log('Story added!')
         })
@@ -42,6 +43,7 @@ export class AddStoryComponent implements OnInit {
 
   hide() {
     this.error = ""
+    this.success = true
   }
 
   public story: Story = {
@@ -57,5 +59,6 @@ export class AddStoryComponent implements OnInit {
     sprint: undefined,
     assignee: undefined,
   }
+  public success:boolean = false;
 
 }
