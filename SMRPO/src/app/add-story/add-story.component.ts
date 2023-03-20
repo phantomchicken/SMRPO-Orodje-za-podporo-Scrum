@@ -25,25 +25,36 @@ export class AddStoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.story.project = this.project;
+    this.error =""
+    this.success=false
   }
 
   addStory() {
     this.error =""
-    this.storyService.addStory(this.story)
+    this.success=false
+    if (!this.story.name || !this.story.description || !this.story.description || !this.story.priority || !this.story.businessValue || !this.story.acceptanceCriteria) {
+      this.error = "Please enter all fields!"
+    } else if (this.story.businessValue<1 || this.story.businessValue>10) {
+      this.error = "Please make sure business value is a number between 1 and 10!"
+    } else {
+      console.log(this.story.businessValue)
+      this.storyService.addStory(this.story)
         .then((story: Story) => {
           this.success = true;
           this.error = ""
           console.log('Story added!')
         })
         .catch((error) => {
-          console.log(error);
+          if (error.error.code==11000) this.error = "Story with this name already exists!";
+          else console.error(error);
         })
-    this.error =""
+    }
+    
   }
 
   hide() {
     this.error = ""
-    this.success = true
+    this.success = false
   }
 
   public story: Story = {

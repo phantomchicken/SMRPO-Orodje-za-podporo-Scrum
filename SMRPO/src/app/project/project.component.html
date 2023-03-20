@@ -28,12 +28,60 @@
             </nav>
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="nav-backlog" role="tabpanel" aria-labelledby="nav-backlog-tab">
-                    <div class="d-flex justify-content-center">
-                        <button *ngIf="!addStoryVisible" (click)="showAddStory()" type="button" class="btn btn-dark w-25">Add story</button>
-                        <button *ngIf="addStoryVisible" (click)="hideAddStory()" type="button" class="btn btn-dark w-25">Hide Form</button>
+                    <div class="row">
+                            <div *ngFor="let story of stories" class="col-md-3 m-4"> <!-- *ngFor -->
+                                <div class="card bg-light">
+                                    <div class="card-header d-flex justify-content-between">
+                                        <div>
+                                            <h5 class="card-title">{{story.name}}</h5>
+                                        </div>
+                                        <div>
+                                            <input class="form-check-input" type="checkbox" value="" (change)="checkStory(story._id, $event.target)">
+                                        </div>
+                                        
+                                    </div>
+                                  <div class="card-body">
+                                    <p class="card-text"><b>Priority: </b>{{story.priority}}</p>
+                                    <p class="card-text"><b>Business value: </b>{{story.businessValue}}</p>
+                                    <p class="card-text"><b>Story points: </b> {{story.storyPoints}}</p>
+                                    <p *ngIf="story.sprint" class="card-text"><b>Sprint: </b> {{story.sprint}}</p>
+                                </div>
+                              </div>
+                            </div>
                     </div>
-                    <div *ngIf="addStoryVisible">
-                        <app-add-story [project]="project._id"></app-add-story>
+                    <div class="row mt-4">
+                        <div class="d-flex justify-content-center">
+                            <mat-form-field *ngIf="checkedStories.length>0" class="mr-4" style="background-color: white;">
+                                <mat-label>Add to sprint</mat-label>
+                                <mat-select [(ngModel)]="currSprint" panelClass="example-panel-white" >
+                                  <mat-option *ngFor="let sprint of sprints" [value]="sprint"> Sprint {{sprint.startDate | date:'dd.MM'}} - {{sprint.endDate | date:'dd.MM'}}</mat-option>
+                                </mat-select>
+                              </mat-form-field>                              
+                           <button *ngIf="checkedStories.length>0" (click)="addStoriesToSprint()" type="button" class="btn btn-success w-25 mr-2">Add stories to sprint</button>
+                           <div *ngIf="success" class="alert alert-success alert-dismissible" role="alert">
+                            Stories successfully added!
+                            <button type="button" class="close" (click)="hide()" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div *ngIf="error" class="alert alert-danger alert-dismissible" role="alert">
+                                {{error}}
+                                <button type="button" class="close" (click)="hide()" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                       
+                        </div>
+                        <div class="row mt-4">
+                            <div class="d-flex justify-content-center">
+                                <button *ngIf="!addStoryVisible" (click)="showAddStory()" type="button" class="btn btn-dark w-25">Add story</button>
+                                <button *ngIf="addStoryVisible" (click)="hideAddStory()" type="button" class="btn btn-dark w-25">Hide Form</button>
+                            </div>
+                        </div>
+                        
+                        <div *ngIf="addStoryVisible">
+                            <app-add-story [project]="project._id"></app-add-story>
+                        </div>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="nav-sprints" role="tabpanel" aria-labelledby="nav-sprints-tab">

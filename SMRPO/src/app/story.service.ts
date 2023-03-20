@@ -30,6 +30,20 @@ export class StoryDataService {
       .catch(this.processError);
   }
 
+  public updateStory(story: Story): Promise<Story> {
+    const url: string = `${this.apiUrl}/db/story/${story._id}`;
+    const httpLastnosti = {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.storage.getItem('SMRPO-token')}`
+      })
+    };
+    return this.http
+      .put(url, story, httpLastnosti)
+      .toPromise()
+      .then(response => response as Story)
+      .catch (this.processError);
+  }
+
   public getStories(): Promise<Story[]> {
     const url: string = `${this.apiUrl}/db/stories`;
     return this.http

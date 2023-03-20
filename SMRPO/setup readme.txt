@@ -33,3 +33,4 @@ docker exec -it smrpo-mongo-db mongosh
 use SMRPO
 db.Projects.getIndexes()
 db.Projects.createIndex({ name: 1 }, { unique: true, name: 'name' })
+db.Stories.dropIndex('name_1')
