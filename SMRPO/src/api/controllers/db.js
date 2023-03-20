@@ -368,6 +368,38 @@ const createStory = (req, res) => {
     });
 }
 
+const updateStory = (req, res) => {
+    Story.findById(req.params.idStory).exec((error, story) => {
+        if (!story) {
+            return res.status(404).json({
+                "message": "No story found."
+            });
+        } else if (error) {
+            return res.status(500).json(error);
+        } else {
+            console.log(story)
+            if (req.body.name != "") story.name = req.body.name
+            if (req.body.description != "") story.description = req.body.description
+            if (req.body.storyPoints != "") story.storyPoints = req.body.storyPoints
+            if (req.body.priority != "") story.priority = req.body.priority
+            if (req.body.acceptanceCriteria != "") story.acceptanceCriteria = req.body.acceptanceCriteria
+            if (req.body.businessValue != "") story.businessValue = req.body.businessValue
+            if (req.body.status != "") story.status = req.body.status
+            if (req.body.project != "") story.project = req.body.project
+            if (req.body.sprint != "") story.sprint = req.body.sprint
+            if (req.body.assignee!= "") story.assignee = req.body.assignee
+
+            story.save((error, updated_story) => {
+                if (error) {
+                    res.status(500).json(error);
+                } else {
+                    res.status(200).json(updated_story);
+                }
+            });
+        }
+    });
+}
+
 function Latch(limit) {
     this.limit = limit;
     this.count = 0;
@@ -533,6 +565,7 @@ module.exports =
     getProjects: getProjects,
     addProject: addProject,
     createStory: createStory,
+    updateStory : updateStory,
     deleteAllData: deleteAllData,
     addSampleData: addSampleData
 }
