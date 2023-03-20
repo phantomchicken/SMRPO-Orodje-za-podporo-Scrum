@@ -30,7 +30,6 @@
           <a *ngIf="!is_user_logged()" class="nav-link" (click)="navto('login')">Login</a>
           <a class="nav-link" (click)="navto('projects')">Projects</a>
           <a *ngIf="authenticationService.is_admin()" class="nav-link" (click)="navto('admin')">Admin</a>
-          <a class="nav-link" (click)="navto('articles')">Test1</a>
         </li>
       </ul>
     </div>
@@ -57,7 +56,6 @@
                     <div *ngIf="authenticationService.is_logged()" class="dropdown-divider"></div>  
                     <a *ngIf="authenticationService.is_logged()" class="dropdown-item nav-link" (click)="navto('reset-password')">My profile</a>
                     <a *ngIf="authenticationService.is_logged() && authenticationService.is_admin()" class="dropdown-item nav-link" (click)="navto('admin')">Admin view</a>
-                    <a >Test1</a>
                     <button *ngIf="authenticationService.is_logged()" type="button" class="btn btn-danger btn-block" (click)="logout()">Log out</button>
                 </div>
                 </div>
