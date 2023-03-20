@@ -395,14 +395,10 @@ const createStory = (req, res) => {
 
     if (!('name' in req.body 
         && 'description' in req.body
-        && 'storyPoints' in req.body 
         && 'priority' in req.body 
         && 'acceptanceCriteria' in req.body 
         && 'businessValue' in req.body 
-        && 'status' in req.body 
         && 'project' in req.body
-        && 'sprint' in req.body
-        && 'assignee' in req.body
     )) {
         res.status(500).send('Missing argument')
         return;
@@ -415,7 +411,10 @@ const createStory = (req, res) => {
     new_story.priority = req.body.priority;
     new_story.acceptanceCriteria = req.body.acceptanceCriteria;
     new_story.businessValue = req.body.businessValue;
-    new_story.status = req.body.status;
+    if (req.body.status != "") 
+        story.status = req.body.status
+    else
+        new_story.status = req.body.status;
     new_story.project = req.body.project;
     new_story.sprint = req.body.sprint;
     new_story.assignee = req.body.assignee;
