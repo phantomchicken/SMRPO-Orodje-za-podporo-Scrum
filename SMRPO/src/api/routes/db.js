@@ -41,6 +41,8 @@ router.route('/sprint/:idSprint')
     .put(authentication, ctrlDb.updateSprint)
     .delete(authentication, ctrlDb.deleteSprint)
 
+router.route('/project')
+    .post(ctrlDb.addProject)
 router.route('/projects')
     .get(ctrlDb.getProjects)
 router.route('/project/:idProject')
@@ -49,9 +51,13 @@ router.route('/project/:idProject')
     .delete(authentication, ctrlDb.deleteProject)
 
 
-router.route('/project')
-    .post(ctrlDb.addProject)
 router.route('/story')
     .post(ctrlDb.createStory)
+router.route('/stories')
+    .get(ctrlDb.getStories)
+router.route('/story/:idStory')
+    .get(ctrlDb.getStory)
+    .put(authentication, ctrlDb.updateStory)
+    .delete(authentication, ctrlDb.deleteStory)
 
 module.exports = router;
