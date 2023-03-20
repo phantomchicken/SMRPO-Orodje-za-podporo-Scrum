@@ -34,6 +34,12 @@ router.route('/users')
 
 router.route('/sprint')
     .post(ctrlDb.addSprint)
+router.route('/projects')
+    .get(ctrlDb.getSprints)
+router.route('/project/:idProject')
+    .get(ctrlDb.getSprint)
+    .put(authentication, ctrlDb.updateSprint)
+    .delete(authentication, ctrlDb.deleteSprint)
 
 router.route('/projects')
     .get(ctrlDb.getProjects)

@@ -222,7 +222,6 @@ const addSprint = (req, res) => {
         }
     });
 }
-
 const getProject = (req, res) => {
     //console.log(req.params)
     Project.findById(req.params.idProject).exec((error, project) => {
@@ -239,6 +238,70 @@ const getProject = (req, res) => {
     });
 }
 
+const getSprints = (req, res) => {
+    Sprint.find({}, function (error, sprints) {
+        if (error) {
+            return res.status(500).json(error);
+        } else {
+            //console.log(projects)
+            //console.log(projects)
+            res.status(200).json(sprints);
+        }
+    });
+}
+
+const getSprint = (req, res) => {
+    //console.log(req.params)
+    Sprint.findById(req.params.idSprint).exec((error, sprint) => {
+        console.log(sprint)
+        if (!sprint) {
+            return res.status(404).json({
+                "message": "Sprint not found."
+            });
+        } else if (error) {
+            return res.status(500).json(error);
+        } else {
+            res.status(200).json(sprint);
+        }
+    });
+}
+
+const updateSprint = (req, res) => {
+    //console.log(req.body)
+    //console.log(req.params)
+    Sprint.findById(req.params.idSprint).exec((error, sprint) => {
+        if (!project) {
+            return res.status(404).json({
+                "message": "No sprint found."
+            });
+        } else if (error) {
+            return res.status(500).json(error);
+        } else {
+            sprint.startDate = req.body.startDate;
+            sprint.endDate = req.body.endDate;
+            sprint.velocity = req.body.velocity;
+
+            sprint.save((error, updated_sprint) => {
+                if (error) {
+                    res.status(500).json(error);
+                } else {
+                    res.status(200).json(updated_sprint);
+                }
+            });
+        }
+    });
+}
+
+const deleteSprint = (req, res) => {
+    Sprint.findByIdAndRemove(req.params.idSprint).exec((error) => {
+        if (error) {
+            return res.status(500).json(error);
+        } else {
+            return res.status(204).json(null);
+        }
+    });
+}
+
 const getProjects = (req, res) => {
     Project.find({}, function (error, projects) {
         if (error) {
@@ -250,7 +313,6 @@ const getProjects = (req, res) => {
         }
     });
 }
-
 
 const addProject = (req, res) => {
     console.log(req.body)
@@ -559,6 +621,10 @@ module.exports =
     deleteUser: deleteUser,
     checkPassword: checkPassword,
     addSprint: addSprint,
+    getSprints: getSprints,
+    getSprint: getSprint,
+    updateSprint: updateSprint,
+    deleteSprint: deleteSprint,
     getProject: getProject,
     updateProject: updateProject,
     deleteProject: deleteProject,
