@@ -7,7 +7,7 @@ import { environment } from '../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class SprintDataService {
+export class StoryDataService {
   constructor(private http: HttpClient, @Inject(Storage_Browser) private storage: Storage) { }
 
   private apiUrl = environment.apiUrl;

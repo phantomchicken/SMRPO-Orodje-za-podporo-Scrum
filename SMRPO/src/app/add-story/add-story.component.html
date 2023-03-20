@@ -6,12 +6,11 @@
                     <h5 class="card-title text-center mb-3">Add story</h5>
                     <form (ngSubmit)="addStory()">
                         <div class="form-row align-items-center mt-3">
-
-                            <label class="sr-only" for="inlineFormInputGroup">Story name</label>
+                            <label class="sr-only" for="inlineFormInputGroup1">Story name</label>
                             <div class="form-group">
-                                <label for="inlineFormInputGroup">story name</label>
+                                <label for="inlineFormInputGroup1">story name</label>
                                 <input [(ngModel)]="story.name" type="text" class="form-control"
-                                       id="inlineFormInputGroup" placeholder="story name" name="name">
+                                       id="inlineFormInputGroup1" placeholder="story name" name="name">
                             </div>
                         </div>
                         <div class="form-row align-items-center mt-3">
@@ -28,18 +27,16 @@
                                     <div class="input-group-text">Priority &nbsp; &nbsp; &nbsp; &nbsp;</div>
                                 </div>
                                 <mat-form-field appearance="fill" style="background-color: white;">
-<!--                                    <mat-label>Priority</mat-label>-->
                                     <mat-select [(ngModel)]="story.priority" [formControl]="priorityFormControl">
-                                        <mat-option *ngFor="let priority of priorities" value="priority">{{priority}}</mat-option>
+                                        <mat-option *ngFor="let priority of priorities" [value]="priority">{{priority}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
 
                             </div>
                         </div>
                         <div class="form-row align-items-center mt-3">
-                            <span *ngFor="let priority of story.priority"
-                                  class="avatar rounded-circle bg-secondary d-flex justify-content-center align-items-center mr-3 p-2 col-1 mt-1">
-                                <span class="text-uppercase font-weight-bold">{{priority | slice:0:1}}</span>
+                            <span class="bg-secondary d-flex justify-content-center align-items-center mr-3 p-2 col-1 mt-1">
+                                <span class="text-uppercase font-weight-bold">{{story.priority}}</span>
                             </span>
                         </div>
                         <div class="dropdown-divider mb-3"></div>
@@ -52,9 +49,9 @@
                         </div>
                         <div class="form-row align-items-center justify-content-center mt-3"></div>
                         <div class="form-group">
-                            <label for="inlineFormInputGroup3">Business value</label>
+                            <label for="inlineFormInputGroup2">Business value</label>
                             <input [(ngModel)]="story.businessValue" type="text" class="form-control"
-                                   id="inlineFormInputGroup3" placeholder="Business value" name="name">
+                                   id="inlineFormInputGroup2" placeholder="Business value" name="business value">
                         </div>
                         <div class="form-row align-items-center justify-content-center mt-3">
                             <input id="submit-login" type="submit" class="btn btn-primary w-75 m-3" value="Add story">

@@ -411,10 +411,10 @@ const createStory = (req, res) => {
     new_story.priority = req.body.priority;
     new_story.acceptanceCriteria = req.body.acceptanceCriteria;
     new_story.businessValue = req.body.businessValue;
-    if (req.body.status != "") 
-        story.status = req.body.status
+    if (req.body.status != "")
+        new_story.status = req.body.status
     else
-        new_story.status = req.body.status;
+        new_story.status = "Backlog";
     new_story.project = req.body.project;
     new_story.sprint = req.body.sprint;
     new_story.assignee = req.body.assignee;
@@ -424,7 +424,7 @@ const createStory = (req, res) => {
         if (error) {
             res.status(500).json(error);
         } else {
-            res.status(201).json(new_project);
+            res.status(201).json(new_story);
         }
     });
 }

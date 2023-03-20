@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormControl} from "@angular/forms";
 import {Story} from "../classes/story";
-import {Project} from "../classes/project";
-import {User} from "../classes/user";
-import {Sprint} from "../classes/sprint";
+import {StoryDataService} from "../story.service";
+import {Router} from "@angular/router";
+
 @Component({
   selector: 'app-add-story',
   templateUrl: `add-story.component.html`,
@@ -15,16 +15,29 @@ export class AddStoryComponent implements OnInit {
   error: string = "";
   priorityFormControl = new FormControl('white');
 
-  public priorities: String[] = ["MUST HAVE", "COULD HAVE", "SHOULD HAVE", "WON'T HAVE THIS TIME"];
+  public priorities: Array<String> = ['Must have', 'Could have', 'Should have', 'Won\'t have this time'];
 
 
-  constructor() { }
+  constructor(private router: Router,
+              private storyService: StoryDataService) { }
+
+  @Input() project:string = "";
 
   ngOnInit(): void {
+    this.story.project = this.project;
   }
 
   addStory() {
-
+    this.error =""
+    this.storyService.addStory(this.story)
+        .then((story: Story) => {
+          this.error = ""
+          console.log('Story added!')
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+    this.error =""
   }
 
   hide() {
@@ -41,9 +54,8 @@ export class AddStoryComponent implements OnInit {
     businessValue: -1,
     status: "",
     project: "",
-    sprint: "",
-    assignee: "",
+    sprint: undefined,
+    assignee: undefined,
   }
-
 
 }

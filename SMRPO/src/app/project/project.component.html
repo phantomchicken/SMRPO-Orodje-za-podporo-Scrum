@@ -33,7 +33,7 @@
                         <button *ngIf="addStoryVisible" (click)="hideAddStory()" type="button" class="btn btn-dark w-25">Hide Form</button>
                     </div>
                     <div *ngIf="addStoryVisible">
-                        <app-add-story></app-add-story>
+                        <app-add-story [project]="project._id"></app-add-story>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="nav-sprints" role="tabpanel" aria-labelledby="nav-sprints-tab">
