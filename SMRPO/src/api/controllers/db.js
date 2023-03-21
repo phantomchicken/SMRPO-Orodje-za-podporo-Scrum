@@ -526,6 +526,7 @@ Latch.prototype.await = function (callback, ctx) {
 const deleteAllData = (req, res) => {
     Project.collection.drop();
     Sprint.collection.drop();
+    Story.collection.drop();
     User.collection.deleteMany( { privilege : "normal" });
     res.status(200).json({"message": "Contents on DB hard deleted!"});
 };

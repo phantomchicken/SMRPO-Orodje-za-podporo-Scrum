@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { SprintDataService } from '../sprint.service';
 import {Sprint} from '../classes/sprint';
 
@@ -12,6 +12,13 @@ export class AddSprintComponent implements OnInit {
   public error:string ="";
   public success:boolean = false;
   @Input() project:string = "";
+
+    
+  @Output() messageEvent = new EventEmitter<string>();
+  sendMessage() {
+    console.log("send message")
+    this.messageEvent.emit("sprint")
+  }
 
   constructor(private sprintService: SprintDataService) { }
 
@@ -34,21 +41,24 @@ export class AddSprintComponent implements OnInit {
       this.sprintService.getSprints()
           .then((sprints: Sprint[]) => {
         for (var i=0; i < sprints.length; i++){
-          let s_i = new Date(sprints[i].startDate)
-          let e_i = new Date(sprints[i].endDate)
-          if ((sDate.getTime() >= s_i.getTime() && sDate.getTime() <= e_i.getTime())
-              || (eDate.getTime() >= s_i.getTime() && eDate.getTime() <= e_i.getTime())
-          || (s_i.getTime() >= sDate.getTime() && s_i.getTime() <= eDate.getTime())
-              || (e_i.getTime() >= sDate.getTime() && e_i.getTime() <= eDate.getTime())){
-            this.error = "Sprint overlaps with an existing sprint!"
-            overlap = true
-            break
-          }
+            if (sprints[i].project == this.project) { // get all sprints and check for overlap only for those concerning the same project
+              let s_i = new Date(sprints[i].startDate)
+              let e_i = new Date(sprints[i].endDate)
+              if ((sDate.getTime() >= s_i.getTime() && sDate.getTime() <= e_i.getTime())
+                || (eDate.getTime() >= s_i.getTime() && eDate.getTime() <= e_i.getTime())
+                || (s_i.getTime() >= sDate.getTime() && s_i.getTime() <= eDate.getTime())
+                || (e_i.getTime() >= sDate.getTime() && e_i.getTime() <= eDate.getTime())){
+                  this.error = "Sprint overlaps with an existing sprint!"
+                  overlap = true
+                  break
+              }
+            }
         }
         if (!overlap) {
           this.sprintService.addSprint(this.sprint)
               .then((sprint: Sprint) => {
                 this.success = true;
+                this.sendMessage()
                 console.log('Sprint added!');
               })
               .catch((error) => {

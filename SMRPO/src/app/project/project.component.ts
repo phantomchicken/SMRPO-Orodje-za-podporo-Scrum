@@ -36,6 +36,23 @@ export class ProjectComponent implements OnInit {
   public success:boolean = false
   public error:string = ""
 
+  message:string = "";
+
+  update($event: string) {
+    if ($event=="story") {
+      this.storyDataService.getStories().then((data:Story[])=>{
+        this.stories = data.filter(story => story.project === this.project._id);
+        console.log(this.stories)
+      })
+    } else if ($event=="sprint") {
+      this.sprintDataService.getSprints().then((data:Sprint[])=>{
+        this.sprints = data.filter(sprint => sprint.project === this.project._id);
+        console.log(this.sprints)
+      })
+    }
+    
+  }
+
   showAddStory() {
     this.addStoryVisible = true;
   }
@@ -71,12 +88,12 @@ export class ProjectComponent implements OnInit {
   }
 
   addStoriesToSprint() {
-    console.log(this.currSprint)
+    // console.log(this.currSprint)
     this.hide()
     for (var i=0; i< this.checkedStories.length; i++){
       var story_id = this.checkedStories[i]
-      var curr_story:Story = this.stories.filter((story) => story._id === story_id)[0]; // assumes ID is unique  
-      if (curr_story.sprint!="") this.error = "Story is already assigned to a sprint!" // check if sprint is active
+      var curr_story:Story = this.stories.filter((story) => story._id === story_id)[0]; // assumes ID is unique 
+      if (curr_story.sprint) this.error = "Story is already assigned to a sprint!" // check if sprint is active
       else {
         curr_story.sprint = this.currSprint._id
         this.storyDataService.updateStory(curr_story)

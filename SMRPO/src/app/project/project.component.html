@@ -80,18 +80,41 @@
                         </div>
                         
                         <div *ngIf="addStoryVisible">
-                            <app-add-story [project]="project._id"></app-add-story>
+                            <app-add-story (messageEvent)="update($event)" [project]="project._id"></app-add-story>
                         </div>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="nav-sprints" role="tabpanel" aria-labelledby="nav-sprints-tab">
+                    <div class="row">
+                        <div *ngFor="let sprint of sprints; let i = index;" class="col-md-3 m-4"> <!-- *ngFor -->
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between bg-info">
+                                    <div>
+                                        <h5 class="card-title">Sprint #{{i+1}}</h5>
+                                    </div>
+                                    
+                                </div>
+                              <div class="card-body">
+                                <p class="card-text"><b>Start date: </b>{{sprint.startDate | date:'dd.MM'}}</p>
+                                <p class="card-text"><b>End date: </b>{{sprint.endDate | date:'dd.MM'}}</p>
+                                <p class="card-text"><b>Velocity: </b> {{sprint.velocity}}</p>
+                                <!--<p *ngIf="sprint.project" class="card-text"><b>Project: </b> {{sprint.project}}</p> -->
+                            </div>
+                          </div>
+                        </div>
+                </div>
+                <div class="row mt-4">
                     <div class="d-flex justify-content-center">
                         <button *ngIf="!addSprintVisible" (click)="showAddSprint()" type="button" class="btn btn-dark w-25">Add sprint</button>
                         <button *ngIf="addSprintVisible" (click)="hideAddSprint()" type="button" class="btn btn-dark w-25">Hide Form</button>
                     </div>
                     <div *ngIf="addSprintVisible">
-                        <app-add-sprint [project]="project._id"></app-add-sprint>
+                        <app-add-sprint (messageEvent)="update($event)" [project]="project._id"></app-add-sprint>
                     </div>
+
+                </div>
+                    
+                    
                 </div>
             </div>
         </div>       
