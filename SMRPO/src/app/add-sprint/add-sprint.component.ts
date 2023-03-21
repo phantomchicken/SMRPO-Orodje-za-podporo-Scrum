@@ -16,24 +16,47 @@ export class AddSprintComponent implements OnInit {
   constructor(private sprintService: SprintDataService) { }
 
   addSprint(): void {
+    let today = new Date()
+    let sDate = new Date(this.sprint.startDate)
+    let eDate = new Date(this.sprint.endDate)
     this.sprint.project = this.project;
     if (!this.sprint.startDate || !this.sprint.endDate || !this.sprint.velocity) {
       this.error = "Please enter all fields!"
-    } else if (this.sprint.startDate > this.sprint.endDate){
+    } else if (sDate.getTime() > eDate.getTime()){
       this.error = "Sprint ends before it starts!"
-    }else if (this.sprint.velocity < 0 || this.sprint.velocity > 100){
+    } else if (sDate.getTime() < today.getTime()){
+      this.error = "Sprint starts before today!"
+    }else if (isNaN(+this.sprint.velocity) || this.sprint.velocity < 0 || this.sprint.velocity > 100){
       this.error = "Sprint velocity is invalid!"
     } else{
       // add backend call
-      this.sprintService.addSprint(this.sprint)
-        .then((sprint: Sprint) => {
-          this.success = true;
-          console.log('Sprint added!'); //TODO: redirect
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-      this.error = "";
+      let overlap = false
+      this.sprintService.getSprints()
+          .then((sprints: Sprint[]) => {
+        for (var i=0; i < sprints.length; i++){
+          let s_i = new Date(sprints[i].startDate)
+          let e_i = new Date(sprints[i].endDate)
+          if ((sDate.getTime() >= s_i.getTime() && sDate.getTime() <= e_i.getTime())
+              || (eDate.getTime() >= s_i.getTime() && eDate.getTime() <= e_i.getTime())
+          || (s_i.getTime() >= sDate.getTime() && s_i.getTime() <= eDate.getTime())
+              || (e_i.getTime() >= sDate.getTime() && e_i.getTime() <= eDate.getTime())){
+            this.error = "Sprint overlaps with an existing sprint!"
+            overlap = true
+            break
+          }
+        }
+        if (!overlap) {
+          this.sprintService.addSprint(this.sprint)
+              .then((sprint: Sprint) => {
+                this.success = true;
+                console.log('Sprint added!');
+              })
+              .catch((error) => {
+                console.error(error);
+              });
+          this.error = "";
+        }
+      })
     }
   }
 
