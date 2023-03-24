@@ -52,7 +52,8 @@
                 <div class="dropdown-name nav-link text-center">
                   <span *ngIf="is_user_logged()" class="dropdown-item nav-link">Log-in #{{authenticationService.get_current_user().login_counter}} at:</span>
                     <!--<a *ngIf="is_user_logged()" class="dropdown-item nav-link">Welcome {{username}}!</a>-->
-                    <span *ngIf="is_user_logged()" class="small">{{authenticationService.get_current_user().timestamp | date:'dd-MM-YYYY HH:mm'}}</span>
+                    <span *ngIf="is_user_logged() && authenticationService.get_current_user().login_counter==1" class="small">First log-in</span>
+                    <span *ngIf="is_user_logged() && authenticationService.get_current_user().login_counter!=1" class="small">{{authenticationService.get_current_user().timestamp | date:'dd-MM-YYYY HH:mm'}}</span>
                     <div *ngIf="authenticationService.is_logged()" class="dropdown-divider"></div>  
                     <a *ngIf="authenticationService.is_logged()" class="dropdown-item nav-link" (click)="navto('reset-password')">My profile</a>
                     <a *ngIf="authenticationService.is_logged() && authenticationService.is_admin()" class="dropdown-item nav-link" (click)="navto('admin')">Admin view</a>

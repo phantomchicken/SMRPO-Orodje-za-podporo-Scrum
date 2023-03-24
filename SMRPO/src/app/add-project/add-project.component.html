@@ -28,7 +28,7 @@
                                     <div class="input-group-text bg-warning text-white">Product owner</div>
                                 </div>
                                 <select [(ngModel)]="project.product_owner" class="form-control" id="exampleFormControlSelect1" name="product_owner">
-                                    <option *ngFor="let user of users" [ngValue]="user">{{user.firstname}}</option>
+                                    <option *ngFor="let user of users" [ngValue]="user">{{user.firstname}} {{user.lastname}}</option>
                                 </select>
                             </div>
                         </div>
@@ -38,7 +38,7 @@
                                     <div class="input-group-text bg-success text-white">Scrum master &nbsp;</div>
                                 </div>
                                 <select [(ngModel)]="project.scrum_master" class="form-control" id="exampleFormControlSelect1" name="scrum_master">
-                                    <option *ngFor="let user of users" [ngValue]="user">{{user.firstname}}</option>
+                                    <option *ngFor="let user of users" [ngValue]="user">{{user.firstname}} {{user.lastname}}</option>
                                 </select>
                             </div>
                         </div>
@@ -50,7 +50,7 @@
                                 <mat-form-field appearance="fill" style="background-color: white;">
                                     <mat-label>Users</mat-label>
                                     <mat-select [(ngModel)]="project.developers" [formControl]="usersFormControl" multiple panelClass="example-panel-white" >
-                                      <mat-option *ngFor="let user of users" [value]="user">{{user.firstname}}</mat-option>
+                                      <mat-option *ngFor="let user of users" [value]="user">{{user.firstname}} {{user.lastname}}</mat-option>
                                     </mat-select>
                                   </mat-form-field>
                                 

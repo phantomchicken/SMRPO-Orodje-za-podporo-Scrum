@@ -105,8 +105,8 @@
                 </div>
                 <div class="row mt-4">
                     <div class="d-flex justify-content-center">
-                        <button *ngIf="!addSprintVisible" (click)="showAddSprint()" type="button" class="btn btn-dark w-25">Add sprint</button>
-                        <button *ngIf="addSprintVisible" (click)="hideAddSprint()" type="button" class="btn btn-dark w-25">Hide Form</button>
+                        <button *ngIf="!addSprintVisible && authenticationService.get_current_user()._id == scrum_master_id" (click)="showAddSprint()" type="button" class="btn btn-dark w-25">Add sprint</button>
+                        <button *ngIf="addSprintVisible && authenticationService.get_current_user()._id == scrum_master_id" (click)="hideAddSprint()" type="button" class="btn btn-dark w-25">Hide Form</button>
                     </div>
                     <div *ngIf="addSprintVisible">
                         <app-add-sprint (messageEvent)="update($event)" [project]="project._id"></app-add-sprint>

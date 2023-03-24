@@ -23,14 +23,17 @@ export class AdminViewComponent implements OnInit {
   public error: string = "";
   public success: boolean = false;
   public passwordVisible: boolean = false;
+  public confirmPasswordVisible: boolean = false;
+  public confirmPassword: string = ""
   public showForm: boolean = false
 
   public showPassword(): void {
-    if (this.passwordVisible)
-      this.passwordVisible = false
-    else
-      this.passwordVisible = true;
+    this.passwordVisible = this.passwordVisible ? false : true;
   };
+
+  public showConfirmPassword(): void {
+    this.confirmPasswordVisible = this.confirmPasswordVisible ? false : true;
+  }
 
   public is_user_logged(): boolean {
     return this.authenticationService.is_logged();
@@ -45,16 +48,16 @@ export class AdminViewComponent implements OnInit {
       this.error = "Please enter a valid email!"
     } else if (this.authenticationService.validatePassword(this.user.password) != "") {
       this.error = this.authenticationService.validatePassword(this.user.password)
+    } else if (this.user.password != this.confirmPassword) {
+      this.error = "Password and confirm password field should match!"
     }
     else {
       this.userService.register(this.user)
         .then(() => {
-          //console.log("success")
           this.error =""
           this.success = true;
           this.users.push(this.user)
           this.dataSource.data = this.users
-          //this.router.navigateByUrl("/");
         })
         .catch(error => {
           this.error = error;
