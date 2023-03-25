@@ -1,22 +1,20 @@
 <div class="container">
-    <div class="row">
-      <div *ngFor="let project of projects" class="col-md-4 mt-4"> <!-- *ngFor -->
-        <div class="card" *ngIf="roleForProject(project) || authenticationService.is_admin()">
+  <div class="row">
+    <ng-container *ngFor="let project of projects">
+      <div *ngIf="roleForProject(project) || authenticationService.is_admin()" class="col-md-4 mt-4">
+        <div class="card">
           <div class="card-body" [ngClass]="getColor(project)">
             <h5 class="card-title">{{project.name}}</h5>
             <p *ngIf="project.description.length>250" class="card-text">{{project.description | slice:0:250 }}...</p>
             <p *ngIf="project.description.length<=250" class="card-text">{{project.description}}</p>
             <a class="stretched-link" routerLink="/project/{{project._id}}"></a>
+          </div>
         </div>
-        </div>
-        <!--<h6>This user {{authenticationService.get_current_user()._id}}</h6> 
-        <h6>Product owner {{project.product_owner}}</h6> 
-        <h6>Scrum master {{project.scrum_master}}</h6> 
-        <h6 *ngIf="(authenticationService.get_current_user()._id) === project.product_owner">{{authenticationService.get_current_user()._id}}</h6>  -->
       </div>
-    </div>
+    </ng-container>
   </div>
-  <div class="form-row align-items-center justify-content-center mt-3">
-    <a *ngIf="authenticationService.is_admin()" routerLink="/projects/add" type="submit" class="btn btn-success w-25 m-3">Add project</a>
+</div>
+<div class="form-row align-items-center justify-content-center mt-3">
+  <a *ngIf="authenticationService.is_admin()" routerLink="/projects/add" type="submit" class="btn btn-success w-25 m-3">Add project</a>
 </div>
 <h3 *ngIf="!authenticationService.is_logged()">Log in to see your projects!</h3>

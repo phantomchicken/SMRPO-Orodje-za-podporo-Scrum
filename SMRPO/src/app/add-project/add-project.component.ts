@@ -27,7 +27,7 @@ export class AddProjectComponent implements OnInit {
 
   addProject(): void {
     this.error =""
-    if (!this.project.name || !this.project.description || this.project.scrum_master!=(new User) || this.project.product_owner!=(new User) || this.project.developers.length == 0) {
+    if (!this.project.name || !this.project.description || this.project.scrum_master==(new User) || this.project.product_owner==(new User) || this.project.developers.length == 0) {
       this.error = "Please enter all fields!"
     } else if (this.project.scrum_master == this.project.product_owner) {
       this.error = "Scrum master and product owner can't be the same person!"

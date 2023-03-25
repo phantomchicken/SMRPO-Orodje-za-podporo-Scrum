@@ -35,15 +35,21 @@
                                         <div>
                                             <h5 class="card-title">{{story.name}}</h5>
                                         </div>
-                                        <div>
-                                            <input class="form-check-input" type="checkbox" value="" (change)="checkStory(story._id, $event.target)">
+                                        <div> <!-- if not already assigned to sprint, if points assigned, if scrum master-->
+                                            <input *ngIf="!story.sprint && story.storyPoints!=-1 && authenticationService.get_current_user()._id == scrum_master_id" class="form-check-input" type="checkbox" value="" (change)="checkStory(story._id, $event.target)">
                                         </div>
                                         
                                     </div>
                                   <div class="card-body">
                                     <p class="card-text"><b>Priority: </b>{{story.priority}}</p>
                                     <p class="card-text"><b>Business value: </b>{{story.businessValue}}</p>
-                                    <p class="card-text"><b>Story points: </b> {{story.storyPoints}}</p>
+                                    <form *ngIf="authenticationService.get_current_user()._id == scrum_master_id && !(story.sprint)"> <!-- if not already assigned to sprint, if scrum master-->
+                                        <div class="form-group">
+                                          <label for="card-text example-input"><b>Story points: </b></label>
+                                          <input class="form-control w-50" type="text" id="example-input" name="exampleInput" [value]="story.storyPoints" (change)="editStoryPoints(story, $event.target)">
+                                        </div>
+                                    </form>
+                                    <p *ngIf="authenticationService.get_current_user()._id != scrum_master_id || story.sprint" class="card-text"><b>Story points: </b> {{story.storyPoints}}</p> <!-- if assigned to sprint, if not scrum master-->
                                     <p *ngIf="story.sprint" class="card-text"><b>Sprint: </b> {{story.sprint}}</p>
                                 </div>
                               </div>
@@ -56,8 +62,9 @@
                                 <mat-select [(ngModel)]="currSprint" panelClass="example-panel-white" >
                                   <mat-option *ngFor="let sprint of sprints" [value]="sprint"> Sprint {{sprint.startDate | date:'dd.MM'}} - {{sprint.endDate | date:'dd.MM'}}</mat-option>
                                 </mat-select>
-                              </mat-form-field>                              
+                              </mat-form-field>
                            <button *ngIf="checkedStories.length>0" (click)="addStoriesToSprint()" type="button" class="btn btn-success w-25 mr-2">Add stories to sprint</button>
+                           <div *ngIf="checkedStories.length>0">{{getCheckedStoryPoints()}}<span *ngIf="currSprint.velocity!=0">/{{currSprint.velocity}}</span>   </div>
                            <div *ngIf="success" class="alert alert-success alert-dismissible" role="alert">
                             Stories successfully added!
                             <button type="button" class="close" (click)="hide()" aria-label="Close">
@@ -74,7 +81,7 @@
                         </div>
                         <div class="row mt-4">
                             <div class="d-flex justify-content-center">
-                                <button *ngIf="!addStoryVisible" (click)="showAddStory()" type="button" class="btn btn-dark w-25">Add story</button>
+                                <button *ngIf="!addStoryVisible && (authenticationService.get_current_user()._id == scrum_master_id || authenticationService.get_current_user()._id == product_owner_id)" (click)="showAddStory()" type="button" class="btn btn-dark w-25">Add story</button>
                                 <button *ngIf="addStoryVisible" (click)="hideAddStory()" type="button" class="btn btn-dark w-25">Hide Form</button>
                             </div>
                         </div>

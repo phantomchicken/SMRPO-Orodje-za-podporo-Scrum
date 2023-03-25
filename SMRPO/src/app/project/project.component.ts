@@ -114,6 +114,27 @@ export class ProjectComponent implements OnInit {
     //console.log(this.checkedStories)
   }
 
+  editStoryPoints(story:Story, newStoryPoints:any){
+    if (!isNaN(+newStoryPoints.value) && newStoryPoints.value>0) {
+      story.storyPoints = newStoryPoints.value
+      this.storyDataService.updateStory(story)
+      this.error = ""
+    } else {
+      this.error="Story points must be a positive number!"
+      newStoryPoints.value = story.storyPoints
+    }
+  }
+
+  getCheckedStoryPoints(): number {
+    let sum:number = 0;
+    for (var i=0; i< this.checkedStories.length; i++) {
+      var curr_story:Story = this.stories.filter((story) => story._id === this.checkedStories[i])[0];
+      sum += (+curr_story.storyPoints!)
+    }
+    return sum;
+  }
+  
+
   public project: Project = {
     _id: "",
     name: "",
