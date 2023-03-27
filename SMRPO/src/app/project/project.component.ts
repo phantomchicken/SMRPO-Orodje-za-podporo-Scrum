@@ -178,4 +178,8 @@ export class ProjectComponent implements OnInit {
   hideAddStory() {
     this.addStoryVisible = false;
   }
+
+  splitNewLine(str:String){
+    return str.split("&~")
+  }
 }

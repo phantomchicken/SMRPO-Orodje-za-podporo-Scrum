@@ -48,6 +48,12 @@
                                       <div class="card-body">
                                         <p class="card-text"><b>Priority: </b>{{story.priority}}</p>
                                         <p class="card-text"><b>Business value: </b>{{story.businessValue}}</p>
+                                        <p class="card-text"><b>Acceptance criteria:</b></p>
+                                          <ol>
+                                              <ng-container *ngFor="let ac of splitNewLine(story.acceptanceCriteria)">
+                                                <li class="card-text">{{ac}}</li>
+                                              </ng-container>
+                                          </ol>
                                         <form *ngIf="authenticationService.get_current_user()._id == scrum_master_id && !(story.sprint)"> <!-- if not already assigned to sprint, if scrum master-->
                                             <div class="form-group">
                                               <label for="card-text example-input"><b>Story points: </b></label>

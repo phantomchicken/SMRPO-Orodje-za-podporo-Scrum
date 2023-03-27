@@ -43,6 +43,7 @@ export class AddStoryComponent implements OnInit {
     } else if (isNaN(+this.story.businessValue) || this.story.businessValue<1 || this.story.businessValue>10) {
       this.error = "Please make sure business value is a number between 1 and 10!"
     } else {
+      this.story.acceptanceCriteria = this.story.acceptanceCriteria.replace(/\n/g, "&~");
       let overlap = false
       this.storyService.getStories().then((stories:Story []) => { // get all stories and check for same name only for those concerning the same project
         for (var i=0;i<stories.length;i++) {
