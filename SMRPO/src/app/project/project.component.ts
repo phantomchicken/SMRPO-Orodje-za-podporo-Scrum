@@ -39,6 +39,7 @@ export class ProjectComponent implements OnInit {
   public wontHaveStories: Story[] = []
   public unfinishedStories: Story[] = []
   public finishedStories: Story[] = []
+  remVel:number = 0
   message:string = "";
 
   update($event: string) {
@@ -99,20 +100,20 @@ export class ProjectComponent implements OnInit {
   }
 
   addStoriesToSprint() {
-    // console.log(this.currSprint)
     this.hide()
     for (var i=0; i< this.checkedStories.length; i++){
       var story_id = this.checkedStories[i]
       var curr_story:Story = this.stories.filter((story) => story._id === story_id)[0]; // assumes ID is unique 
       if (curr_story.sprint) this.error = "Story is already assigned to a sprint!" // check if sprint is active
+      else if (this.remVel-(+curr_story.storyPoints!)<0) this.error = "Story is too long for sprint!" // check if sprint has enough remaining velocity
       else {
+        this.remVel -= +curr_story.storyPoints!
         curr_story.sprint = this.currSprint._id
         this.storyDataService.updateStory(curr_story)
         this.success = true
-        this.checkedStories = [] //?
-        this.currSprint = new Sprint //?
       }
     }
+    if (this.success) this.checkedStories = [] // cleanup if successful adding!
   }
 
   checkStory(id:string, checkedEventTarget:any) {
@@ -140,6 +141,15 @@ export class ProjectComponent implements OnInit {
       sum += (+curr_story.storyPoints!)
     }
     return sum;
+  }
+
+  calculateRemainingVelocity(sprint:Sprint): number {
+    var sprintStories:Story[] = this.stories.filter((story) => story.sprint === sprint._id)
+    this.remVel = sprint.velocity
+    for (var i=0; i<sprintStories.length; i++){
+      this.remVel -= (+sprintStories[i].storyPoints!)
+    }
+    return this.remVel
   }
 
   public project: Project = {
