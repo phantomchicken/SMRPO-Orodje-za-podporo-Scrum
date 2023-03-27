@@ -13,9 +13,6 @@ import { UsersDataService } from '../user.service';
 })
 export class ProjectsComponent implements OnInit {
   
-
-  //TODO: fetch projects from project service, populate cards 
-
   constructor(protected authenticationService: AuthenticationService, private projectDataService: ProjectDataService, private userDataService: UsersDataService) { }
   public projects: any = []
   public loggedUser: User = new User

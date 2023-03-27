@@ -29,8 +29,10 @@
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="nav-backlog" role="tabpanel" aria-labelledby="nav-backlog-tab">
                     <div class="row">
-                            <div *ngFor="let story of stories" class="col-md-3 m-4"> <!-- *ngFor -->
-                                <div class="card bg-light">
+                        <div class="col-md-4 ">
+                            <div class="m-2 justify-content-center align-items-center d-flex"><h5>Unfinished</h5></div>
+                            <div *ngFor="let story of unfinishedStories" class="col-10"> <!-- *ngFor -->
+                                <div class="card bg-light mt-2">
                                     <div class="card-header d-flex justify-content-between">
                                         <div>
                                             <h5 class="card-title">{{story.name}}</h5>
@@ -54,6 +56,64 @@
                                 </div>
                               </div>
                             </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="m-2 justify-content-center align-items-center d-flex"><h5>Finished</h5></div>
+                            <div *ngFor="let story of finishedStories" class="col-10"> <!-- *ngFor -->
+                                <div class="card bg-light mt-2">
+                                    <div class="card-header d-flex justify-content-between">
+                                        <div>
+                                            <h5 class="card-title">{{story.name}}</h5>
+                                        </div>
+                                        <div> <!-- if not already assigned to sprint, if points assigned, if scrum master-->
+                                            <input *ngIf="!story.sprint && story.storyPoints!=-1 && authenticationService.get_current_user()._id == scrum_master_id" class="form-check-input" type="checkbox" value="" (change)="checkStory(story._id, $event.target)">
+                                        </div>
+                                        
+                                    </div>
+                                  <div class="card-body">
+                                    <p class="card-text"><b>Priority: </b>{{story.priority}}</p>
+                                    <p class="card-text"><b>Business value: </b>{{story.businessValue}}</p>
+                                    <form *ngIf="authenticationService.get_current_user()._id == scrum_master_id && !(story.sprint)"> <!-- if not already assigned to sprint, if scrum master-->
+                                        <div class="form-group">
+                                          <label for="card-text example-input"><b>Story points: </b></label>
+                                          <input class="form-control w-50" type="text" id="example-input" name="exampleInput" [value]="story.storyPoints" (change)="editStoryPoints(story, $event.target)">
+                                        </div>
+                                    </form>
+                                    <p *ngIf="authenticationService.get_current_user()._id != scrum_master_id || story.sprint" class="card-text"><b>Story points: </b> {{story.storyPoints}}</p> <!-- if assigned to sprint, if not scrum master-->
+                                    <p *ngIf="story.sprint" class="card-text"><b>Sprint: </b> {{story.sprint}}</p>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="m-2 justify-content-center align-items-center d-flex"><h5>Future releases</h5></div>
+                            <div *ngFor="let story of wontHaveStories" class="col-10"> <!-- *ngFor -->
+                                <div class="card bg-light mt-2">
+                                    <div class="card-header d-flex justify-content-between">
+                                        <div>
+                                            <h5 class="card-title">{{story.name}}</h5>
+                                        </div>
+                                        <div> <!-- if not already assigned to sprint, if points assigned, if scrum master-->
+                                            <input *ngIf="!story.sprint && story.storyPoints!=-1 && authenticationService.get_current_user()._id == scrum_master_id" class="form-check-input" type="checkbox" value="" (change)="checkStory(story._id, $event.target)">
+                                        </div>
+                                        
+                                    </div>
+                                  <div class="card-body">
+                                    <p class="card-text"><b>Priority: </b>{{story.priority}}</p>
+                                    <p class="card-text"><b>Business value: </b>{{story.businessValue}}</p>
+                                    <form *ngIf="authenticationService.get_current_user()._id == scrum_master_id && !(story.sprint)"> <!-- if not already assigned to sprint, if scrum master-->
+                                        <div class="form-group">
+                                          <label for="card-text example-input"><b>Story points: </b></label>
+                                          <input class="form-control w-50" type="text" id="example-input" name="exampleInput" [value]="story.storyPoints" (change)="editStoryPoints(story, $event.target)">
+                                        </div>
+                                    </form>
+                                    <p *ngIf="authenticationService.get_current_user()._id != scrum_master_id || story.sprint" class="card-text"><b>Story points: </b> {{story.storyPoints}}</p> <!-- if assigned to sprint, if not scrum master-->
+                                    <p *ngIf="story.sprint" class="card-text"><b>Sprint: </b> {{story.sprint}}</p>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                            
                     </div>
                     <div class="row mt-4">
                         <div class="d-flex justify-content-center">

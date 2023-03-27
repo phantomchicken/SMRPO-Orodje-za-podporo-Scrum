@@ -36,18 +36,22 @@ export class ProjectComponent implements OnInit {
   public success:boolean = false
   public error:string = ""
 
+  public wontHaveStories: Story[] = []
+  public unfinishedStories: Story[] = []
+  public finishedStories: Story[] = []
   message:string = "";
 
   update($event: string) {
     if ($event=="story") {
       this.storyDataService.getStories().then((data:Story[])=>{
         this.stories = data.filter(story => story.project === this.project._id);
-        console.log(this.stories)
+        this.filterStories()
+        console.log("UPDATE STORIES", this.stories)
       })
     } else if ($event=="sprint") {
       this.sprintDataService.getSprints().then((data:Sprint[])=>{
         this.sprints = data.filter(sprint => sprint.project === this.project._id);
-        console.log(this.sprints)
+        console.log("UPDATE SPRINTS", this.sprints)
       })
     }
     
@@ -69,6 +73,7 @@ export class ProjectComponent implements OnInit {
         })
         this.storyDataService.getStories().then((data:Story[])=>{
           this.stories = data.filter(story => story.project === project._id);
+          this.filterStories()
           console.log(this.stories)
         })
         this.usersDataService.getUser(this.scrum_master_id).then((data:User)=>{
@@ -87,6 +92,12 @@ export class ProjectComponent implements OnInit {
     this.project_ref = this.project._id;
   }
 
+  filterStories() {
+    this.wontHaveStories = this.stories.filter(story => story.priority === "Won't have this time")
+    this.finishedStories = this.stories.filter(story => story.status === "Done")
+    this.unfinishedStories = this.stories.filter(story => story.status !== "Done" && story.priority !== "Won't have this time") // won't have goes to won't have not unfinished! 
+  }
+
   addStoriesToSprint() {
     // console.log(this.currSprint)
     this.hide()
@@ -98,13 +109,10 @@ export class ProjectComponent implements OnInit {
         curr_story.sprint = this.currSprint._id
         this.storyDataService.updateStory(curr_story)
         this.success = true
+        this.checkedStories = [] //?
+        this.currSprint = new Sprint //?
       }
     }
-  }
-
-  hide() {
-    this.error = ""
-    this.success = false
   }
 
   checkStory(id:string, checkedEventTarget:any) {
@@ -133,7 +141,6 @@ export class ProjectComponent implements OnInit {
     }
     return sum;
   }
-  
 
   public project: Project = {
     _id: "",
@@ -145,6 +152,11 @@ export class ProjectComponent implements OnInit {
   };
   public project_ref: string = "";
 
+  hide() {
+    this.error = ""
+    this.success = false
+  }
+  
   showAddSprint() {
     this.addSprintVisible = true;
   }
