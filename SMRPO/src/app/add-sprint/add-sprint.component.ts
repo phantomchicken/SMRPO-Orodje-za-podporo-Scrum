@@ -23,9 +23,13 @@ export class AddSprintComponent implements OnInit {
   constructor(private sprintService: SprintDataService) { }
 
   addSprint(): void {
-    let today = new Date()
-    let sDate = new Date(this.sprint.startDate)
-    let eDate = new Date(this.sprint.endDate)
+    let todayDate = new Date()
+    let startDate = new Date(this.sprint.startDate)
+    let endDate = new Date(this.sprint.endDate)
+
+    let today = new Date(Date.UTC(todayDate.getUTCFullYear(), todayDate.getUTCMonth(), todayDate.getUTCDate()))
+    let sDate = new Date(Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(), startDate.getUTCDate()))
+    let eDate = new Date(Date.UTC(endDate.getUTCFullYear(), endDate.getUTCMonth(), endDate.getUTCDate()))
 
     if (sDate.getDay() === 6 || sDate.getDay() === 0){
       this.error = "Sprint must not start at weekend!"
@@ -40,9 +44,9 @@ export class AddSprintComponent implements OnInit {
     this.sprint.project = this.project;
     if (!this.sprint.startDate || !this.sprint.endDate || !this.sprint.velocity) {
       this.error = "Please enter all fields!"
-    } else if (sDate.getDate() > eDate.getDate()){
+    } else if (sDate.getTime() > eDate.getTime()){
       this.error = "Sprint ends before it starts!"
-    } else if (sDate.getDate() < today.getDate()){
+    } else if (sDate.getTime() < today.getTime()){
       this.error = "Sprint starts before today!"
     }else if (isNaN(+this.sprint.velocity) || this.sprint.velocity < 0 || this.sprint.velocity > 100){
       this.error = "Sprint velocity is invalid!"
@@ -55,10 +59,10 @@ export class AddSprintComponent implements OnInit {
             if (sprints[i].project == this.project) { // get all sprints and check for overlap only for those concerning the same project
               let s_i = new Date(sprints[i].startDate)
               let e_i = new Date(sprints[i].endDate)
-              if ((sDate.getDate() >= s_i.getDate() && sDate.getDate() <= e_i.getDate())
-                || (eDate.getDate() >= s_i.getDate() && eDate.getDate() <= e_i.getDate())
-                || (s_i.getDate() >= sDate.getDate() && s_i.getDate() <= eDate.getDate())
-                || (e_i.getDate() >= sDate.getDate() && e_i.getDate() <= eDate.getDate())){
+              if ((sDate.getTime() >= s_i.getTime() && sDate.getTime() <= e_i.getTime())
+                || (eDate.getTime() >= s_i.getTime() && eDate.getTime() <= e_i.getTime())
+                || (s_i.getTime() >= sDate.getTime() && s_i.getTime() <= eDate.getTime())
+                || (e_i.getTime() >= sDate.getTime() && e_i.getTime() <= eDate.getTime())){
                   this.error = "Sprint overlaps with an existing sprint!"
                   overlap = true
                   break
