@@ -26,6 +26,17 @@ export class AddSprintComponent implements OnInit {
     let today = new Date()
     let sDate = new Date(this.sprint.startDate)
     let eDate = new Date(this.sprint.endDate)
+
+    if (sDate.getDay() === 6 || sDate.getDay() === 0){
+      this.error = "Sprint must not start at weekend!"
+      return
+    }
+
+    if (eDate.getDay() === 6 || eDate.getDay() === 0){
+      this.error = "Sprint must not end at weekend!"
+      return
+    }
+
     this.sprint.project = this.project;
     if (!this.sprint.startDate || !this.sprint.endDate || !this.sprint.velocity) {
       this.error = "Please enter all fields!"
