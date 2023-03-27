@@ -36,18 +36,23 @@ export class ProjectComponent implements OnInit {
   public success:boolean = false
   public error:string = ""
 
+  public wontHaveStories: Story[] = []
+  public unfinishedStories: Story[] = []
+  public finishedStories: Story[] = []
+  remVel:number = 0
   message:string = "";
 
   update($event: string) {
     if ($event=="story") {
       this.storyDataService.getStories().then((data:Story[])=>{
         this.stories = data.filter(story => story.project === this.project._id);
-        console.log(this.stories)
+        this.filterStories()
+        console.log("UPDATE STORIES", this.stories)
       })
     } else if ($event=="sprint") {
       this.sprintDataService.getSprints().then((data:Sprint[])=>{
         this.sprints = data.filter(sprint => sprint.project === this.project._id);
-        console.log(this.sprints)
+        console.log("UPDATE SPRINTS", this.sprints)
       })
     }
     
@@ -69,6 +74,7 @@ export class ProjectComponent implements OnInit {
         })
         this.storyDataService.getStories().then((data:Story[])=>{
           this.stories = data.filter(story => story.project === project._id);
+          this.filterStories()
           console.log(this.stories)
         })
         this.usersDataService.getUser(this.scrum_master_id).then((data:User)=>{
@@ -87,24 +93,27 @@ export class ProjectComponent implements OnInit {
     this.project_ref = this.project._id;
   }
 
+  filterStories() {
+    this.wontHaveStories = this.stories.filter(story => story.priority === "Won't have this time")
+    this.finishedStories = this.stories.filter(story => story.status === "Done")
+    this.unfinishedStories = this.stories.filter(story => story.status !== "Done" && story.priority !== "Won't have this time") // won't have goes to won't have not unfinished! 
+  }
+
   addStoriesToSprint() {
-    // console.log(this.currSprint)
     this.hide()
     for (var i=0; i< this.checkedStories.length; i++){
       var story_id = this.checkedStories[i]
       var curr_story:Story = this.stories.filter((story) => story._id === story_id)[0]; // assumes ID is unique 
       if (curr_story.sprint) this.error = "Story is already assigned to a sprint!" // check if sprint is active
+      else if (this.remVel-(+curr_story.storyPoints!)<0) this.error = "Story is too long for sprint!" // check if sprint has enough remaining velocity
       else {
+        this.remVel -= +curr_story.storyPoints!
         curr_story.sprint = this.currSprint._id
         this.storyDataService.updateStory(curr_story)
         this.success = true
       }
     }
-  }
-
-  hide() {
-    this.error = ""
-    this.success = false
+    if (this.success) this.checkedStories = [] // cleanup if successful adding!
   }
 
   checkStory(id:string, checkedEventTarget:any) {
@@ -133,7 +142,15 @@ export class ProjectComponent implements OnInit {
     }
     return sum;
   }
-  
+
+  calculateRemainingVelocity(sprint:Sprint): number {
+    var sprintStories:Story[] = this.stories.filter((story) => story.sprint === sprint._id)
+    this.remVel = sprint.velocity
+    for (var i=0; i<sprintStories.length; i++){
+      this.remVel -= (+sprintStories[i].storyPoints!)
+    }
+    return this.remVel
+  }
 
   public project: Project = {
     _id: "",
@@ -145,6 +162,11 @@ export class ProjectComponent implements OnInit {
   };
   public project_ref: string = "";
 
+  hide() {
+    this.error = ""
+    this.success = false
+  }
+  
   showAddSprint() {
     this.addSprintVisible = true;
   }
