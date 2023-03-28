@@ -207,6 +207,51 @@ const addSprint = (req, res) => {
         return;
     }
 
+    let todayDate = new Date()
+    let startDate = new Date(req.body.startDate)
+    let endDate = new Date(req.body.endDate)
+
+    let today = new Date(Date.UTC(todayDate.getUTCFullYear(), todayDate.getUTCMonth(), todayDate.getUTCDate()))
+    let sDate = new Date(Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(), startDate.getUTCDate()))
+    let eDate = new Date(Date.UTC(endDate.getUTCFullYear(), endDate.getUTCMonth(), endDate.getUTCDate()))
+
+    if (sDate.getDay() === 6 || sDate.getDay() === 0)
+      return res.status(500).send('Sprint must not end at weekend!');
+    if (eDate.getDay() === 6 || eDate.getDay() === 0)
+        return res.status(500).send('Sprint must not end at weekend!');
+    
+    if (sDate.getTime() > eDate.getTime()){
+        return res.status(500).send("Sprint ends before it starts!");
+    } else if (sDate.getTime() < today.getTime()){
+        return res.status(500).send("Sprint starts before today!");
+    }else if (isNaN(+req.body.velocity) || req.body.velocity < 0 || req.body.velocity > 100){
+        return res.status(500).send("Sprint velocity is invalid!");
+    } else{
+      let overlap = false
+      Sprint.find({}, function (error, sprints) {
+        if (error) {
+            return res.status(500).json(error);
+        } else {
+            for (var i=0; i < sprints.length; i++){
+                if (sprints[i].project == this.project) { // get all sprints and check for overlap only for those concerning the same project
+                  let s_i = new Date(sprints[i].startDate)
+                  let e_i = new Date(sprints[i].endDate)
+                  if ((sDate.getTime() >= s_i.getTime() && sDate.getTime() <= e_i.getTime())
+                    || (eDate.getTime() >= s_i.getTime() && eDate.getTime() <= e_i.getTime())
+                    || (s_i.getTime() >= sDate.getTime() && s_i.getTime() <= eDate.getTime())
+                    || (e_i.getTime() >= sDate.getTime() && e_i.getTime() <= eDate.getTime())){
+                      this.error = "Sprint overlaps with an existing sprint!"
+                      overlap = true
+                      break
+                  }
+                }
+            }}
+        });
+
+        if(overlap)
+            return res.status(500).send("Sprint overlaps with another!");
+    }
+
     const new_sprint = new Sprint();
     new_sprint.startDate = req.body.startDate;
     new_sprint.endDate = req.body.endDate;

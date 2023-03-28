@@ -73,13 +73,14 @@ export class AddSprintComponent implements OnInit {
           this.sprintService.addSprint(this.sprint)
               .then((sprint: Sprint) => {
                 this.success = true;
+                this.error = "";
                 this.sendMessage()
                 console.log('Sprint added!');
               })
               .catch((error) => {
+                this.error = error;
                 console.error(error);
               });
-          this.error = "";
         }
       })
     }
