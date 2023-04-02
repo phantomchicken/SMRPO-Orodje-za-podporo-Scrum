@@ -55,7 +55,7 @@
                     <span *ngIf="is_user_logged() && authenticationService.get_current_user().login_counter==1" class="small">First log-in</span>
                     <span *ngIf="is_user_logged() && authenticationService.get_current_user().login_counter!=1" class="small">{{authenticationService.get_current_user().timestamp | date:'dd-MM-YYYY HH:mm'}}</span>
                     <div *ngIf="authenticationService.is_logged()" class="dropdown-divider"></div>  
-                    <a *ngIf="authenticationService.is_logged()" class="dropdown-item nav-link" (click)="navto('reset-password')">My profile</a>
+                    <a *ngIf="authenticationService.is_logged()" class="dropdown-item nav-link" routerLink="/users/{{authenticationService.get_current_user()._id}}">My profile</a> <!-- with navto? (click)="navto('/users/authenticationService.get_current_user()._id')"-->
                     <a *ngIf="authenticationService.is_logged() && authenticationService.is_admin()" class="dropdown-item nav-link" (click)="navto('admin')">Admin view</a>
                     <button *ngIf="authenticationService.is_logged()" type="button" class="btn btn-danger btn-block" (click)="logout()">Log out</button>
                 </div>

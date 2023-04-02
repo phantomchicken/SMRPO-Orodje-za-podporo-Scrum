@@ -11,7 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { AdminViewComponent } from './admin-view/admin-view.component';
-import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 import { AddProjectComponent } from './add-project/add-project.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { MatTableModule} from '@angular/material/table'
@@ -33,7 +33,7 @@ import { AdminEditUserComponent } from './admin-edit-user/admin-edit-user.compon
     RegisterComponent,
     LoginComponent,
     AdminViewComponent,
-    ResetPasswordComponent,
+    UserProfileComponent,
     AddProjectComponent,
     ProjectsComponent,
     AddSprintComponent,

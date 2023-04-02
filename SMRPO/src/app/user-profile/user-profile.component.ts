@@ -1,27 +1,35 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AuthenticationService } from '../authentication.service';
 import { User } from '../classes/user';
 import { UsersDataService } from '../user.service';
 
 @Component({
-  selector: 'app-reset-password',
-  templateUrl: 'reset-password.component.html',
+  selector: 'app-user-profile',
+  templateUrl: 'user-profile.component.html',
   styles: [
   ]
 })
-export class ResetPasswordComponent implements OnInit {
+export class UserProfileComponent implements OnInit {
 
   constructor(
+    private route: ActivatedRoute,
     protected authenticationService: AuthenticationService,
     private router: Router,
     private userDataService: UsersDataService) { }
-
+  
   ngOnInit(): void {
+    this.routeSub = this.route.params.subscribe(params => {
+      this.userDataService.getUser(params['id']).then((data: User) => {
+        this.user = data
+      })
+    })
   }
 
+  private routeSub!: Subscription;
   public error:string = "";
-  //public success:boolean = false; 
+  public success:boolean = false; 
   protected oldPassword: string = "";
   public newPassword1: string = "";
   public newPassword2: string = "";
@@ -61,6 +69,7 @@ export class ResetPasswordComponent implements OnInit {
 
   public hide():void{
     this.error=""
+    this.success = false
   }
 
   resetPassword(): void {
@@ -97,7 +106,23 @@ export class ResetPasswordComponent implements OnInit {
           });
         });
       } 
+    }
+  }
 
+  public editUser(): void {
+    this.success = false
+    this.error=""
+    if (!this.user.email || !this.user.firstname || !this.user.lastname || !this.user.username) {
+      this.error = "Please fill in all fields!"
+    } else if (!this.authenticationService.validateEmail(this.user.email)) {
+      this.error = "Please enter a valid email!"
+    } else {
+      this.userDataService.updateUser(this.user).then(() => {
+        this.success = true
+      }).catch((error) => {
+        if (error.error.code==11000) this.error = "User with this username/e-mail already exists!";
+        else console.error(error);
+      })
     }
   }
 

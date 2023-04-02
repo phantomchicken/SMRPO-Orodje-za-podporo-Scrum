@@ -5,7 +5,7 @@ import { HomeComponent } from '../home/home.component';
 import { RegisterComponent } from '../register/register.component';
 import { LoginComponent } from '../login/login.component';
 import { AdminViewComponent } from '../admin-view/admin-view.component';
-import { ResetPasswordComponent } from '../reset-password/reset-password.component';
+import { UserProfileComponent } from '../user-profile/user-profile.component';
 import { AddProjectComponent } from '../add-project/add-project.component';
 import { ProjectsComponent } from '../projects/projects.component';
 import {AddSprintComponent} from "../add-sprint/add-sprint.component";
@@ -35,8 +35,8 @@ const paths: Routes = [
     component: AdminEditUserComponent
   },
   {
-    path: 'reset-password',
-    component: ResetPasswordComponent
+    path: 'users/:id',
+    component: UserProfileComponent
   },{
     path: 'projects/add',
     component: AddProjectComponent
