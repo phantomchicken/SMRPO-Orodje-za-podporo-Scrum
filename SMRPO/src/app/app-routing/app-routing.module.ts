@@ -10,6 +10,7 @@ import { AddProjectComponent } from '../add-project/add-project.component';
 import { ProjectsComponent } from '../projects/projects.component';
 import {AddSprintComponent} from "../add-sprint/add-sprint.component";
 import { ProjectComponent } from '../project/project.component';
+import { AdminEditUserComponent } from '../admin-edit-user/admin-edit-user.component';
 
 
 const paths: Routes = [
@@ -28,6 +29,10 @@ const paths: Routes = [
   {
     path: 'admin',
     component: AdminViewComponent
+  },
+  {
+    path: 'admin/edit/:id',
+    component: AdminEditUserComponent
   },
   {
     path: 'reset-password',

@@ -19,7 +19,7 @@ export class AdminViewComponent implements OnInit {
   
   public dataSource: MatTableDataSource<User> = new MatTableDataSource();
   public users: User[] = []
-  public displayedColumns = ['#','username', 'firstname', 'lastname', 'email', 'privilege']; //id
+  public displayedColumns = ['#','username', 'firstname', 'lastname', 'email', 'privilege', 'edit']; //id
   public error: string = "";
   public success: boolean = false;
   public passwordVisible: boolean = false;
@@ -54,10 +54,12 @@ export class AdminViewComponent implements OnInit {
     else {
       this.userService.register(this.user)
         .then(() => {
-          this.error =""
-          this.success = true;
-          this.users.push(this.user)
-          this.dataSource.data = this.users
+          this.userService.getUsers().then((data:User[])=> {
+            this.error =""
+            this.success = true;
+            this.users = data
+            this.dataSource.data = this.users
+          })
         })
         .catch(error => {
           this.error = error;

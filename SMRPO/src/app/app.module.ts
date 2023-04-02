@@ -22,6 +22,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import { ProjectComponent } from './project/project.component';
 import { AddStoryComponent } from './add-story/add-story.component';
+import { AdminEditUserComponent } from './admin-edit-user/admin-edit-user.component';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { AddStoryComponent } from './add-story/add-story.component';
     ProjectsComponent,
     AddSprintComponent,
     ProjectComponent,
-    AddStoryComponent
+    AddStoryComponent,
+    AdminEditUserComponent
   ],
   imports: [
     BrowserModule,
