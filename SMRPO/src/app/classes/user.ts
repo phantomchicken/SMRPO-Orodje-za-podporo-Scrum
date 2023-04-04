@@ -7,5 +7,6 @@ export class User {
     password: string = "";
     privilege: string = "";
     timestamp: Date = new Date();
-    login_counter: number = 0
+    login_counter: number = 0;
+    archived: boolean = false;
 }

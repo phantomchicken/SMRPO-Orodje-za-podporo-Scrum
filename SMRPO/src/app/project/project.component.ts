@@ -79,6 +79,7 @@ export class ProjectComponent implements OnInit {
         })
         this.usersDataService.getUser(this.scrum_master_id).then((data:User)=>{
           this.scrum_master = data
+          console.log(data);
         })
         this.usersDataService.getUser(this.product_owner_id).then((data:User)=>{
           this.product_owner = data
@@ -91,6 +92,7 @@ export class ProjectComponent implements OnInit {
        });
     });
     this.project_ref = this.project._id;
+    console.log(this.scrum_master_id);
   }
 
   filterStories() {

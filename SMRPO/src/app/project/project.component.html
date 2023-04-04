@@ -8,9 +8,11 @@
               <h6 class="card-subtitle mb-2 text-muted ">Project description</h6>
               <p class="card-text text-justify">{{project.description}}</p>
               <h6 class="card-subtitle mt-4 mb-2 text-muted">Scrum master</h6>
-              <p class="card-text" [ngClass]="authenticationService.get_current_user()._id == scrum_master_id ? 'font-weight-bold text-success' : ''">{{scrum_master.firstname}} {{scrum_master.lastname}}</p>
+              <p *ngIf="!scrum_master.archived" class="card-text" [ngClass]="authenticationService.get_current_user()._id == scrum_master_id ? 'font-weight-bold text-success' : ''">{{scrum_master.firstname}} {{scrum_master.lastname}}</p>
+              <p *ngIf="scrum_master.archived" class="card-text font-weight-bold text-error">Missing</p>
               <h6 class="card-subtitle mt-4 mb-2 text-muted">Product owner</h6>
-              <p class="card-text" [ngClass]="authenticationService.get_current_user()._id == product_owner_id ? 'font-weight-bold text-warning' : ''">{{product_owner.firstname}} {{product_owner.lastname}}</p>
+              <p *ngIf="!product_owner.archived" class="card-text" [ngClass]="authenticationService.get_current_user()._id == product_owner_id ? 'font-weight-bold text-warning' : ''">{{product_owner.firstname}} {{product_owner.lastname}}</p>
+              <p *ngIf="product_owner.archived" class="card-text font-weight-bold text-error">Missing</p>
               <h6 class="card-subtitle mt-4 mb-2 text-muted">Developers</h6>
               <p *ngFor="let developer of developers" class="card-text" [ngClass]="authenticationService.get_current_user()._id == developer._id ? 'font-weight-bold' : ''">{{developer.firstname}} {{developer.lastname}}</p>
           </div>

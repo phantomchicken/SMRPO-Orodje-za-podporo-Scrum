@@ -172,11 +172,15 @@ const updateUser = (req, res) => {
 }
 
 const deleteUser = (req, res) => {
-    User.findByIdAndRemove(req.params.idUser).exec((error) => {
-        if (error) {
+    User.findByIdAndUpdate(req.params.idUser).exec((error, user) => {
+        if (!user) {
+            return res.status(404).json({
+                "message": "No user found."
+            });
+        } else if (error) {
             return res.status(500).json(error);
         } else {
-            return res.status(204).json(null);
+            user.archived = true;
         }
     });
 }

@@ -40,6 +40,10 @@ const userSchema = new mongoose.Schema({
     login_counter: {
         type: Number,
         default: 0
+    },
+    archived: {
+        type: Boolean,
+        default: false
     }
 });
 

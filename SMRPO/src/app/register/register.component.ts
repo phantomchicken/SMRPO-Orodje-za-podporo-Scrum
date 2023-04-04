@@ -61,6 +61,7 @@ export class RegisterComponent implements OnInit {
     password: "",
     privilege: "",
     timestamp: new Date(),
-    login_counter: 0
+    login_counter: 0,
+    archived: false
   };
 }
