@@ -7,6 +7,7 @@ const User = require('../models/users')
 const Project = require('../models/projects')
 const Sprint = require('../models/sprints')
 const Story = require('../models/stories')
+const Task = require('../models/tasks')
 
 const usersData = require('../../../users.json');
 const projectsData = require('../../../projects.json');
@@ -548,6 +549,99 @@ const deleteStory = (req, res) => {
     });
 }
 
+const createTask = (req, res) => {
+    if (req.body === undefined) {
+        res.status(500).send('Internal error')
+        return;
+    }
+
+    if (!('name' in req.body 
+        && 'story' in req.body 
+        && 'timeEstimate' in req.body
+    )) {
+        res.status(500).send('Missing argument')
+        return;
+    }
+
+    const new_task = new Task();
+    new_task.name = req.body.name;
+    new_task.story = req.body.story;
+    new_task.timeEstimate = req.body.timeEstimate;
+
+    new_task.save(error => {
+        console.log(error)
+        if (error) {
+            res.status(500).json(error);
+        } else {
+            res.status(201).json(new_task);
+        }
+    });
+}
+
+const updateTask = (req, res) => {
+    Task.findById(req.params.idTask).exec((error, task) => {
+        if (!task) {
+            return res.status(404).json({
+                "message": "No task found."
+            });
+        } else if (error) {
+            return res.status(500).json(error);
+        } else {
+            if (req.body.name != "") task.name = req.body.name;
+            if (req.body.assignee != "") task.assignee = req.body.assignee;
+            if (req.body.story != "") task.story = req.body.story;
+            if (req.body.done != "") task.done = req.body.done;
+            if (req.body.accepted != "") task.accepted = req.body.accepted;
+            if (req.body.timeEstimate != "") task.timeEstimate = req.body.timeEstimate;
+
+            task.save((error, updated_task) => {
+                if (error) {
+                    res.status(500).json(error);
+                } else {
+                    res.status(200).json(updated_task);
+                }
+            });
+        }
+    });
+}
+
+const getTasks = (req, res) => {
+    Task.find({}, function (error, tasks) {
+        if (error) {
+            return res.status(500).json(error);
+        } else {
+            //console.log(projects)
+            //console.log(projects)
+            res.status(200).json(tasks);
+        }
+    });
+}
+
+const getTask = (req, res) => {
+    //console.log(req.params)
+    Task.findById(req.params.idTask).exec((error, task) => {
+        if (!task) {
+            return res.status(404).json({
+                "message": "Task not found."
+            });
+        } else if (error) {
+            return res.status(500).json(error);
+        } else {
+            res.status(200).json(task);
+        }
+    });
+}
+
+const deleteTask = (req, res) => {
+    Task.findByIdAndRemove(req.params.idTask).exec((error) => {
+        if (error) {
+            return res.status(500).json(error);
+        } else {
+            return res.status(204).json(null);
+        }
+    });
+}
+
 function Latch(limit) {
     this.limit = limit;
     this.count = 0;
@@ -722,6 +816,11 @@ module.exports =
     getStory: getStory,
     updateStory : updateStory,
     deleteStory: deleteStory,
+    createTask: createTask,
+    getTasks: getTasks,
+    getTask: getTask,
+    updateTask : updateTask,
+    deleteTask: deleteTask,
     deleteAllData: deleteAllData,
     addSampleData: addSampleData
 }
