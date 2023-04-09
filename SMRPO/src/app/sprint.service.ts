@@ -39,6 +39,20 @@ export class SprintDataService {
       .catch(this.processError);
   }
 
+  public updateSprint(sprint:Sprint): Promise<Sprint> {
+    const url: string = `${this.apiUrl}/db/sprint/${sprint._id}`;
+    const httpLastnosti = {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.storage.getItem('SMRPO-token')}`
+      })
+    };
+    return this.http
+        .put(url, sprint, httpLastnosti)
+        .toPromise()
+        .then(response => response as Sprint)
+        .catch(this.processError);
+  }
+
   private processError(napaka: any): Promise<any> {
     return Promise.reject(napaka.error.message || napaka);
   }

@@ -254,7 +254,7 @@ const addSprint = (req, res) => {
         });
 
         if(overlap)
-            return res.status(500).send("Sprint overlaps with another!");
+            return res.status(500).send("Sprint overlaps with an existing sprint!");
     }
 
     const new_sprint = new Sprint();
@@ -293,9 +293,16 @@ const getSprints = (req, res) => {
         if (error) {
             return res.status(500).json(error);
         } else {
-            //console.log(projects)
-            //console.log(projects)
-            res.status(200).json(sprints);
+            const modifiedSprints = sprints.map(sprint => {
+                const sprintObj = sprint.toObject();
+                sprintObj.editable = false;
+                if (sprintObj.startDate.getTime() > Date.now())
+                    sprintObj.editable = true;
+                return sprintObj;
+            });
+            sprints = sprints.map(sprint => sprint.toObject())
+            console.log(modifiedSprints);
+            res.status(200).json(modifiedSprints);
         }
     });
 }
@@ -311,7 +318,12 @@ const getSprint = (req, res) => {
         } else if (error) {
             return res.status(500).json(error);
         } else {
-            res.status(200).json(sprint);
+            const sprintObj = sprint.toObject();
+            sprintObj.editable = false;
+            if (sprintObj.startDate.getTime() > Date.now())
+                sprintObj.editable = true;
+            console.log(sprintObj)
+            res.status(200).json(sprintObj);
         }
     });
 }
@@ -319,8 +331,54 @@ const getSprint = (req, res) => {
 const updateSprint = (req, res) => {
     //console.log(req.body)
     //console.log(req.params)
+
+    let todayDate = new Date()
+    let startDate = new Date(req.body.startDate)
+    let endDate = new Date(req.body.endDate)
+
+    let today = new Date(Date.UTC(todayDate.getUTCFullYear(), todayDate.getUTCMonth(), todayDate.getUTCDate()))
+    let sDate = new Date(Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(), startDate.getUTCDate()))
+    let eDate = new Date(Date.UTC(endDate.getUTCFullYear(), endDate.getUTCMonth(), endDate.getUTCDate()))
+
+    if (sDate.getDay() === 6 || sDate.getDay() === 0)
+        return res.status(500).send('Sprint must not end at weekend!');
+    if (eDate.getDay() === 6 || eDate.getDay() === 0)
+        return res.status(500).send('Sprint must not end at weekend!');
+
+    if (sDate.getTime() > eDate.getTime()){
+        return res.status(500).send("Sprint ends before it starts!");
+    } else if (sDate.getTime() < today.getTime()){
+        return res.status(500).send("Sprint starts before today!");
+    }else if (isNaN(+req.body.velocity) || req.body.velocity < 0 || req.body.velocity > 100){
+        return res.status(500).send("Sprint velocity is invalid!");
+    } else{
+        let overlap = false
+        Sprint.find({}, function (error, sprints) {
+            if (error) {
+                return res.status(500).json(error);
+            } else {
+                for (var i=0; i < sprints.length; i++){
+                    if (sprints[i].project == this.project) { // get all sprints and check for overlap only for those concerning the same project
+                        let s_i = new Date(sprints[i].startDate)
+                        let e_i = new Date(sprints[i].endDate)
+                        if ((sDate.getTime() >= s_i.getTime() && sDate.getTime() <= e_i.getTime())
+                            || (eDate.getTime() >= s_i.getTime() && eDate.getTime() <= e_i.getTime())
+                            || (s_i.getTime() >= sDate.getTime() && s_i.getTime() <= eDate.getTime())
+                            || (e_i.getTime() >= sDate.getTime() && e_i.getTime() <= eDate.getTime())){
+                            this.error = "Sprint overlaps with an existing sprint!"
+                            overlap = true
+                            break
+                        }
+                    }
+                }}
+        });
+
+        if(overlap)
+            return res.status(500).send("Sprint overlaps with an existing sprint!");
+    }
+
     Sprint.findById(req.params.idSprint).exec((error, sprint) => {
-        if (!project) {
+        if (!sprint) {
             return res.status(404).json({
                 "message": "No sprint found."
             });

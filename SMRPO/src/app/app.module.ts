@@ -23,6 +23,7 @@ import {MatSelectModule} from '@angular/material/select';
 import { ProjectComponent } from './project/project.component';
 import { AddStoryComponent } from './add-story/add-story.component';
 import { AdminEditUserComponent } from './admin-edit-user/admin-edit-user.component';
+import {DatePipe} from "@angular/common";
 
 
 @NgModule({
@@ -55,7 +56,9 @@ import { AdminEditUserComponent } from './admin-edit-user/admin-edit-user.compon
     MatSelectModule,
     ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [
+    DatePipe
+  ],
   bootstrap: [TemplateComponent]
 })
 export class AppModule { 

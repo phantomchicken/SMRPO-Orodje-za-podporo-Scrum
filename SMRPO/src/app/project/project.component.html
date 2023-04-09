@@ -147,12 +147,6 @@
                               </mat-form-field>
                            <button *ngIf="checkedStories.length>0" (click)="addStoriesToSprint()" type="button" class="btn btn-success w-25 mr-2">Add stories to sprint</button>
                            <div *ngIf="checkedStories.length>0">{{getCheckedStoryPoints()}}<span *ngIf="currSprint.velocity!=0" >/{{calculateRemainingVelocity(currSprint)}} (remaining)</span>   </div>
-                           <div *ngIf="success" class="alert alert-success alert-dismissible" role="alert">
-                            Stories successfully added!
-                            <button type="button" class="close" (click)="hide()" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            </div>
                             <div *ngIf="error" class="alert alert-danger alert-dismissible" role="alert">
                                 {{error}}
                                 <button type="button" class="close" (click)="hide()" aria-label="Close">
@@ -177,19 +171,57 @@
                     <div class="row">
                         <div *ngFor="let sprint of sprints; let i = index;" class="col-md-3 m-4"> <!-- *ngFor -->
                             <div class="card">
-                                <div class="card-header d-flex justify-content-between bg-info">
-                                    <div>
-                                        <h5 class="card-title">Sprint #{{i+1}}</h5>
-                                    </div>
-                                    
+                            <div class="card-header d-flex justify-content-between bg-info">
+                                <div>
+                                    <h5 class="card-title">Sprint #{{i+1}}</h5>
                                 </div>
-                              <div class="card-body">
+                            </div>
+                            <div class="card-body"  *ngIf="!sprint.isEditing">
                                 <p class="card-text"><b>Start date: </b>{{sprint.startDate | date:'dd.MM'}}</p>
                                 <p class="card-text"><b>End date: </b>{{sprint.endDate | date:'dd.MM'}}</p>
                                 <p class="card-text"><b>Velocity: </b> {{sprint.velocity}}</p>
-                                <!--<p *ngIf="sprint.project" class="card-text"><b>Project: </b> {{sprint.project}}</p> -->
+                                <div *ngIf="sprint.updated" class="alert alert-success alert-dismissible" role="alert">
+                                    Sprint successfully updated!
+                                    <button type="button" class="close" (click)="updated_message_hide(i)" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
                             </div>
-                          </div>
+                            <div class="card-body" *ngIf="sprint.isEditing">
+                                <form #formRef="ngForm" (submit)="onSprintEditSubmit(formRef, i)">
+                                    <div class="form-group">
+                                        <label for="startDate">Start date:</label>
+                                        <input type="date" class="form-control" id="startDate" name="startDate"
+                                               [ngModel]="formatDate(sprint.startDate)">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="endDate">End date:</label>
+                                        <input type="date" class="form-control" id="endDate" name="endDate"
+                                               [ngModel]="formatDate(sprint.endDate)">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="velocity">Velocity:</label>
+                                        <input type="number" class="form-control" id="velocity" name="velocity"
+                                               [ngModel]="sprint.velocity">
+                                    </div>
+                                    <div class="d-flex justify-content-center" style="margin-bottom: 10%">
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </div>
+                                </form>
+                                <div *ngIf="sprint.update_error" class="alert alert-danger alert-dismissible" role="alert">
+                                    {{sprint.update_error}}
+                                    <button type="button" class="close" (click)="updated_error_hide(i)" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div *ngIf="sprint.editable && !sprint.isEditing" class="d-flex justify-content-center" style="margin-bottom: 10%">
+                                <button (click)="editSprint(i)" type="button" class="btn btn-dark w-75">Edit sprint</button>
+                            </div>
+                            <div *ngIf="sprint.editable && sprint.isEditing" class="d-flex justify-content-center" style="margin-bottom: 10%">
+                                <button (click)="cancelEditSprint(i)" type="button" class="btn btn-dark w-75">Cancel</button>
+                            </div>
+                            </div>
                         </div>
                 </div>
                 <div class="row mt-4">

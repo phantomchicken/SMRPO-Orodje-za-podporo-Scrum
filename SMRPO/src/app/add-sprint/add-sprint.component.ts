@@ -99,6 +99,10 @@ export class AddSprintComponent implements OnInit {
     startDate: new Date(),
     endDate: new Date(),
     velocity: -1,
-    project: ""
+    project: "",
+    editable: false,
+    isEditing: false,
+    updated: false,
+    update_error:""
   };
 }
