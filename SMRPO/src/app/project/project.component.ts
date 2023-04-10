@@ -211,8 +211,20 @@ export class ProjectComponent implements OnInit {
   }
 
   onSprintEditSubmit(form: NgForm, index: number) {
-
-    this.updateSprint(index, this.sprints[index], form.value.startDate, form.value.endDate, form.value.velocity)
+    let startDate = new Date(this.sprints[index].startDate);
+    let endDate = new Date(this.sprints[index].endDate);
+    let velocity = this.sprints[index].velocity;
+    let newStartDate = new Date(form.value.startDate);
+    let newEndDate = new Date(form.value.endDate);
+    let newVelocity = form.value.velocity;
+    if (startDate.getDate() === newStartDate.getDate()
+        && endDate.getDate() === newEndDate.getDate()
+        && velocity == newVelocity){
+      this.sprints[index].isEditing = false;
+    }
+    else{
+      this.updateSprint(index, this.sprints[index], newStartDate, newEndDate, newVelocity)
+    }
   }
 
   editSprint(index: number) {
