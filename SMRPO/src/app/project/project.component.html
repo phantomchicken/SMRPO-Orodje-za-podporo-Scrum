@@ -239,7 +239,7 @@
                 </div>
                 </div>
                 <div class="tab-pane fade" id="nav-doc" role="tabpanel" aria-labelledby="nav-doc-tab">
-
+                    <app-documentation (messageEvent)="update($event)" [project]="project._id"></app-documentation>
                 </div>
             </div>
         </div>       

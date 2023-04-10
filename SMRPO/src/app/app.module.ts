@@ -24,6 +24,7 @@ import { ProjectComponent } from './project/project.component';
 import { AddStoryComponent } from './add-story/add-story.component';
 import { AdminEditUserComponent } from './admin-edit-user/admin-edit-user.component';
 import {DatePipe} from "@angular/common";
+import { DocumentationComponent } from './documentation/documentation.component';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import {DatePipe} from "@angular/common";
     AddSprintComponent,
     ProjectComponent,
     AddStoryComponent,
-    AdminEditUserComponent
+    AdminEditUserComponent,
+    DocumentationComponent
   ],
   imports: [
     BrowserModule,
