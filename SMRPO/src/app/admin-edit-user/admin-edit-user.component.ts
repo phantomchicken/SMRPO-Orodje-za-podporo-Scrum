@@ -48,16 +48,21 @@ export class AdminEditUserComponent implements OnInit {
   public editUser(): void {
     this.success = false
     this.error=""
-    if (!this.user.email || !this.user.password || !this.user.firstname || !this.user.lastname || !this.user.username || !this.user.privilege) {
+    if (!this.user.email || !this.user.firstname || !this.user.lastname || !this.user.username || !this.user.privilege) {
       this.error = "Please fill in all fields!"
     } else if (!this.authenticationService.validateEmail(this.user.email)) {
       this.error = "Please enter a valid email!"
-    } else if (this.authenticationService.validatePassword(this.user.password) != "") {
-      this.error = this.authenticationService.validatePassword(this.user.password)
-    } else if (this.user.password != this.confirmPassword) {
-      this.error = "Password and confirm password field should match!"
-    }
-    else {
+    } 
+    
+    if (this.user.password) { // if password changed, validate
+      if (this.authenticationService.validatePassword(this.user.password) != "") {
+        this.error = this.authenticationService.validatePassword(this.user.password)
+      } else if (this.user.password != this.confirmPassword) {
+        this.error = "Password and confirm password field should match!"
+      }
+    } 
+
+    if (this.error=="") { // if all conditions met, update user
       this.userService.updateUser(this.user).then(() => {
         this.success = true
       }).catch((error) => {

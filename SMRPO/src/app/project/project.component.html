@@ -62,7 +62,7 @@
                                         <form *ngIf="authenticationService.get_current_user()._id == scrum_master_id && !(story.sprint)"> <!-- if not already assigned to sprint, if scrum master-->
                                             <div class="form-group">
                                               <label for="card-text example-input"><b>Story points: </b></label>
-                                              <input class="form-control w-50" type="text" id="example-input" name="exampleInput" [value]="story.storyPoints" (change)="editStoryPoints(story, $event.target)">
+                                              <input class="form-control w-50" type="text" id="example-input" name="exampleInput" [value]="story.storyPoints !== -1 ? story.storyPoints : ''" (change)="editStoryPoints(story, $event.target)">
                                             </div>
                                         </form>
                                         <p *ngIf="authenticationService.get_current_user()._id != scrum_master_id || story.sprint" class="card-text"><b>Story points: </b> {{story.storyPoints}}</p> <!-- if assigned to sprint, if not scrum master-->
@@ -131,7 +131,8 @@
                                                 <li class="card-text">{{ac}}</li>
                                               </ng-container>
                                           </ol>
-                                        <p class="card-text"><b>Story points: </b> {{story.storyPoints}}</p> <!-- if assigned to sprint, if not scrum master-->
+                                        <p *ngIf="story.storyPoints!=-1" class="card-text"><b>Story points: </b> {{story.storyPoints}}</p> <!-- if assigned to sprint, if not scrum master-->
+                                        <p *ngIf="story.storyPoints==-1" class="card-text"><b>Story points: </b> </p> <!-- if assigned to sprint, if not scrum master-->
                                         <p *ngIf="story.sprint" class="card-text"><b>Sprint: </b> {{story.sprint}}</p>
                                     </div>
                                   </div>
@@ -174,7 +175,7 @@
                     <div class="row">
                         <div *ngFor="let sprint of sprints; let i = index;" class="col-md-3 m-4"> <!-- *ngFor -->
                             <div class="card">
-                            <div class="card-header d-flex justify-content-between bg-info">
+                            <div class="card-header d-flex justify-content-between" [ngClass]="colorSprint(sprint)">
                                 <div>
                                     <h5 class="card-title">Sprint #{{i+1}}</h5>
                                 </div>
@@ -182,7 +183,7 @@
                             <div class="card-body"  *ngIf="!sprint.isEditing">
                                 <p class="card-text"><b>Start date: </b>{{sprint.startDate | date:'dd.MM'}}</p>
                                 <p class="card-text"><b>End date: </b>{{sprint.endDate | date:'dd.MM'}}</p>
-                                <p class="card-text"><b>Velocity: </b> {{sprint.velocity}}</p>
+                                <p class="card-text"><b>Velocity: </b> {{sprint.velocity}} points</p>
                                 <div *ngIf="sprint.updated" class="alert alert-success alert-dismissible" role="alert">
                                     Sprint successfully updated!
                                     <button type="button" class="close" (click)="updated_message_hide(i)" aria-label="Close">

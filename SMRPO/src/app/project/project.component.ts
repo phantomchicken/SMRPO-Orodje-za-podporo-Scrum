@@ -55,6 +55,7 @@ export class ProjectComponent implements OnInit {
     } else if ($event=="sprint") {
       this.sprintDataService.getSprints().then((data:Sprint[])=>{
         this.sprints = data.filter(sprint => sprint.project === this.project._id);
+        this.sortSprints()
         console.log("UPDATE SPRINTS", this.sprints)
       })
     }
@@ -73,9 +74,11 @@ export class ProjectComponent implements OnInit {
         this.scrum_master_id = project.scrum_master.toString()
         this.sprintDataService.getSprints().then((data:Sprint[])=>{
           this.sprints = data.filter(sprint => sprint.project === project._id);
+          this.sortSprints()
           this.sprints.forEach(sprint => {
             sprint.isEditing = false
           })
+
           console.log(this.sprints)
         })
         this.storyDataService.getStories().then((data:Story[])=>{
@@ -238,6 +241,25 @@ export class ProjectComponent implements OnInit {
     this.sprints[index].update_error = "";
   }
 
+  sortSprints(){ // sort sprints by descending date
+    this.sprints.sort((a: Sprint, b: Sprint) => {
+      const dateA = new Date(a.startDate).getTime();
+      const dateB = new Date(b.startDate).getTime();
+      return dateA - dateB;
+    });
+  }
+
+  colorSprint(sprint: Sprint): string{ // past sprints are grey, current green, future dark blue
+    var today = new Date().toISOString()
+   
+    if (sprint.startDate.toString() < today && (today < sprint.endDate.toString() || today.substring(0,10) == sprint.endDate.toString().substring(0,10))) { // primitive check if same day
+      return "bg-success"
+    } else if (sprint.startDate.toString() < today && sprint.endDate.toString() < today) {
+      return "bg-secondary"
+    } else   //(sprint.startDate < today && sprint.endDate < today) {
+      return "bg-info"
+  }
+
   @Output() messageEvent = new EventEmitter<string>();
   sendMessage() {
     console.log("send message")
@@ -262,15 +284,14 @@ export class ProjectComponent implements OnInit {
       this.sprints[index].update_error = "Sprint must not end at weekend!"
       return
     }
-
     if (!sprint.startDate || !sprint.endDate || !sprint.velocity) {
       this.sprints[index].update_error = "Please enter all fields!"
     } else if (sDate.getTime() > eDate.getTime()){
       this.sprints[index].update_error = "Sprint ends before it starts!"
     } else if (sDate.getTime() < today.getTime()){
       this.sprints[index].update_error = "Sprint starts before today!"
-    }else if (isNaN(+sprint.velocity) || sprint.velocity < 0 || sprint.velocity > 100){
-      this.sprints[index].update_error = "Sprint velocity is invalid!"
+    } else if (isNaN(+newVelocity) || newVelocity < 0 || newVelocity > 100){ // newVelocity is new value
+      this.sprints[index].update_error = "Sprint velocity must be a number between 1 and 100!"
     } else{
       // add backend call
       let overlap = false
@@ -304,7 +325,9 @@ export class ProjectComponent implements OnInit {
                     console.log('Sprint updated!');
                   })
                   .catch((error) => {
-                    this.sprints[index].update_error = error;
+                    this.sprints[index].update_error = error.error;
+                    this.sprints[index].isEditing = false;
+                    this.sprints[index].updated = false;
                     console.error(error);
                   });
             }

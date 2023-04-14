@@ -230,7 +230,7 @@ const addSprint = (req, res) => {
     } else if (sDate.getTime() < today.getTime()){
         return res.status(500).send("Sprint starts before today!");
     }else if (isNaN(+req.body.velocity) || req.body.velocity < 0 || req.body.velocity > 100){
-        return res.status(500).send("Sprint velocity is invalid!");
+        return res.status(500).send("Sprint velocity must be a number between 1 and 100!!");
     } else{
       let overlap = false
       Sprint.find({}, function (error, sprints) {
@@ -350,7 +350,7 @@ const updateSprint = (req, res) => {
     } else if (sDate.getTime() < today.getTime()){
         return res.status(500).send("Sprint starts before today!");
     }else if (isNaN(+req.body.velocity) || req.body.velocity < 0 || req.body.velocity > 100){
-        return res.status(500).send("Sprint velocity is invalid!");
+        return res.status(500).send("Sprint velocity must be a number between 1 and 100!!");
     } else{
         let overlap = false
         Sprint.find({}, function (error, sprints) {

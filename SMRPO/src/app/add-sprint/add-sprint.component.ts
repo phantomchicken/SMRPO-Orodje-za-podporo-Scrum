@@ -49,7 +49,7 @@ export class AddSprintComponent implements OnInit {
     } else if (sDate.getTime() < today.getTime()){
       this.error = "Sprint starts before today!"
     }else if (isNaN(+this.sprint.velocity) || this.sprint.velocity < 0 || this.sprint.velocity > 100){
-      this.error = "Sprint velocity is invalid!"
+      this.error = "Sprint velocity must be a number between 1 and 100!"
     } else{
       // add backend call
       let overlap = false
