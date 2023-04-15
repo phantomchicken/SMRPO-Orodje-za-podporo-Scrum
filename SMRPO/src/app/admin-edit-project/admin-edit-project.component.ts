@@ -20,38 +20,56 @@ export class AdminEditProjectComponent implements OnInit {
     private projectService: ProjectDataService,
     private userService: UsersDataService) { }
 
-private routeSub!: Subscription;
-public error:string ="";
+private routeSub!: Subscription
+public error:string =""
+public warning: boolean = false
+public success: boolean = false
 public users: User[] = [];
 public scrum_master_id: string = ""
 public product_owner_id: string = ""
 public scrum_master: User = new User()
 public product_owner: User = new User()
 public developers: User[] = []
-public toppings2: string[] = ['cheese','tomato']
-public toppings: string[] = ['cheese','tomato','mushrooms']
+
 public hide():void{
   this.error=""
+  this.success = false
+  this.warning = false 
 }
+
+public showWarning(): void {
+  this.warning = true
+}
+
   editProject(): void {
+    this.success = false
     this.error =""
-    if (!this.project.name || !this.project.description || this.project.scrum_master==(new User) || this.project.product_owner==(new User) || this.project.developers.length == 0) {
+    if (!this.project.name || !this.project.description || this.project.scrum_master==(new User) || this.project.product_owner==(new User) || this.developers.length == 0) {
       this.error = "Please enter all fields!"
     } else if (this.project.scrum_master == this.project.product_owner) {
       this.error = "Scrum master and product owner can't be the same person!"
     }else{
-      //console.log(this.project)
+      this.project.developers = this.developers // because project.developers wants User type
       this.projectService.updateProject(this.project)
         .then((project: Project) => {
+          this.success = true
           this.error =""
-          this.router.navigateByUrl('/projects')
+          //this.router.navigateByUrl('/projects')
         })
         .catch((error:any) => {
           if (error.error.code==11000) this.error = "Project with this name already exists!";
           else console.error(error);
         });
-      this.error = "";
     }
+  }
+
+  deleteProject(): void {
+    this.projectService.deleteProject(this.project).then(() => {
+      this.router.navigateByUrl('/projects')
+    }).catch((error) => {
+      this.error = error
+      console.error(error);
+    })
   }
 
   ngOnInit(): void {
@@ -70,20 +88,19 @@ public hide():void{
         for (var i=0; i<this.project.developers.length; i++){
           this.userService.getUser(this.project.developers[i]).then((data:User)=>{
             this.developers.push(data)
-            console.log(this.project.developers);
-          console.log(this.developers);
+          //this.toppings = new FormControl(this.developers)
           })
         }
+        this.userService.getUsers().then((users: User[]) => {
+          this.users = users;      
+         });
       })
     })
-    this.userService.getUsers().then((users: User[]) => {
-      this.users = users;      
-     });
+    
   }
 
-  compareToppings(topping1: User, topping2: User): boolean {
-    console.log(topping1)
-    return topping1._id === topping2._id;
+  compareUsers(user1: User, user2: User): boolean {
+    return user1._id === user2._id;
   }
   
   
