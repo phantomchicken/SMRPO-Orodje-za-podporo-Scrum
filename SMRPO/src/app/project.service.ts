@@ -40,6 +40,20 @@ export class ProjectDataService {
       .catch(this.processError);
   }
 
+  public updateProject(project:Project): Promise<Project> {
+    const url: string = `${this.apiUrl}/db/project/${project._id}`;
+    const httpLastnosti = {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.storage.getItem('SMRPO-token')}`
+      })
+    };
+    return this.http
+        .put(url, project, httpLastnosti)
+        .toPromise()
+        .then(response => response as Project)
+        .catch(this.processError);
+  }
+
   private processError(napaka: any): Promise<any> {
     return Promise.reject(napaka.error.message || napaka);
   }

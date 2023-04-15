@@ -54,7 +54,6 @@ export class AddProjectComponent implements OnInit {
   ngOnInit(): void {
      this.userService.getUsers().then((users: User[]) => {
       this.users = users;      
-      console.log(users);
      });
   }
 

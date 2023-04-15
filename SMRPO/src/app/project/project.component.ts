@@ -32,6 +32,7 @@ export class ProjectComponent implements OnInit {
   public scrum_master: User = new User
   public developers: User[] = []
   public sprints: Sprint[] = []
+  public activeSprints: Sprint[] = []
   public stories: Story[] = []
   public checkedStories: string[] = []
   public currSprint:Sprint = new Sprint
@@ -55,6 +56,7 @@ export class ProjectComponent implements OnInit {
     } else if ($event=="sprint") {
       this.sprintDataService.getSprints().then((data:Sprint[])=>{
         this.sprints = data.filter(sprint => sprint.project === this.project._id);
+        this.activeSprints = this.sprints.filter(sprint => this.colorSprint(sprint)=="bg-success") // if color is green, sprint is active, use it to populate dropdown
         this.sortSprints()
         console.log("UPDATE SPRINTS", this.sprints)
       })
@@ -74,6 +76,7 @@ export class ProjectComponent implements OnInit {
         this.scrum_master_id = project.scrum_master.toString()
         this.sprintDataService.getSprints().then((data:Sprint[])=>{
           this.sprints = data.filter(sprint => sprint.project === project._id);
+          this.activeSprints = this.sprints.filter(sprint => this.colorSprint(sprint)=="bg-success") // if color is green, sprint is active, use it to populate dropdown
           this.sortSprints()
           this.sprints.forEach(sprint => {
             sprint.isEditing = false

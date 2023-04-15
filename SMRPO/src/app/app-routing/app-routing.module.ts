@@ -11,6 +11,7 @@ import { ProjectsComponent } from '../projects/projects.component';
 import {AddSprintComponent} from "../add-sprint/add-sprint.component";
 import { ProjectComponent } from '../project/project.component';
 import { AdminEditUserComponent } from '../admin-edit-user/admin-edit-user.component';
+import { AdminEditProjectComponent } from '../admin-edit-project/admin-edit-project.component';
 
 
 const paths: Routes = [
@@ -49,6 +50,9 @@ const paths: Routes = [
   },{
     path: 'project/:id',
     component: ProjectComponent
+  },{
+    path: 'project/:id/edit',
+    component: AdminEditProjectComponent
   }
   
 ]
