@@ -326,6 +326,7 @@ export class ProjectComponent implements OnInit {
                     this.sprints[index].isEditing = false;
                     this.sprints[index].updated = true;
                     console.log('Sprint updated!');
+                    this.sortSprints() // sort immediately on edit or on refresh?
                   })
                   .catch((error) => {
                     this.sprints[index].update_error = error.error;

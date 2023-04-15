@@ -296,7 +296,7 @@ const getSprints = (req, res) => {
             const modifiedSprints = sprints.map(sprint => {
                 const sprintObj = sprint.toObject();
                 sprintObj.editable = false;
-                if (sprintObj.startDate.getTime() > Date.now())
+                if (sprintObj.endDate.getTime() > Date.now()) // endDate so we can edit current sprints (only velocity)
                     sprintObj.editable = true;
                 return sprintObj;
             });
@@ -320,7 +320,7 @@ const getSprint = (req, res) => {
         } else {
             const sprintObj = sprint.toObject();
             sprintObj.editable = false;
-            if (sprintObj.startDate.getTime() > Date.now())
+            if (sprintObj.endDate.getTime() > Date.now()) // endDate so we can edit current sprints (only velocity)
                 sprintObj.editable = true;
             console.log(sprintObj)
             res.status(200).json(sprintObj);

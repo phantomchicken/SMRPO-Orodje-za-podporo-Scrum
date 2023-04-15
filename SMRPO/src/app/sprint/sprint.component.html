@@ -1,0 +1,82 @@
+<div class="container">
+  <div class="row">
+    <div class="card col-md-4 mt-4">
+      <div class="card-body">
+        <h5 class="card-title">Sprint details</h5>
+        <h6 class="card-subtitle mt-4 mb-2 text-muted">Start date</h6>
+        <p class="card-text">{{sprint.startDate | date:'dd.MM.YYYY'}}</p>
+        <h6 class="card-subtitle mt-4 mb-2 text-muted">End date</h6>
+        <p class="card-text">{{sprint.endDate | date:'dd.MM.YYYY'}}</p>
+        <h6 class="card-subtitle mt-4 mb-2 text-muted">Velocity</h6>
+        <p class="card-text">{{sprint.velocity}} points</p>
+        <button routerLink="/project/{{sprint.project}}" class="btn btn-primary">Back to project</button>
+      </div>
+      
+    </div>
+    <div class="col-md-8 mt-4">
+      <ng-container *ngFor="let story of stories">
+      <div class="col-12 mt-4">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between">
+            <div>
+                <h5 class="card-title">{{story.name}}</h5>
+            </div>            
+        </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-6">
+                <h6 class="card-subtitle mb-2 text-muted ">Priority</h6>
+                <p class="card-text text-justify">{{story.priority}}</p>
+              </div>
+              <div class="col-6">
+                <h6 class="card-subtitle mb-2 text-muted ">Business value</h6>
+                <p class="card-text text-justify">{{story.businessValue}}</p>
+              </div>
+              <div class="col-12 mt-3">
+                <h6 class="card-subtitle mb-2 text-muted ">Story description</h6>
+                <p class="card-text text-justify">{{story.description}}</p>
+              </div>
+              <div class="col-12 mt-3">
+                <h6 class="card-subtitle mb-2 text-muted ">Acceptance criteria</h6>
+            <ol>
+              <ng-container *ngFor="let ac of splitNewLine(story.acceptanceCriteria)">
+                <li class="card-text">{{ac}}</li>
+              </ng-container>
+            </ol>
+              </div>
+              <div *ngIf="dataSource" class="user-table-container text-center">
+                <table class="table-hover" mat-table [dataSource]="dataSource">
+                    <ng-container matColumnDef="#">
+                        <th mat-header-cell *matHeaderCellDef>#</th>
+                        <td mat-cell *matCellDef="let element; let i = index;"> {{i+1}} </td>
+                    </ng-container>
+                    
+                    <ng-container matColumnDef="description">
+                        <th mat-header-cell *matHeaderCellDef>Description</th>
+                        <td mat-cell *matCellDef="let description">{{ description }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="assignee">
+                      <th mat-header-cell *matHeaderCellDef>Assignee</th>
+                      <td mat-cell *matCellDef="let assignee">{{ assignee }}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="done">
+                    <th mat-header-cell *matHeaderCellDef>Done</th>
+                    <td mat-cell *matCellDef="let done">{{ done }}</td>
+                </ng-container>
+    
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    </div>
+  </div>    
+</div>
+<h3 *ngIf="!authenticationService.is_logged()">Log in to see your projects!</h3>
