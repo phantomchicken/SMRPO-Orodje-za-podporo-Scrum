@@ -146,7 +146,7 @@
                             <mat-form-field *ngIf="checkedStories.length>0" class="mr-4" style="background-color: white;">
                                 <mat-label>Add to sprint</mat-label>
                                 <mat-select [(ngModel)]="currSprint" panelClass="example-panel-white" >
-                                  <mat-option *ngFor="let sprint of activeSprints" [value]="sprint"> Sprint {{sprint.startDate | date:'dd.MM'}} - {{sprint.endDate | date:'dd.MM'}}</mat-option>
+                                  <mat-option *ngFor="let sprint of sprints" [value]="sprint"> Sprint {{sprint.startDate | date:'dd.MM'}} - {{sprint.endDate | date:'dd.MM'}}</mat-option>
                                 </mat-select>
                               </mat-form-field>
                            <button *ngIf="checkedStories.length>0" (click)="addStoriesToSprint()" type="button" class="btn btn-success w-25 mr-2">Add stories to sprint</button>
@@ -190,7 +190,7 @@
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <a *ngIf="colorSprint(sprint)=='bg-success'" class="stretched-link" routerLink="/sprint/{{sprint._id}}"></a> <!-- can access sprint backlog only if active sprint-->
+                                <a *ngIf="colorSprint(sprint)=='bg-info'" class="stretched-link" routerLink="/sprint/{{sprint._id}}"></a> <!-- can access sprint backlog only if active sprint-->
                             </div>
                             <div class="card-body" *ngIf="sprint.isEditing">
                                 <form #formRef="ngForm" (submit)="onSprintEditSubmit(formRef, i)">

@@ -20,7 +20,19 @@
           <div class="card-header d-flex justify-content-between">
             <div>
                 <h5 class="card-title">{{story.name}}</h5>
-            </div>            
+            </div>
+            <div *ngIf="authenticationService.get_current_user()._id == project.product_owner.toString()">
+              <ng-container *ngIf="storyState === ' '">
+                <button class="btn btn-success my-2 btn-sm" style="margin-right: 10px; font-size: 12px;" (click)="acceptStory(story)">Accept</button>
+                <button class="btn btn-danger my-2 btn-sm" style="font-size: 12px;" (click)="rejectStory(story)">Reject</button>
+              </ng-container>
+              <ng-container *ngIf="storyState === 'accepted'">
+                <span class="text-success">Accepted</span>
+              </ng-container>
+              <ng-container *ngIf="storyState === 'rejected'">
+                <span class="text-danger">Rejected</span>
+              </ng-container>
+            </div>
         </div>
           <div class="card-body">
             <div class="row">

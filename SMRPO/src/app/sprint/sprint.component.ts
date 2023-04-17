@@ -11,6 +11,7 @@ import { SprintDataService } from '../sprint.service';
 import { StoryDataService } from '../story.service';
 import { UsersDataService } from '../user.service';
 import { TasksDataService } from '../task.service';
+import { Project } from '../classes/project';
 
 @Component({
   selector: 'app-sprint',
@@ -23,10 +24,12 @@ export class SprintComponent implements OnInit {
   constructor(private route: ActivatedRoute, private taskService: TasksDataService, private sprintService: SprintDataService, private projectDataService: ProjectDataService, private usersDataService: UsersDataService, protected authenticationService: AuthenticationService,
     private storyDataService: StoryDataService) { }
     private routeSub!: Subscription
+    public project: Project = new Project()
     public sprint:Sprint = new Sprint()
     public stories:Story[] = []
     public dataSource: MatTableDataSource<string> = new MatTableDataSource()
     public displayedColumns = ['#','description', 'assignee', 'done']; //id
+    public storyState = ' '
 
   ngOnInit(): void {
     this.routeSub = this.route.params.subscribe(params => {
@@ -36,8 +39,18 @@ export class SprintComponent implements OnInit {
           this.stories = data.filter(story => story.project === sprint.project && story.sprint === sprint._id);
           this.dataSource = new MatTableDataSource(["place", "holder"]); //TODO change so data source uses getTasksForStoryFunction
         })
+      this.projectDataService.getProject(sprint.project).then((
+        data:Project) => {
+          this.project = data
+        })
       })
     })
+  }
+
+  public hasSprintEnded(): boolean {
+    const endDate = new Date(this.sprint.endDate);
+    const currentDate = new Date();
+    return endDate < currentDate;
   }
 
   getTasksForStory(story:Story): Task[] {
@@ -53,4 +66,13 @@ export class SprintComponent implements OnInit {
     return str.split("&~")
   }
 
+  acceptStory(story: Story) {
+    story.status = "Done";
+    this.storyState = "accepted"
+  }
+  
+  rejectStory(story: Story) {
+    story.status = "Backlog";
+    this.storyState = "rejected"
+  }
 }
