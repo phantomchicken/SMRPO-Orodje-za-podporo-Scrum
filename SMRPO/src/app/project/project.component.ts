@@ -304,7 +304,31 @@ export class ProjectComponent implements OnInit {
       this.sprints[index].update_error = "Sprint must not end at weekend!"
       return
     }
-    if (!sprint.startDate || !sprint.endDate || !sprint.velocity) {
+
+    if (this.colorSprint(sprint)=='bg-success'){ // for active sprints we can only change velocity
+      if (isNaN(+newVelocity) || newVelocity < 0 || newVelocity > 100){ // newVelocity is new value
+        this.sprints[index].update_error = "Sprint velocity must be a number between 1 and 100!"
+      } else {
+        sprint.velocity = newVelocity
+        this.sprintService.updateSprint(sprint)
+                  .then((sprint: Sprint) => {
+                    this.success = true;
+                    this.sprints[index].update_error = "";
+                    this.sprints[index].isEditing = false;
+                    this.sprints[index].updated = true;
+                    this.update("sprint") // no sort because no date change
+                  })
+                  .catch((error) => {
+                    this.sprints[index].update_error = error.error;
+                    this.sprints[index].isEditing = false;
+                    this.sprints[index].updated = false;
+                    console.error(error);
+                  });
+      }
+      return
+    }
+
+    if (!sprint.startDate || !sprint.endDate || !newVelocity) {
       this.sprints[index].update_error = "Please enter all fields!"
     } else if (sDate.getTime() > eDate.getTime()){
       this.sprints[index].update_error = "Sprint ends before it starts!"
@@ -339,7 +363,6 @@ export class ProjectComponent implements OnInit {
                   .then((sprint: Sprint) => {
                     this.success = true;
                     this.sprints[index].update_error = "";
-                    this.sendMessage()
                     this.sprints[index].isEditing = false;
                     this.sprints[index].updated = true;
                     console.log('Sprint updated!');

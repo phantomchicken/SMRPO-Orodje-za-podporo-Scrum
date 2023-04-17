@@ -200,13 +200,13 @@
                                 <form #formRef="ngForm" (submit)="onSprintEditSubmit(formRef, i)">
                                     <div class="form-group">
                                         <label for="startDate">Start date:</label>
-                                        <input *ngIf="colorSprint(sprint)=='bg-info'" type="date" class="form-control" id="startDate" name="startDate"
-                                               [ngModel]="formatDate(sprint.startDate)" [disabled]="!sprint.editable"> <!-- can't edit dates for current sprint -->
+                                        <input type="date" class="form-control" id="startDate" name="startDate"
+                                               [ngModel]="formatDate(sprint.startDate)" [disabled]="colorSprint(sprint)=='bg-success'"> <!-- can't edit dates for current sprint -->
                                     </div>
                                     <div class="form-group">
                                         <label for="endDate">End date:</label>
                                         <input type="date" class="form-control" id="endDate" name="endDate"
-                                               [ngModel]="formatDate(sprint.endDate)" [disabled]="!sprint.editable">
+                                               [ngModel]="formatDate(sprint.endDate)" [disabled]="colorSprint(sprint)=='bg-success'">
                                     </div>
                                     <div class="form-group">
                                         <label for="velocity">Velocity:</label>
