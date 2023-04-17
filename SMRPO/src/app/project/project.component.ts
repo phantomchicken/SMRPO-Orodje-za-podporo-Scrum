@@ -299,33 +299,35 @@ export class ProjectComponent implements OnInit {
       this.sprints[index].update_error = "Sprint must not start at weekend!"
       return
     }
-
+  
     if (eDate.getDay() === 6 || eDate.getDay() === 0){
       this.sprints[index].update_error = "Sprint must not end at weekend!"
       return
     }
 
-    if (this.colorSprint(sprint)=='bg-success'){ // for active sprints we can only change velocity
-      if (isNaN(+newVelocity) || newVelocity < 0 || newVelocity > 100){ // newVelocity is new value
-        this.sprints[index].update_error = "Sprint velocity must be a number between 1 and 100!"
+    const setError = (error: string, updated: boolean): void => {
+      this.sprints[index].update_error = error;
+      this.sprints[index].isEditing = false;
+      this.sprints[index].updated = updated;
+    };
+
+    if (this.colorSprint(sprint) === 'bg-success') { // for active sprints we can only change velocity
+      if (!newVelocity) this.sprints[index].update_error = "Please enter velocity!"
+      else if (isNaN(+newVelocity) || newVelocity < 0 || newVelocity > 100) { // newVelocity is new value
+        setError("Sprint velocity must be a number between 1 and 100!", false);
       } else {
-        sprint.velocity = newVelocity
+        sprint.velocity = newVelocity;
         this.sprintService.updateSprint(sprint)
-                  .then((sprint: Sprint) => {
-                    this.success = true;
-                    this.sprints[index].update_error = "";
-                    this.sprints[index].isEditing = false;
-                    this.sprints[index].updated = true;
-                    this.update("sprint") // no sort because no date change
-                  })
-                  .catch((error) => {
-                    this.sprints[index].update_error = error.error;
-                    this.sprints[index].isEditing = false;
-                    this.sprints[index].updated = false;
-                    console.error(error);
-                  });
+          .then(() => {
+            this.success = true;
+            setError("", true);        
+          })
+          .catch((error) => {
+            setError(error.error, false);
+            console.error(error);
+          });
       }
-      return
+      return;
     }
 
     if (!sprint.startDate || !sprint.endDate || !newVelocity) {
