@@ -25,8 +25,9 @@ export class SprintComponent implements OnInit {
     private routeSub!: Subscription
     public sprint:Sprint = new Sprint()
     public stories:Story[] = []
-    public dataSource: MatTableDataSource<string> = new MatTableDataSource()
-    public displayedColumns = ['#','description', 'assignee', 'done']; //id
+    public displayedColumns = ['#','description', 'assignee', 'done', 'accepted', 'timeEstimate']; //id
+    public task:Task = new Task()
+    public storyTasksMap = new Map()
 
   ngOnInit(): void {
     this.routeSub = this.route.params.subscribe(params => {
@@ -34,19 +35,21 @@ export class SprintComponent implements OnInit {
         this.sprint = sprint
         this.storyDataService.getStories().then((data:Story[]) => {
           this.stories = data.filter(story => story.project === sprint.project && story.sprint === sprint._id);
-          this.dataSource = new MatTableDataSource(["place", "holder"]); //TODO change so data source uses getTasksForStoryFunction
-        })
+          for (var i=0; i<this.stories.length; i++){
+            this.getTasksForStory(this.stories[i])
+          } })
       })
     })
   }
 
-  getTasksForStory(story:Story): Task[] {
+  getTasksForStory(story:Story): void {
     let tasksForStory: Task[] = []
     this.taskService.getTasks().then((data:Task[]) => {
       tasksForStory = data.filter(task => task.story === story._id);
-      console.log(tasksForStory)    
+      console.log(tasksForStory);
+      this.storyTasksMap.set(story._id,tasksForStory)
+      console.log(this.storyTasksMap.get(this.stories[0]._id));
     })
-    return tasksForStory
   }
 
   splitNewLine(str:String){

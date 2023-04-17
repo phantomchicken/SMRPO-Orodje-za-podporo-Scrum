@@ -51,6 +51,7 @@ export class ProjectComponent implements OnInit {
       this.storyDataService.getStories().then((data:Story[])=>{
         this.stories = data.filter(story => story.project === this.project._id);
         this.filterStories()
+        this.hideAddStory() // without hide errors seen, with hide no status report
         console.log("UPDATE STORIES", this.stories)
       })
     } else if ($event=="sprint") {
@@ -81,17 +82,15 @@ export class ProjectComponent implements OnInit {
           this.sprints.forEach(sprint => {
             sprint.isEditing = false
           })
-
-          console.log(this.sprints)
+          console.log("Sprints", this.sprints)
         })
         this.storyDataService.getStories().then((data:Story[])=>{
           this.stories = data.filter(story => story.project === project._id);
           this.filterStories()
-          console.log(this.stories)
+          console.log("Stories", this.stories)
         })
         this.usersDataService.getUser(this.scrum_master_id).then((data:User)=>{
           this.scrum_master = data
-          console.log(data);
         })
         this.usersDataService.getUser(this.product_owner_id).then((data:User)=>{
           this.product_owner = data
@@ -104,7 +103,6 @@ export class ProjectComponent implements OnInit {
        });
     });
     this.project_ref = this.project._id;
-    console.log(this.scrum_master_id);
   }
 
   filterStories() {
@@ -244,6 +242,13 @@ export class ProjectComponent implements OnInit {
     this.sprints[index].update_error = "";
   }
 
+  getSprintDate(sprintId:string) {
+    let res = []
+    let sprint = this.sprints.find((sprint)=>sprint._id=sprintId)
+    res[0] = sprint?.startDate, res[1] = sprint?.endDate
+    return res
+  }
+
   sortSprints(){ // sort sprints by descending date
     this.sprints.sort((a: Sprint, b: Sprint) => {
       const dateA = new Date(a.startDate).getTime();
@@ -263,9 +268,21 @@ export class ProjectComponent implements OnInit {
       return "bg-info"
   }
 
+  deleteSprint(index:number, sprint:Sprint): void {
+    this.sprintDataService.deleteSprint(sprint).then(() => {
+      let storiesOfSprint = this.stories.filter((story) => story.project == sprint.project && story.sprint == sprint._id)
+      for (var i=0; i<storiesOfSprint.length; i++) {
+        this.storyDataService.deleteStory(storiesOfSprint[i]).then(()=> this.update("story")).catch((error) => {console.log(error)}) // TODO: delete all stories of sprint needed?
+      }
+      this.update("sprint")
+    }).catch((error) => {
+      console.log(error);
+      this.sprints[index].update_error = this.error
+    })
+  }
+
   @Output() messageEvent = new EventEmitter<string>();
   sendMessage() {
-    console.log("send message")
     this.messageEvent.emit("sprint")
   }
 

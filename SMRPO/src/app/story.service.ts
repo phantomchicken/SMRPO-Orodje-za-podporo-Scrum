@@ -53,6 +53,20 @@ export class StoryDataService {
       .catch(this.processError);
   }
 
+  public deleteStory(story:Story): Promise<void> {
+    const url: string = `${this.apiUrl}/db/story/${story._id}`;
+    const httpLastnosti = {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.storage.getItem('SMRPO-token')}`
+      })
+    };
+    return this.http
+      .delete(url, httpLastnosti)
+      .toPromise()
+      .then()
+      .catch(this.processError);
+  }
+
   private processError(napaka: any): Promise<any> {
     return Promise.reject(napaka.error.message || napaka);
   }

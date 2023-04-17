@@ -16,7 +16,6 @@ export class AddSprintComponent implements OnInit {
     
   @Output() messageEvent = new EventEmitter<string>();
   sendMessage() {
-    console.log("send message")
     this.messageEvent.emit("sprint")
   }
 

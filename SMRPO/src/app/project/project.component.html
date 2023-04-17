@@ -66,7 +66,7 @@
                                             </div>
                                         </form>
                                         <p *ngIf="authenticationService.get_current_user()._id != scrum_master_id || story.sprint" class="card-text"><b>Story points: </b> {{story.storyPoints}}</p> <!-- if assigned to sprint, if not scrum master-->
-                                        <p *ngIf="story.sprint" class="card-text"><b>Sprint: </b> {{story.sprint}}</p>
+                                        <p *ngIf="story.sprint" class="card-text"><b>Sprint: </b> {{getSprintDate(story.sprint)[0] | date:'dd.MM'}}-{{getSprintDate(story.sprint)[1] | date:'dd.MM'}}</p>
                                     </div>
                                   </div>
                                 </div>
@@ -179,6 +179,10 @@
                                 <div>
                                     <h5 class="card-title">Sprint #{{i+1}}</h5>
                                 </div>
+                                <div *ngIf="authenticationService.is_admin() || authenticationService.get_current_user()._id == project.scrum_master.toString()"> <!-- if admin or scrum master-->
+                                    <button *ngIf="colorSprint(sprint)=='bg-info'" type="button" class="close btn btn-danger p-2" (click)="deleteSprint(i,sprint)" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button></div>
                             </div>
                             <div class="card-body"  *ngIf="!sprint.isEditing">
                                 <p class="card-text"><b>Start date: </b>{{sprint.startDate | date:'dd.MM'}}</p>

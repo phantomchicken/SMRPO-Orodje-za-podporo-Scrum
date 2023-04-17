@@ -26,9 +26,7 @@ export class TemplateComponent implements OnInit {
     if (this.is_user_logged()) {
       this.user_id = this.authenticationService.get_current_user()._id;
       this.username = this.authenticationService.get_current_user().username;
-      console.log(this.user_id)
-      console.log(this.username)
-      console.log(this.authenticationService.get_current_user())
+      console.log("Currently logged user:", this.authenticationService.get_current_user())
     }
   }
 
