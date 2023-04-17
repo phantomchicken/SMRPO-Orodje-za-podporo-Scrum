@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <div class="container">
   <div class="row">
     <div class="card col-md-3 mt-4">
@@ -21,9 +20,21 @@
           <div class="card-header d-flex justify-content-between">
             <div>
                 <h5 class="card-title">{{story.name}}</h5>
-            </div>            
+            </div>
+            <div>
+              <ng-container *ngIf="authenticationService.get_current_user()._id == project.product_owner.toString() && storyState === ' '">
+                <button *ngIf="story.status=='Done'" class="btn btn-success my-2" style="margin-right: 10px; font-size: 12px;" (click)="acceptStory(story)">Accept</button>
+                <button *ngIf="story.status=='Done'" class="btn btn-danger my-2" style="font-size: 12px;" (click)="rejectStory(story)">Reject</button>
+              </ng-container>
+              <ng-container *ngIf="story.status === 'Accepted'">
+                <span class="text-success">Accepted</span>
+              </ng-container>
+              <ng-container *ngIf="story.status === 'Rejected'">
+                <span class="text-danger">Rejected</span>
+              </ng-container>
+            </div>
         </div>
-          <div class="card-body">
+        <div class="card-body" [class]="{'accepted': story.status === 'Accepted', 'rejected': story.status === 'Rejected'}">
             <div class="row">
               <div class="col-6">
                 <h6 class="card-subtitle mb-2 text-muted ">Priority</h6>
@@ -45,7 +56,7 @@
               </ng-container>
             </ol>
               </div>
-              <div *ngIf="storyTasksMap.get(story._id).length>0" class="user-table-container text-center">
+              <div *ngIf="storyTasksMap.get(story._id)!=null && storyTasksMap.get(story._id).length>0" class="user-table-container text-center">
                 <table class="table-hover table-responsive" mat-table [dataSource]="storyTasksMap.get(story._id)">
                     <ng-container matColumnDef="#">
                         <th mat-header-cell *matHeaderCellDef class="text-center">#</th>

@@ -11,11 +11,12 @@ import { SprintDataService } from '../sprint.service';
 import { StoryDataService } from '../story.service';
 import { UsersDataService } from '../user.service';
 import { TasksDataService } from '../task.service';
+import { Project } from '../classes/project';
 
 @Component({
   selector: 'app-sprint',
   templateUrl: `sprint.component.html`,
-  styles: [
+  styles: ['.accepted {background-color: #DFFFE9}', '.rejected {background-color: #FFCCCB}'
   ]
 })
 export class SprintComponent implements OnInit {
@@ -23,9 +24,11 @@ export class SprintComponent implements OnInit {
   constructor(private route: ActivatedRoute, private taskService: TasksDataService, private sprintService: SprintDataService, private projectDataService: ProjectDataService, private usersDataService: UsersDataService, protected authenticationService: AuthenticationService,
     private storyDataService: StoryDataService) { }
     private routeSub!: Subscription
+    public project: Project = new Project()
     public sprint:Sprint = new Sprint()
     public stories:Story[] = []
     public displayedColumns = ['#','description', 'assignee', 'done', 'accepted', 'timeEstimate']; //id
+    public storyState = ' '
     public task:Task = new Task()
     public storyTasksMap = new Map()
 
@@ -38,8 +41,18 @@ export class SprintComponent implements OnInit {
           for (var i=0; i<this.stories.length; i++){
             this.getTasksForStory(this.stories[i])
           } })
+        this.projectDataService.getProject(sprint.project).then((
+          data:Project) => {
+            this.project = data
+          })
       })
     })
+  }
+
+  public hasSprintEnded(): boolean {
+    const endDate = new Date(this.sprint.endDate);
+    const currentDate = new Date();
+    return endDate < currentDate;
   }
 
   getTasksForStory(story:Story): void {
@@ -56,4 +69,13 @@ export class SprintComponent implements OnInit {
     return str.split("&~")
   }
 
+  acceptStory(story: Story) {
+    story.status = "Accepted";
+    this.storyDataService.updateStory(story).then(()=>{this.storyState = "accepted"}).catch((error)=>console.error(error))    
+  }
+  
+  rejectStory(story: Story) {
+    story.status = "Rejected";
+    this.storyDataService.updateStory(story).then(()=>{this.storyState = "Backlog"}).catch((error)=>console.error(error))  
+  }
 }

@@ -23,7 +23,7 @@ const storySchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['Backlog', 'In Development', 'Code Review', 'Testing', 'Done'],
+        enum: ['Backlog', 'Done','Rejected', 'Accepted'],
         default: 'Backlog'
     },
     project: {

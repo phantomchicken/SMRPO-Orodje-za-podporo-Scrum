@@ -31,6 +31,7 @@ export class ProjectComponent implements OnInit {
   public product_owner: User = new User
   public scrum_master: User = new User
   public developers: User[] = []
+  public developersString: string[] = []
   public sprints: Sprint[] = []
   public activeSprints: Sprint[] = []
   public stories: Story[] = []
@@ -98,6 +99,7 @@ export class ProjectComponent implements OnInit {
         for (var i=0; i<this.project.developers.length; i++){
           this.usersDataService.getUser(this.project.developers[i]).then((data:User)=>{
             this.developers.push(data)
+            this.developersString.push(data._id)
           })
         }
        });
@@ -107,8 +109,8 @@ export class ProjectComponent implements OnInit {
 
   filterStories() {
     this.wontHaveStories = this.stories.filter(story => story.priority === "Won't have this time")
-    this.finishedStories = this.stories.filter(story => story.status === "Done")
-    this.unfinishedStories = this.stories.filter(story => story.status !== "Done" && story.priority !== "Won't have this time") // won't have goes to won't have not unfinished! 
+    this.finishedStories = this.stories.filter(story => story.status === "Accepted")
+    this.unfinishedStories = this.stories.filter(story => story.status !== "Accepted" && story.priority !== "Won't have this time") // won't have goes to won't have not unfinished! 
   }
 
   addStoriesToSprint() {
@@ -126,6 +128,11 @@ export class ProjectComponent implements OnInit {
       }
     }
     if (this.success) this.checkedStories = [] // cleanup if successful adding!
+  }
+
+  markDone(story:Story) {
+    story.status = 'Done'
+    this.storyDataService.updateStory(story)
   }
 
   checkStory(id:string, checkedEventTarget:any) {
@@ -259,7 +266,6 @@ export class ProjectComponent implements OnInit {
 
   colorSprint(sprint: Sprint): string{ // past sprints are grey, current green, future dark blue
     var today = new Date().toISOString()
-   
     if (sprint.startDate.toString() < today && (today < sprint.endDate.toString() || today.substring(0,10) == sprint.endDate.toString().substring(0,10))) { // primitive check if same day
       return "bg-success"
     } else if (sprint.startDate.toString() < today && sprint.endDate.toString() < today) {
