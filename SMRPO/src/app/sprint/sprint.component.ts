@@ -20,6 +20,7 @@ import { Project } from '../classes/project';
   ]
 })
 export class SprintComponent implements OnInit {
+  public addTaskVisible: boolean = false;
 
   constructor(private route: ActivatedRoute, private taskService: TasksDataService, private sprintService: SprintDataService, private projectDataService: ProjectDataService, private usersDataService: UsersDataService, protected authenticationService: AuthenticationService,
     private storyDataService: StoryDataService) { }
@@ -76,5 +77,21 @@ export class SprintComponent implements OnInit {
   rejectStory(story: Story) {
     story.status = "Rejected";
     this.storyDataService.updateStory(story).then().catch((error)=>console.error(error))  
+  }
+
+  showAddTask() {
+    this.addTaskVisible = true;
+  }
+
+  hideAddTask() {
+    this.addTaskVisible = false;
+  }
+
+  update($event: string) {
+    if ($event=="task") {
+      this.stories.forEach(story => {
+        this.getTasksForStory(story);
+      });
+    }
   }
 }

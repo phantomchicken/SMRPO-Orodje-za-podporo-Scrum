@@ -621,6 +621,7 @@ const deleteStory = (req, res) => {
 }
 
 const createTask = (req, res) => {
+        console.log(req.body)
     if (req.body === undefined) {
         res.status(500).send('Internal error')
         return;

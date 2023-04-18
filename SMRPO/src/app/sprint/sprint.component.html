@@ -56,6 +56,18 @@
               </ng-container>
             </ol>
               </div>
+
+              <div class="row mt-4">
+                <div class="d-flex justify-content-center">
+                    <button *ngIf="!addTaskVisible" (click)="showAddTask()" type="button" class="btn btn-dark w-25">Add task</button>
+                    <button *ngIf="addTaskVisible" (click)="hideAddTask()" type="button" class="btn btn-dark w-25">Hide Form</button>
+                </div>
+                <div *ngIf="addTaskVisible">
+                    <app-add-task (messageEvent)="update($event)" [story]="story._id"></app-add-task>
+                </div>
+
+              </div>
+
               <div *ngIf="storyTasksMap.get(story._id)!=null && storyTasksMap.get(story._id).length>0" class="user-table-container text-center">
                 <table class="table-hover table-responsive" mat-table [dataSource]="storyTasksMap.get(story._id)">
                     <ng-container matColumnDef="#">

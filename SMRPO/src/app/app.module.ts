@@ -22,6 +22,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import { ProjectComponent } from './project/project.component';
 import { AddStoryComponent } from './add-story/add-story.component';
+import { AddTaskComponent } from './add-task/add-task.component';
 import { AdminEditUserComponent } from './admin-edit-user/admin-edit-user.component';
 import {DatePipe} from "@angular/common";
 import { DocumentationComponent } from './documentation/documentation.component';
@@ -43,6 +44,7 @@ import { SprintComponent } from './sprint/sprint.component';
     AddSprintComponent,
     ProjectComponent,
     AddStoryComponent,
+    AddTaskComponent,
     AdminEditUserComponent,
     DocumentationComponent,
     AdminEditProjectComponent,

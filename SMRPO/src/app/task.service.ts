@@ -13,7 +13,7 @@ export class TasksDataService {
   private apiUrl = environment.apiUrl;
 
   public createTask(data:any): Promise<Task> {
-    const url: string = `${this.apiUrl}/task/`;
+    const url: string = `${this.apiUrl}/db/task/`;
     return this.http
       .post(url, data)
       .toPromise()
