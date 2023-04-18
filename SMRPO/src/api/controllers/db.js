@@ -12,10 +12,14 @@ const Task = require('../models/tasks')
 const usersData = require('../../../users.json');
 const projectsData = require('../../../projects.json');
 const sprintsData = require('../../../sprints.json');
+const storiesData = require('../../../stories.json');
+const tasksData = require('../../../tasks.json');
 
 var userArray = new Array();
 var projectArray = new Array();
 var sprintArray = new Array();
+var storyArray = new Array();
+var taskArray = new Array();
 
 const getUser = (req, res) => {
     //console.log(req.params)
@@ -296,8 +300,17 @@ const getSprints = (req, res) => {
             const modifiedSprints = sprints.map(sprint => {
                 const sprintObj = sprint.toObject();
                 sprintObj.editable = false;
-                if (sprintObj.endDate.getTime() > Date.now()) // endDate so we can edit current sprints (only velocity)
+                const currentDate = new Date();
+                const endDate = new Date(sprintObj.endDate); // Convert to Date object if not already
+
+                // Compare only the date portion
+                const endDateDateOnly = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
+                const currentDateDateOnly = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+
+                if (endDateDateOnly >= currentDateDateOnly) { 
                     sprintObj.editable = true;
+                }
+
                 return sprintObj;
             });
             sprints = sprints.map(sprint => sprint.toObject())
@@ -725,6 +738,10 @@ Latch.prototype.await = function (callback, ctx) {
 };
 
 const deleteAllData = (req, res) => {
+    userArray.splice(0, userArray.length)
+    projectArray.splice(0, projectArray.length)
+    sprintArray.splice(0, sprintArray.length)
+    storyArray.splice(0, storyArray.length)
     Project.collection.drop();
     Sprint.collection.drop();
     Story.collection.drop();
@@ -817,6 +834,8 @@ const addProjectData = () => {
 
     barrier.await(function () {
         addSprintData();
+        addStoryData()
+        addTaskData()
     });
 };
 
@@ -843,9 +862,77 @@ const addSprintData = () => {
             });
         }
     });
+};
+
+const addStoryData = () => {
+    var barrier = new Latch(storiesData.length);
+    barrier.async(function (end) {
+        for (var storyData of storiesData) {
+            const story = new Story();
+            story.name = storyData.name
+            story.description = storyData.description
+            story.storyPoints = storyData.storyPoints
+            story.status = storyData.status
+            story.priority = storyData.priority
+            story.businessValue = storyData.businessValue
+            story.acceptanceCriteria = storyData.acceptanceCriteria
+            
+            var projectQuery = projectArray
+                                    .filter(project => (project.name == storyData.project))
+                                    .map(project => project._id)
+            
+    	    var sprintQuery = sprintArray
+                                    .filter(sprint => (sprint.project == storyData.project && sprint.startDate == '2023-04-17T00:00:00.000Z') )
+                                    .map(project => project._id)                                    
+
+            if (story.priority!='Won\'t have this time') story.sprint = sprintQuery[0]
+            story.project = projectQuery[0]
+
+            story.save(story, (error, spr) => {
+                if (error) 
+                    message = error;
+                else
+                    storyArray.push(spr);
+                end();
+            });
+        }
+    });
 
     barrier.await(function () {
-        console.log(sprintArray)
+        console.log('DONE');
+    });
+};
+
+//TODO link to project and sprint!
+const addTaskData = () => {
+    var barrier = new Latch(tasksData.length);
+    barrier.async(function (end) {
+        for (var taskData of tasksData) {
+            const task = new Task();
+            task.name = taskData.name
+            task.description = taskData.description
+            task.done = taskData.done
+            task.accepted = taskData.accepted
+            task.timeEstimate = taskData.timeEstimate
+        
+            
+            var storyQuery = storyArray
+                                    .filter(story => (story.name == taskData.story))
+                                    .map(story => story._id)
+            task.story = storyQuery[0]
+
+            task.save(task, (error, spr) => {
+                if (error) 
+                    message = error;
+                else
+                    taskArray.push(spr);
+                end();
+            });
+        }
+    });
+
+    barrier.await(function () {
+        console.log('DONE2');
     });
 };
 

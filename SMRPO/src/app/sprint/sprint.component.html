@@ -22,7 +22,7 @@
                 <h5 class="card-title">{{story.name}}</h5>
             </div>
             <div>
-              <ng-container *ngIf="authenticationService.get_current_user()._id == project.product_owner.toString() && storyState === ' '">
+              <ng-container *ngIf="authenticationService.get_current_user()._id == project.product_owner.toString()">
                 <button *ngIf="story.status=='Done'" class="btn btn-success my-2" style="margin-right: 10px; font-size: 12px;" (click)="acceptStory(story)">Accept</button>
                 <button *ngIf="story.status=='Done'" class="btn btn-danger my-2" style="font-size: 12px;" (click)="rejectStory(story)">Reject</button>
               </ng-container>

@@ -28,7 +28,6 @@ export class SprintComponent implements OnInit {
     public sprint:Sprint = new Sprint()
     public stories:Story[] = []
     public displayedColumns = ['#','description', 'assignee', 'done', 'accepted', 'timeEstimate']; //id
-    public storyState = ' '
     public task:Task = new Task()
     public storyTasksMap = new Map()
 
@@ -71,11 +70,11 @@ export class SprintComponent implements OnInit {
 
   acceptStory(story: Story) {
     story.status = "Accepted";
-    this.storyDataService.updateStory(story).then(()=>{this.storyState = "accepted"}).catch((error)=>console.error(error))    
+    this.storyDataService.updateStory(story).then().catch((error)=>console.error(error))    
   }
   
   rejectStory(story: Story) {
     story.status = "Rejected";
-    this.storyDataService.updateStory(story).then(()=>{this.storyState = "Backlog"}).catch((error)=>console.error(error))  
+    this.storyDataService.updateStory(story).then().catch((error)=>console.error(error))  
   }
 }

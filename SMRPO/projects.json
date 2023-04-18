@@ -12,5 +12,17 @@
                 "developers": ["bojan", "nino"],
                 "scrum_master": "marko",
                 "product_owner": "miha"
+        },{
+                "name": "Sample Project #3",
+                "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae laboriosam in inventore suscipit ea, aut voluptates minus harum expedita maxime! Non autem eaque, id dolores, possimus earum excepturi ex dicta fugit ipsum sapiente accusantium nihil, maiores delectus praesentium recusandae. Reprehenderit pariatur culpa ducimus nulla placeat! Quaerat deserunt expedita voluptatibus debitis quod ducimus dolores iste magnam explicabo quibusdam autem et adipisci iusto cumque fugiat reprehenderit placeat omnis, atque ratione quis libero, obcaecati itaque saepe. Laudantium dolorem blanditiis perferendis labore. Necessitatibus, facilis quam, maxime animi magnam dolores sequi beatae dolor sint ipsum eius iure repellendus amet quibusdam aliquam ipsam perspiciatis consectetur tenetur.",
+                "developers": ["miha", "marko"],
+                "scrum_master": "bojan",
+                "product_owner": "nino"
+        },{
+                "name": "Sample Project #4",
+                "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae laboriosam in inventore suscipit ea, aut voluptates minus harum expedita maxime! Non autem eaque, id dolores, possimus earum excepturi ex dicta fugit ipsum sapiente accusantium nihil, maiores delectus praesentium recusandae. Reprehenderit pariatur culpa ducimus nulla placeat! Quaerat deserunt expedita voluptatibus debitis quod ducimus dolores iste magnam explicabo quibusdam autem et adipisci iusto cumque fugiat reprehenderit placeat omnis, atque ratione quis libero, obcaecati itaque saepe. Laudantium dolorem blanditiis perferendis labore. Necessitatibus, facilis quam, maxime animi magnam dolores sequi beatae dolor sint ipsum eius iure repellendus amet quibusdam aliquam ipsam perspiciatis consectetur tenetur.",
+                "developers": ["bojan", "nino"],
+                "scrum_master": "miha",
+                "product_owner": "marko"
         }
 ]

@@ -1,8 +1,74 @@
 [
         {
-                "startDate": 1677628800000,
-                "endDate": 1678406400000,
-                "velocity": 12,
+                "startDate": "2023-03-01T00:00:00.000Z",
+                "endDate": "2023-03-01T00:00:00.000Z",
+                "velocity": 25,
                 "project": "Sample Project #1"
+        },
+        {
+                "startDate": "2023-04-17T00:00:00.000Z",
+                "endDate": "2023-04-21T00:00:00.000Z",
+                "velocity": 30,
+                "project": "Sample Project #1"
+        },
+        {
+                "startDate": "2023-04-24T00:00:00.000Z",
+                "endDate": "2023-04-24T00:00:00.000Z",
+                "velocity": 35,
+                "project": "Sample Project #1"
+        },
+        {
+                "startDate": "2023-03-01T00:00:00.000Z",
+                "endDate": "2023-03-01T00:00:00.000Z",
+                "velocity": 25,
+                "project": "Sample Project #2"
+        },
+        {
+                "startDate": "2023-04-17T00:00:00.000Z",
+                "endDate": "2023-04-21T00:00:00.000Z",
+                "velocity": 30,
+                "project": "Sample Project #2"
+        },
+        {
+                "startDate": "2023-04-24T00:00:00.000Z",
+                "endDate": "2023-04-24T00:00:00.000Z",
+                "velocity": 35,
+                "project": "Sample Project #2"
+        },
+        {
+                "startDate": "2023-03-01T00:00:00.000Z",
+                "endDate": "2023-03-01T00:00:00.000Z",
+                "velocity": 25,
+                "project": "Sample Project #3"
+        },
+        {
+                "startDate": "2023-04-17T00:00:00.000Z",
+                "endDate": "2023-04-21T00:00:00.000Z",
+                "velocity": 30,
+                "project": "Sample Project #3"
+        },
+        {
+                "startDate": "2023-04-24T00:00:00.000Z",
+                "endDate": "2023-04-24T00:00:00.000Z",
+                "velocity": 35,
+                "project": "Sample Project #3"
+        },
+        {
+                "startDate": "2023-03-01T00:00:00.000Z",
+                "endDate": "2023-03-01T00:00:00.000Z",
+                "velocity": 25,
+                "project": "Sample Project #4"
+        },
+        {
+                "startDate": "2023-04-17T00:00:00.000Z",
+                "endDate": "2023-04-21T00:00:00.000Z",
+                "velocity": 30,
+                "project": "Sample Project #4"
+        },
+        {
+                "startDate": "2023-04-24T00:00:00.000Z",
+                "endDate": "2023-04-24T00:00:00.000Z",
+                "velocity": 35,
+                "project": "Sample Project #4"
         }
 ]
