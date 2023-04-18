@@ -14,7 +14,33 @@
       
     </div>
     <div class="col-md-9 mt-4">
-      <ng-container *ngFor="let story of stories">
+      <ng-container *ngFor="let story of stories; let i = index;">
+        <div class="modal" tabindex="-1" role="dialog" [ngClass]="{'d-block': showRejectModalFlag, 'd-none': !showRejectModalFlag}">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header bg-danger">
+                <h5 class="modal-title">Reject Story</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeRejectModal()">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form (ngSubmit)="rejectStory(selectedStory)">
+                  <div class="form-group">
+                    <label for="rejectionComment">Rejection Comment</label>
+                    <textarea class="form-control" id="rejectionComment" rows="4" [(ngModel)]="rejectionComment" name="rejectionComment"></textarea>
+                    
+                  </div>
+                  <div class="form-group text-center">
+                    <button type="submit" class="btn btn-danger w-50">Reject</button>
+                  </div>
+                  
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
       <div class="col-12 mt-4">
         <div class="card">
           <div class="card-header d-flex justify-content-between">
@@ -24,8 +50,8 @@
             <div>
               <ng-container *ngIf="authenticationService.get_current_user()._id == project.product_owner.toString()">
                 <button *ngIf="story.status=='Done'" class="btn btn-success my-2" style="margin-right: 10px; font-size: 12px;" (click)="acceptStory(story)">Accept</button>
-                <button *ngIf="story.status=='Done'" class="btn btn-danger my-2" style="font-size: 12px;" (click)="rejectStory(story)">Reject</button>
-              </ng-container>
+                <button *ngIf="story.status === 'Done'" class="btn btn-danger my-2" style="font-size: 12px;" (click)="showRejectModal(story)">Reject</button>
+</ng-container>
               <ng-container *ngIf="story.status === 'Accepted'">
                 <span class="text-success">Accepted</span>
               </ng-container>
@@ -57,17 +83,6 @@
             </ol>
               </div>
 
-              <div class="row mt-4">
-                <div class="d-flex justify-content-center">
-                    <button *ngIf="!addTaskVisible" (click)="showAddTask()" type="button" class="btn btn-dark w-25">Add task</button>
-                    <button *ngIf="addTaskVisible" (click)="hideAddTask()" type="button" class="btn btn-dark w-25">Hide Form</button>
-                </div>
-                <div *ngIf="addTaskVisible">
-                    <app-add-task (messageEvent)="update($event)" [story]="story._id"></app-add-task>
-                </div>
-
-              </div>
-
               <div *ngIf="storyTasksMap.get(story._id)!=null && storyTasksMap.get(story._id).length>0" class="user-table-container text-center">
                 <table class="table-hover table-responsive" mat-table [dataSource]="storyTasksMap.get(story._id)">
                     <ng-container matColumnDef="#">
@@ -87,20 +102,31 @@
 
                   <ng-container matColumnDef="done">
                     <th mat-header-cell *matHeaderCellDef class="text-center">Done</th>
-                    <td mat-cell *matCellDef="let done"><button type="button" [ngClass]="task.done ? 'btn btn-success' : ' btn btn-danger'"><i [ngClass]="task.done ? 'fas fa-check' : ' fas fa-times'"></i></button></td>
+                    <td mat-cell *matCellDef="let done"><button type="button" [ngClass]="task.done ? 'btn-sm btn-success' : ' btn-sm btn-danger'"><i [ngClass]="task.done ? 'fas fa-check' : ' fas fa-times'"></i></button></td>
                   </ng-container>
                   <ng-container matColumnDef="accepted">
                     <th mat-header-cell *matHeaderCellDef class="text-center">Accepted</th>
-                    <td mat-cell *matCellDef="let accepted"><button type="button" [ngClass]="task.accepted ? 'btn btn-success' : ' btn btn-danger'"><i [ngClass]="task.accepted ? 'fas fa-check' : ' fas fa-times'"></i></button></td>
+                    <td mat-cell *matCellDef="let accepted"><button type="button" [ngClass]="task.accepted ? 'btn-sm btn-success' : ' btn-sm btn-danger'"><i [ngClass]="task.accepted ? 'fas fa-check' : ' fas fa-times'"></i></button></td>
                 </ng-container>
                 <ng-container matColumnDef="timeEstimate">
                   <th mat-header-cell *matHeaderCellDef class="text-center">Time</th>
-                  <td mat-cell *matCellDef="let timeEstimate">{{task.timeEstimate}}</td>
+                  <td mat-cell *matCellDef="let task">{{task.timeEstimate}}</td>
               </ng-container>
     
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 </table>
+            </div>
+
+            <div class="row mt-4">
+              <div class="d-flex justify-content-center">
+                  <button *ngIf="!addTaskVisible[i]" (click)="showAddTask(i)" type="button" class="btn btn-dark w-25">Add task</button>
+                  <button *ngIf="addTaskVisible[i]" (click)="hideAddTask(i)" type="button" class="btn btn-dark w-25">Hide Form</button>
+              </div>
+              <div *ngIf="addTaskVisible[i]">
+                  <app-add-task (messageEvent)="update($event)" [story]="story._id"></app-add-task>
+              </div>
+
             </div>
             </div>
             

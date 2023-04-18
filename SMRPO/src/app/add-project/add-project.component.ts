@@ -29,10 +29,11 @@ export class AddProjectComponent implements OnInit {
     this.error =""
     if (!this.project.name || !this.project.description || this.project.scrum_master==(new User) || this.project.product_owner==(new User) || this.project.developers.length == 0) {
       this.error = "Please enter all fields!"
+    } else if (this.project.developers.some(developer => developer._id === this.project.product_owner._id)) {
+      this.error = "Product owner can't be a developer simultaneously!";
     } else if (this.project.scrum_master == this.project.product_owner) {
       this.error = "Scrum master and product owner can't be the same person!"
     }else{
-      //console.log(this.project)
       this.projectService.addProject(this.project)
         .then((project: Project) => {
           this.error =""

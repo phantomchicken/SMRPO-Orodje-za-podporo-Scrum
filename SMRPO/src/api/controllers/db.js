@@ -539,6 +539,7 @@ const createStory = (req, res) => {
     new_story.project = req.body.project;
     new_story.sprint = req.body.sprint;
     new_story.assignee = req.body.assignee;
+    new_story.comment = req.body.comment;
 
     new_story.save(error => {
         console.log(error)
@@ -570,6 +571,7 @@ const updateStory = (req, res) => {
             if (req.body.project != "") story.project = req.body.project
             if (req.body.sprint != "") story.sprint = req.body.sprint
             if (req.body.assignee!= "") story.assignee = req.body.assignee
+            if (req.body.comment!= "") story.comment = req.body.comment
 
             story.save((error, updated_story) => {
                 if (error) {

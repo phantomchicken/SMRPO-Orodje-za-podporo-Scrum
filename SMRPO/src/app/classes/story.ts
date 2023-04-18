@@ -10,4 +10,5 @@ export class Story {
     project: string = "";
     sprint: string | undefined;
     assignee: string | undefined;
+    comment: string = "";
 }

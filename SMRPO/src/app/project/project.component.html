@@ -5,8 +5,8 @@
               <h5 class="card-title">Project details</h5>
               <h6 class="card-subtitle mt-4 mb-2 text-muted">Project name</h6>
               <p class="card-text">{{project.name}}</p>
-              <h6 class="card-subtitle mb-2 text-muted ">Project description</h6>
-              <p class="card-text text-justify">{{project.description}}</p>
+              <h6 class="card-subtitle mb-2 text-muted">Project description</h6>
+              <p class="card-text text-justify" style="white-space: pre-wrap;">{{project.description}}</p>
               <h6 class="card-subtitle mt-4 mb-2 text-muted">Scrum master</h6>
               <p *ngIf="!scrum_master.archived" class="card-text" [ngClass]="authenticationService.get_current_user()._id == scrum_master_id ? 'font-weight-bold text-success' : ''">{{scrum_master.firstname}} {{scrum_master.lastname}}</p>
               <p *ngIf="scrum_master.archived" class="card-text font-weight-bold text-error">Missing</p>
@@ -70,6 +70,7 @@
                                         <p *ngIf="story.storyPoints!=-1 && (authenticationService.get_current_user()._id != scrum_master_id || story.sprint)" class="card-text"><b>Story points: </b> {{story.storyPoints}}</p> <!-- if assigned to sprint, if not scrum master-->
                                         <p *ngIf="story.storyPoints==-1 && authenticationService.get_current_user()._id != scrum_master_id" class="card-text"><b>Story points: </b> </p> <!--  if not scrum master-->
                                         <p *ngIf="story.sprint" class="card-text"><b>Sprint: </b> {{getSprintDate(story.sprint)[0] | date:'dd.MM'}}-{{getSprintDate(story.sprint)[1] | date:'dd.MM'}}</p>
+                                        <p *ngIf="story.comment" class="card-text"><b class="text-danger">Rejected: </b>{{story.comment}}</p>
                                     </div>
                                   </div>
                                 </div>

@@ -38,6 +38,9 @@ const storySchema = new mongoose.Schema({
     assignee: {
         type: mongoose.Types.ObjectId,
         ref: "User",
+    },
+    comment: {
+        type: String
     }
 });
 

@@ -20,7 +20,10 @@ import { Project } from '../classes/project';
   ]
 })
 export class SprintComponent implements OnInit {
-  public addTaskVisible: boolean = false;
+  public addTaskVisible: boolean[] = [];
+  showRejectModalFlag: boolean = false
+  rejectionComment: string = ""
+  selectedStory: Story = new Story()
 
   constructor(private route: ActivatedRoute, private taskService: TasksDataService, private sprintService: SprintDataService, private projectDataService: ProjectDataService, private usersDataService: UsersDataService, protected authenticationService: AuthenticationService,
     private storyDataService: StoryDataService) { }
@@ -70,21 +73,38 @@ export class SprintComponent implements OnInit {
   }
 
   acceptStory(story: Story) {
-    story.status = "Accepted";
+    story.status = "Accepted"
+    story.comment = ""
     this.storyDataService.updateStory(story).then().catch((error)=>console.error(error))    
   }
   
+  // Update your TypeScript functions
+  showRejectModal(story: Story) {
+    this.showRejectModalFlag = true;
+    this.rejectionComment = '';
+    this.selectedStory = story;
+  }
+
+  closeRejectModal() {
+    this.showRejectModalFlag = false;
+  }
+
   rejectStory(story: Story) {
     story.status = "Rejected";
-    this.storyDataService.updateStory(story).then().catch((error)=>console.error(error))  
+    story.comment = this.rejectionComment;
+    story.sprint = undefined
+    this.storyDataService.updateStory(story).then(() => {
+      this.closeRejectModal();
+    }).catch((error) => console.error(error));
   }
 
-  showAddTask() {
-    this.addTaskVisible = true;
+
+  showAddTask(i:number) {
+    this.addTaskVisible[i] = true;
   }
 
-  hideAddTask() {
-    this.addTaskVisible = false;
+  hideAddTask(i:number) {
+    this.addTaskVisible[i] = false;
   }
 
   update($event: string) {

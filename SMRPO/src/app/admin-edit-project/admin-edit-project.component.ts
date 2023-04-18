@@ -46,9 +46,11 @@ public showWarning(): void {
     this.error =""
     if (!this.project.name || !this.project.description || this.project.scrum_master==(new User) || this.project.product_owner==(new User) || this.developers.length == 0) {
       this.error = "Please enter all fields!"
+    } else if (this.developers.some(developer => developer._id === this.project.product_owner.toString())) {
+      this.error = "Product owner can't be a developer simultaneously!";
     } else if (this.project.scrum_master == this.project.product_owner) {
       this.error = "Scrum master and product owner can't be the same person!"
-    }else{
+    } else{
       this.project.developers = this.developers // because project.developers wants User type
       this.projectService.updateProject(this.project)
         .then((project: Project) => {

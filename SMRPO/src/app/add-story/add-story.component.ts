@@ -89,6 +89,7 @@ export class AddStoryComponent implements OnInit {
     project: "",
     sprint: undefined,
     assignee: undefined,
+    comment: ""
   }
   public success:boolean = false;
 
