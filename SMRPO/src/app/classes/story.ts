@@ -11,4 +11,5 @@ export class Story {
     sprint: string | undefined;
     assignee: string | undefined;
     comment: string = "";
+    isEditing: boolean = false;
 }

@@ -88,6 +88,9 @@ export class ProjectComponent implements OnInit {
         this.storyDataService.getStories().then((data:Story[])=>{
           this.stories = data.filter(story => story.project === project._id);
           this.filterStories()
+          this.stories.forEach(story => {
+            story.isEditing = false
+          })
           console.log("Stories", this.stories)
         })
         this.usersDataService.getUser(this.scrum_master_id).then((data:User)=>{
@@ -140,6 +143,12 @@ export class ProjectComponent implements OnInit {
     else this.checkedStories = this.checkedStories.filter((storyId) => storyId != id)
     //console.log(id, checkedEventTarget.checked)
     //console.log(this.checkedStories)
+  }
+
+  deleteStoryBtn(story:Story){
+    console.log("deleting story")
+    this.storyDataService.deleteStory(story).then(()=> this.update("story")).catch((error) => {console.log(error)})
+    
   }
 
   editStoryPoints(story:Story, newStoryPoints:any){
@@ -238,15 +247,42 @@ export class ProjectComponent implements OnInit {
     }
   }
 
+  onStoryEditSubmit(form: NgForm, index: number) {
+    let priority = this.stories[index].priority;
+    let businessValue = this.stories[index].businessValue;
+    let acceptanceCriteria = this.stories[index].acceptanceCriteria;
+    let newPriority = form.value.priority
+    let newBusinessValue = form.value.businessValue
+    let newAcceptanceCriteria = form.value.velocity;
+    if (priority === newPriority
+        && businessValue === newBusinessValue
+        && acceptanceCriteria == newAcceptanceCriteria){
+      this.stories[index].isEditing = false;
+    }
+    else{
+      this.storyDataService.updateStory(this.stories[index])
+    }
+
+    this.stories[index].isEditing = false;
+  }
+
   editSprint(index: number) {
     // let sprintIndex:number = this.getSprintIndexById(sprintId);
     this.sprints[index].isEditing = true;
     // console.log(this.sprints[sprintIndex])
   }
 
+  editStory(index: number){
+    this.stories[index].isEditing = true;
+  }
+
   cancelEditSprint(index: number) {
     this.sprints[index].isEditing = false;
     this.sprints[index].update_error = "";
+  }
+
+  cancelEditStory(index: number) {
+    this.stories[index].isEditing = false;
   }
 
   getSprintDate(sprintId:string) {

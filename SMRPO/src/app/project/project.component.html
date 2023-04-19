@@ -39,8 +39,8 @@
                                 Unfinished
                               </button>
                             <div class="collapse show" id="collapse1">
-                                <div *ngFor="let story of unfinishedStories" class="col-10"> <!-- *ngFor -->
-                                    <div class="card bg-light mt-2">
+                                <div *ngFor="let story of unfinishedStories; let i = index;" class="col-10"> <!-- *ngFor -->
+                                    <div class="card bg-light mt-2" *ngIf="!story.isEditing"> <!--1.............................................-->
                                         <div class="card-header d-flex justify-content-between">
                                             <div>
                                                 <h5 class="card-title">{{story.name}}</h5>
@@ -71,8 +71,49 @@
                                         <p *ngIf="story.storyPoints==-1 && authenticationService.get_current_user()._id != scrum_master_id" class="card-text"><b>Story points: </b> </p> <!--  if not scrum master-->
                                         <p *ngIf="story.sprint" class="card-text"><b>Sprint: </b> {{getSprintDate(story.sprint)[0] | date:'dd.MM'}}-{{getSprintDate(story.sprint)[1] | date:'dd.MM'}}</p>
                                         <p *ngIf="story.comment" class="card-text"><b class="text-danger">Rejected: </b>{{story.comment}}</p>
+                                        <div *ngIf="story.status!='Done' && !story.sprint && (authenticationService.get_current_user()._id == scrum_master_id || authenticationService.get_current_user()._id == product_owner_id)" class="d-flex justify-content-end">
+                                            <button type="button" class="btn btn-dark mr-2"><i class="far fa-edit" (click)="editStory(i)"></i></button>
+                                            <button type="button" class="btn btn-danger mr-2" (click)="deleteStoryBtn(story)"><i class="far fa-trash-alt"></i></button>
+                                        </div>
                                     </div>
                                   </div>
+
+                                  <div class="card bg-light mt-2" *ngIf="story.isEditing"> <!--2.............................................-->
+                                    <div class="card-header d-flex justify-content-between">
+                                        <form #formRef="ngForm" (submit)="onStoryEditSubmit(formRef, i)">
+                                            <div class="form-group">
+                                                <label for="storyName">Story name:</label>
+                                                <input class="form-control" id="storyName" name="storyName" [(ngModel)]="story.name">
+                                            </div>
+                                        </form>                                        
+                                    </div>
+                                  <div class="card-body">
+                                    
+                                    <form #formRef="ngForm" (submit)="onStoryEditSubmit(formRef, i)">
+                                        <div class="form-group">
+                                            <label for="priority">Priority:</label>
+                                            <select class="form-control" id="priority" name="priority" [(ngModel)]="story.priority">
+                                                <option value="Must have">Must have</option>
+                                                <option value="Could have">Could have</option>
+                                                <option value="Should have">Should have</option>
+                                                <option value="Won't have this time">Won't have this time</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="businessValue">Business value:</label>
+                                            <input type="number" class="form-control" id="businessValue" name="businessValue" [(ngModel)]="story.businessValue" min="0">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="acceptanceCriteria">Acceptance criteria:</label>
+                                            <textarea class="form-control" id="acceptanceCriteria" name="acceptanceCriteria" [(ngModel)]="story.acceptanceCriteria"></textarea>
+                                        </div>
+                                        <div class="d-flex justify-content-center" style="margin-bottom: 10%">
+                                            <button type="submit" class="btn btn-primary mr-2">Save</button>
+                                            <button type="button" class="btn btn-secondary" (click)="cancelEditStory(i)">Cancel</button>
+                                        </div>                                        
+                                    </form>
+                                </div>
+                            </div>
                                 </div>
                             </div>
                         </div>
@@ -139,6 +180,11 @@
                                         <p *ngIf="story.storyPoints!=-1" class="card-text"><b>Story points: </b> {{story.storyPoints}}</p> <!-- if assigned to sprint, if not scrum master-->
                                         <p *ngIf="story.storyPoints==-1" class="card-text"><b>Story points: </b> </p> <!-- if assigned to sprint, if not scrum master-->
                                         <p *ngIf="story.sprint" class="card-text"><b>Sprint: </b> {{story.sprint}}</p>
+
+                                        <div *ngIf="story.status!='Done' && !story.sprint && (authenticationService.get_current_user()._id == scrum_master_id || authenticationService.get_current_user()._id == product_owner_id)" class="d-flex justify-content-end">
+                                            <button type="button" class="btn btn-dark mr-2"><i class="far fa-edit"></i></button>
+                                            <button type="button" class="btn btn-danger mr-2" (click)="deleteStoryBtn(story)"><i class="far fa-trash-alt"></i></button>
+                                        </div>
                                     </div>
                                   </div>
                                 </div>
