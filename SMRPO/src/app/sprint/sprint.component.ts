@@ -12,6 +12,7 @@ import { StoryDataService } from '../story.service';
 import { UsersDataService } from '../user.service';
 import { TasksDataService } from '../task.service';
 import { Project } from '../classes/project';
+import { User } from '../classes/user';
 
 @Component({
   selector: 'app-sprint',
@@ -34,6 +35,9 @@ export class SprintComponent implements OnInit {
     public displayedColumns = ['#','description', 'assignee', 'done', 'accepted', 'timeEstimate']; //id
     public task:Task = new Task()
     public storyTasksMap = new Map()
+    public developerIds:string[] = []
+    public developers:User[] = []
+    public error:string = ""
 
   ngOnInit(): void {
     this.routeSub = this.route.params.subscribe(params => {
@@ -44,13 +48,59 @@ export class SprintComponent implements OnInit {
           for (var i=0; i<this.stories.length; i++){
             this.getTasksForStory(this.stories[i])
           } })
-        this.projectDataService.getProject(sprint.project).then((
-          data:Project) => {
-            this.project = data
-          })
+          this.projectDataService.getProject(sprint.project).then((
+            data:Project) => {
+              this.project = data
+              this.developerIds = this.project.developers.map((developer: User) => developer.toString());
+              this.getDevelopers()
+            })
       })
     })
   }
+
+  public hide():void{
+    this.error=""
+  }
+
+  acceptTask(task:Task){
+    let currentUser = this.authenticationService.get_current_user()._id
+    if (this.developerIds.includes(currentUser) && task.assignee == currentUser) { // assigned and sameuser
+      task.accepted = true
+    }
+  }
+
+  toggleAssign(task:Task){
+    let currentUser = this.authenticationService.get_current_user()._id
+    if (this.developerIds.includes(currentUser)) { // must be developers
+      if (task.assignee!='' && currentUser == task.assignee){ // if already assigned check if same user and then toggle
+        task.assignee = ''
+        task.accepted = false
+      } else if (!task.assignee || task.assignee==''){ // if nothing assigned yet
+        task.assignee = task.assignee=='' ||!task.assignee ? currentUser : ''
+        task.accepted = true
+      }
+      this.taskService.updateTask(task).then().catch((error) => console.error(error))
+    }    
+  }
+
+  getDevelopers() {
+    for (var id of this.developerIds) {
+      this.usersDataService.getUser(id).then((data: User) => {
+        this.developers.push(data);
+      }).catch((error) => console.error(error));
+    }
+  }
+  
+
+  getDeveloperName(developerId: string): string {
+    var developer: any = this.developers.find(dev => dev._id === developerId);
+    if (developer) {
+      return developer.firstname + ' ' + developer.lastname;
+    } else {
+      return '';
+    }
+  }
+  
 
   public hasSprintEnded(): boolean {
     const endDate = new Date(this.sprint.endDate);
@@ -90,9 +140,14 @@ export class SprintComponent implements OnInit {
   }
 
   rejectStory(story: Story) {
+    if (this.rejectionComment==''){
+      this.error="Must provide reason for rejection!"
+      return
+    }
     story.status = "Rejected";
     story.comment = this.rejectionComment;
     story.sprint = undefined
+    
     this.storyDataService.updateStory(story).then(() => {
       this.closeRejectModal();
     }).catch((error) => console.error(error));
@@ -114,6 +169,7 @@ export class SprintComponent implements OnInit {
   toggleTask(task:Task, story:Story){
     // TODO if (task.accepted && task.assignee == this.authenticationService.get_current_user()._id) task.done = task.done ? false : true
     if (this.authenticationService.get_current_user()._id == this.project.product_owner.toString() || story.status=='Accepted' || story.status=='Done') return // can't do as product owner, or when story accepted or done but not accepted
+    if (task.assignee != this.authenticationService.get_current_user()._id && !this.authenticationService.is_admin()) return // if not assigned or admin
     task.done = task.done ? false : true
     this.taskService.updateTask(task).then().catch((error) => console.error(error))
   }

@@ -3,6 +3,8 @@ import {FormControl} from "@angular/forms";
 import {Task} from "../classes/task";
 import { TasksDataService } from '../task.service';
 import {Router} from "@angular/router";
+import { UsersDataService } from '../user.service';
+import { User } from '../classes/user';
 
 @Component({
   selector: 'app-add-task',
@@ -14,12 +16,13 @@ export class AddTaskComponent implements OnInit {
 
   error: string = "";
   priorityFormControl = new FormControl('white');
+  developers: User[] = []
 
   constructor(private router: Router,
-              private taskService: TasksDataService) { }
+              private taskService: TasksDataService, private usersService: UsersDataService) { }
 
   @Input() story:string = "";
-  
+  @Input() developerIds: string[] = [];
   @Output() messageEvent = new EventEmitter<string>();
   sendMessage() {
     this.messageEvent.emit("task")
@@ -29,13 +32,19 @@ export class AddTaskComponent implements OnInit {
     this.task.story = this.story;
     this.error =""
     this.success=false
+    this.usersService.getUsers().then((data:User[]) => {
+      let users = data
+      this.developers = users.filter((user) => this.developerIds.includes(user._id) )
+    })
   }
 
   addTask() {
     this.error =""
     this.success=false
     if (!this.task.name || !this.task.timeEstimate) {
-      this.error = "Please enter all fields!"
+      this.error = "Please enter name and time!"
+    } else if (isNaN(+this.task.timeEstimate) || this.task.timeEstimate < 0 || this.task.timeEstimate > 100) {
+      this.error = "Time estimate should be a number between 1 and 100!"
     } else {
       let overlap = false
       this.taskService.getTasks().then((tasks:Task []) => { // get all stories and check for same name only for those concerning the same project
@@ -74,7 +83,7 @@ export class AddTaskComponent implements OnInit {
   public task: Task = {
     _id: '',
     name: '',
-    assignee: undefined,
+    assignee: '',
     story: '',
     done: false,
     accepted: false,

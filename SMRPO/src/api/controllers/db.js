@@ -641,6 +641,7 @@ const createTask = (req, res) => {
     new_task.name = req.body.name;
     new_task.story = req.body.story;
     new_task.timeEstimate = req.body.timeEstimate;
+    new_task.assignee = req.body.assignee;
 
     new_task.save(error => {
         console.log(error)

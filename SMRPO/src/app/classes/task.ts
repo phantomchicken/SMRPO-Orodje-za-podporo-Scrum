@@ -1,7 +1,7 @@
 export class Task {
     _id: string  = "";
     name: string  = "";
-    assignee: string | undefined;
+    assignee: string = "";
     story: string = "";
     done: boolean = false
     accepted: boolean = false

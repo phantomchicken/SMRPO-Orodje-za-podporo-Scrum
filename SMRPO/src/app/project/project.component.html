@@ -50,8 +50,7 @@
                             <div class="collapse show" id="collapse1">
                                 <div *ngFor="let story of unfinishedStories; let i = index;" class="col-10">
                                     <!-- *ngFor -->
-                                    <div class="card bg-light mt-2" *ngIf="!story.isEditing">
-                                        <!--1.............................................-->
+                                    <div class="card bg-light mt-2" *ngIf="!story.isEditing"> <!--1.............................................-->
                                         <div class="card-header d-flex justify-content-between" [class]="activeSprints[0]._id == story.sprint ? 'bg-success' : ''">
                                             <div>
                                                 <h5 class="card-title">{{story.name}}</h5>

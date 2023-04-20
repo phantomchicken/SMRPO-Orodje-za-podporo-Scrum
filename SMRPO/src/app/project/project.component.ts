@@ -127,13 +127,17 @@ export class ProjectComponent implements OnInit {
         this.remVel -= +curr_story.storyPoints!
         curr_story.sprint = this.currSprint._id
         curr_story.status = "Backlog"
-        this.storyDataService.updateStory(curr_story)
-        //this.filterStories()
-        this.update("story")
-        this.success = true
+        this.storyDataService.updateStory(curr_story).then(()=>{
+          this.update("story")
+          //this.filterStories()
+          this.success = true
+          if (this.success && i==this.checkedStories.length) this.checkedStories = [] // must be in callback because async! cleanup if successful adding and last iteration!
+        })
+        
       }
     }
-    if (this.success) this.checkedStories = [] // cleanup if successful adding!
+    
+    
   }
 
   markDone(story:Story) {
