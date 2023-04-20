@@ -128,6 +128,8 @@ export class ProjectComponent implements OnInit {
         curr_story.sprint = this.currSprint._id
         curr_story.status = "Backlog"
         this.storyDataService.updateStory(curr_story)
+        //this.filterStories()
+        this.update("story")
         this.success = true
       }
     }
@@ -248,7 +250,8 @@ export class ProjectComponent implements OnInit {
     }
   }
 
-  onStoryEditSubmit(form: NgForm, index: number) {
+  onStoryEditSubmit(form: NgForm, id: string) {
+    let index = this.stories.findIndex((story) => story._id == id)
     let priority = this.stories[index].priority;
     let businessValue = this.stories[index].businessValue;
     let acceptanceCriteria = this.stories[index].acceptanceCriteria;
@@ -273,8 +276,10 @@ export class ProjectComponent implements OnInit {
     // console.log(this.sprints[sprintIndex])
   }
 
-  editStory(index: number){
-    this.stories[index].isEditing = true;
+  editStory(id: string){
+    let ix = this.stories.findIndex((story) => story._id == id)
+    console.log(id, ix, this.stories);
+    this.stories[ix].isEditing = true;
   }
 
   cancelEditSprint(index: number) {
@@ -282,13 +287,14 @@ export class ProjectComponent implements OnInit {
     this.sprints[index].update_error = "";
   }
 
-  cancelEditStory(index: number) {
+  cancelEditStory(id: string) {
+    let index = this.stories.findIndex((story) => story._id == id)
     this.stories[index].isEditing = false;
   }
 
   getSprintDate(sprintId:string) {
     let res = []
-    let sprint = this.sprints.find((sprint)=> sprint._id == sprintId)
+    let sprint = this.sprints.find((sprint)=>sprint._id == sprintId)
     res[0] = sprint?.startDate, res[1] = sprint?.endDate
     return res
   }

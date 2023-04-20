@@ -2,223 +2,334 @@
 <div *ngIf="authenticationService.roleForProject(project)" class="container-fluid p-t-md">
     <div class="row">
         <div class="card col-md-4 mt-4">
-            <div class="card-body"  >
-              <h5 class="card-title">Project details</h5>
-              <h6 class="card-subtitle mt-4 mb-2 text-muted">Project name</h6>
-              <p class="card-text">{{project.name}}</p>
-              <h6 class="card-subtitle mb-2 text-muted">Project description</h6>
-              <p class="card-text text-justify" style="white-space: pre-wrap;">{{project.description}}</p>
-              <h6 class="card-subtitle mt-4 mb-2 text-muted">Scrum master</h6>
-              <p *ngIf="!scrum_master.archived" class="card-text" [ngClass]="authenticationService.get_current_user()._id == scrum_master_id ? 'font-weight-bold text-success' : ''">{{scrum_master.firstname}} {{scrum_master.lastname}}</p>
-              <p *ngIf="scrum_master.archived" class="card-text font-weight-bold text-error">Missing</p>
-              <h6 class="card-subtitle mt-4 mb-2 text-muted">Product owner</h6>
-              <p *ngIf="!product_owner.archived" class="card-text" [ngClass]="authenticationService.get_current_user()._id == product_owner_id ? 'font-weight-bold text-warning' : ''">{{product_owner.firstname}} {{product_owner.lastname}}</p>
-              <p *ngIf="product_owner.archived" class="card-text font-weight-bold text-error">Missing</p>
-              <h6 class="card-subtitle mt-4 mb-2 text-muted">Developers</h6>
-              <p *ngFor="let developer of developers" class="card-text" [ngClass]="authenticationService.get_current_user()._id == developer._id ? 'font-weight-bold' : ''">{{developer.firstname}} {{developer.lastname}}</p>
-          </div>
+            <div class="card-body">
+                <h5 class="card-title">Project details</h5>
+                <h6 class="card-subtitle mt-4 mb-2 text-muted">Project name</h6>
+                <p class="card-text">{{project.name}}</p>
+                <h6 class="card-subtitle mb-2 text-muted">Project description</h6>
+                <p class="card-text text-justify" style="white-space: pre-wrap;">{{project.description}}</p>
+                <h6 class="card-subtitle mt-4 mb-2 text-muted">Scrum master</h6>
+                <p *ngIf="!scrum_master.archived" class="card-text"
+                    [ngClass]="authenticationService.get_current_user()._id == scrum_master_id ? 'font-weight-bold text-success' : ''">
+                    {{scrum_master.firstname}} {{scrum_master.lastname}}</p>
+                <p *ngIf="scrum_master.archived" class="card-text font-weight-bold text-error">Missing</p>
+                <h6 class="card-subtitle mt-4 mb-2 text-muted">Product owner</h6>
+                <p *ngIf="!product_owner.archived" class="card-text"
+                    [ngClass]="authenticationService.get_current_user()._id == product_owner_id ? 'font-weight-bold text-warning' : ''">
+                    {{product_owner.firstname}} {{product_owner.lastname}}</p>
+                <p *ngIf="product_owner.archived" class="card-text font-weight-bold text-error">Missing</p>
+                <h6 class="card-subtitle mt-4 mb-2 text-muted">Developers</h6>
+                <p *ngFor="let developer of developers" class="card-text"
+                    [ngClass]="authenticationService.get_current_user()._id == developer._id ? 'font-weight-bold' : ''">
+                    {{developer.firstname}} {{developer.lastname}}</p>
+            </div>
         </div>
         <div class="col-md-8 mt-4">
             <nav class="m-3">
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <button class="nav-link active" id="nav-backlog-tab" data-bs-toggle="tab" data-bs-target="#nav-backlog"
-                        type="button" role="tab" aria-controls="nav-backlog" aria-selected="true" href="#nav-backlog" 
-                        data-toggle="tab">Backlog</button>
+                    <button class="nav-link active" id="nav-backlog-tab" data-bs-toggle="tab"
+                        data-bs-target="#nav-backlog" type="button" role="tab" aria-controls="nav-backlog"
+                        aria-selected="true" href="#nav-backlog" data-toggle="tab">Backlog</button>
                     <button class="nav-link" id="nav-sprints-tab" data-bs-toggle="tab" data-bs-target="#nav-sprints"
-                        type="button" role="tab" aria-controls="nav-sprints" aria-selected="false" href="#nav-sprints" 
+                        type="button" role="tab" aria-controls="nav-sprints" aria-selected="false" href="#nav-sprints"
                         data-toggle="tab">Sprints</button>
                     <button class="nav-link" id="nav-doc-tab" data-bs-toggle="tab" data-bs-target="#nav-doc"
-                            type="button" role="tab" aria-controls="nav-doc" aria-selected="false" href="#nav-doc"
-                            data-toggle="tab">Documentation</button>
+                        type="button" role="tab" aria-controls="nav-doc" aria-selected="false" href="#nav-doc"
+                        data-toggle="tab">Documentation</button>
                 </div>
             </nav>
             <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="nav-backlog" role="tabpanel" aria-labelledby="nav-backlog-tab">
+                <div class="tab-pane fade show active" id="nav-backlog" role="tabpanel"
+                    aria-labelledby="nav-backlog-tab">
                     <div class="row">
                         <div class="col-md-4 justify-content-center align-items-center">
-                            <button class="btn btn-primary w-100" type="button" data-toggle="collapse" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                            <button class="btn btn-primary w-100" type="button" data-toggle="collapse"
+                                data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
                                 Unfinished
-                              </button>
+                            </button>
                             <div class="collapse show" id="collapse1">
-                                <div *ngFor="let story of unfinishedStories; let i = index;" class="col-10"> <!-- *ngFor -->
-                                    <div class="card bg-light mt-2" *ngIf="!story.isEditing"> <!--1.............................................-->
+                                <div *ngFor="let story of unfinishedStories; let i = index;" class="col-10">
+                                    <!-- *ngFor -->
+                                    <div class="card bg-light mt-2" *ngIf="!story.isEditing">
+                                        <!--1.............................................-->
                                         <div class="card-header d-flex justify-content-between" [class]="activeSprints[0]._id == story.sprint ? 'bg-success' : ''">
                                             <div>
                                                 <h5 class="card-title">{{story.name}}</h5>
                                             </div>
-                                            <div> <!-- if not already assigned to sprint, if points assigned, if scrum master-->
+                                            <div>
+                                                <!-- if not already assigned to sprint, if points assigned, if scrum master-->
                                                 <!--<p *ngIf="activeSprints[0]._id == story.sprint" class="text-success">current sprint</p> -->
                                                 <input *ngIf="!story.sprint && story.storyPoints!=-1 && authenticationService.get_current_user()._id == scrum_master_id" class="form-check-input" type="checkbox" value="" (change)="checkStory(story._id, $event.target)">
                                             </div>
-                                            
-                                        </div>
-                                      <div class="card-body">
-                                        <p class="card-text"><b>Priority: </b>{{story.priority}}</p>
-                                        <p class="card-text"><b>Business value: </b>{{story.businessValue}}</p>
-                                        <p class="card-text"><b>Acceptance criteria:</b></p>
-                                          <ol>
-                                              <ng-container *ngFor="let ac of splitNewLine(story.acceptanceCriteria)">
-                                                <li class="card-text">{{ac}}</li>
-                                              </ng-container>
-                                          </ol>
-                                        <form *ngIf="authenticationService.get_current_user()._id == scrum_master_id && !(story.sprint)"> <!-- if not already assigned to sprint, if scrum master-->
-                                            <div class="form-group">
-                                              <label for="card-text example-input"><b>Story points: </b></label>
-                                              <input class="form-control w-50" type="text" id="example-input" name="exampleInput" [value]="story.storyPoints !== -1 ? story.storyPoints : ''" (change)="editStoryPoints(story, $event.target)">
-                                            </div>
-                                        </form>
-                                        <p *ngIf="story.storyPoints!=-1 && (authenticationService.get_current_user()._id != scrum_master_id || story.sprint)" class="card-text"><b>Story points: </b> {{story.storyPoints}}</p> <!-- if assigned to sprint, if not scrum master-->
-                                        <p *ngIf="story.storyPoints==-1 && authenticationService.get_current_user()._id != scrum_master_id" class="card-text"><b>Story points: </b> </p> <!--  if not scrum master-->
-                                        <p *ngIf="story.sprint" class="card-text"><b>Sprint: </b> {{getSprintDate(story.sprint)[0] | date:'dd.MM'}}-{{getSprintDate(story.sprint)[1] | date:'dd.MM'}}</p>
-                                        <p *ngIf="story.comment" class="card-text"><b class="text-danger">Rejected: </b>{{story.comment}}</p>
-                                        <div *ngIf="story.status!='Done' && !story.sprint && (authenticationService.get_current_user()._id == scrum_master_id || authenticationService.get_current_user()._id == product_owner_id)" class="d-flex justify-content-end">
-                                            <button type="button" class="btn btn-dark mr-2"><i class="far fa-edit" (click)="editStory(i)"></i></button>
-                                            <button type="button" class="btn btn-danger mr-2" (click)="deleteStoryBtn(story)"><i class="far fa-trash-alt"></i></button>
-                                        </div>
-                                    </div>
-                                  </div>
 
-                                  <div class="card bg-light mt-2" *ngIf="story.isEditing"> <!--2.............................................-->
-                                    <div class="card-header d-flex justify-content-between">
-                                        <form #formRef="ngForm" (submit)="onStoryEditSubmit(formRef, i)">
-                                            <div class="form-group">
-                                                <label for="storyName">Story name:</label>
-                                                <input class="form-control" id="storyName" name="storyName" [(ngModel)]="story.name">
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="card-text"><b>Priority: </b>{{story.priority}}</p>
+                                            <p class="card-text"><b>Business value: </b>{{story.businessValue}}</p>
+                                            <p class="card-text"><b>Acceptance criteria:</b></p>
+                                            <ol>
+                                                <ng-container *ngFor="let ac of splitNewLine(story.acceptanceCriteria)">
+                                                    <li class="card-text">{{ac}}</li>
+                                                </ng-container>
+                                            </ol>
+                                            <form
+                                                *ngIf="authenticationService.get_current_user()._id == scrum_master_id && !(story.sprint)">
+                                                <!-- if not already assigned to sprint, if scrum master-->
+                                                <div class="form-group">
+                                                    <label for="card-text example-input"><b>Story points: </b></label>
+                                                    <input class="form-control w-50" type="text" id="example-input"
+                                                        name="exampleInput"
+                                                        [value]="story.storyPoints !== -1 ? story.storyPoints : ''"
+                                                        (change)="editStoryPoints(story, $event.target)">
+                                                </div>
+                                            </form>
+                                            <p *ngIf="story.storyPoints!=-1 && (authenticationService.get_current_user()._id != scrum_master_id || story.sprint)"
+                                                class="card-text"><b>Story points: </b> {{story.storyPoints}}</p>
+                                            <!-- if assigned to sprint, if not scrum master-->
+                                            <p *ngIf="story.storyPoints==-1 && authenticationService.get_current_user()._id != scrum_master_id"
+                                                class="card-text"><b>Story points: </b> </p>
+                                            <!--  if not scrum master-->
+                                            <p *ngIf="story.sprint" class="card-text"><b>Sprint: </b>
+                                                {{getSprintDate(story.sprint)[0] |
+                                                date:'dd.MM'}}-{{getSprintDate(story.sprint)[1] | date:'dd.MM'}}</p>
+                                            <p *ngIf="story.comment" class="card-text"><b class="text-danger">Rejected:
+                                                </b>{{story.comment}}</p>
+                                            <div *ngIf="story.status!='Done' && !story.sprint && (authenticationService.get_current_user()._id == scrum_master_id || authenticationService.get_current_user()._id == product_owner_id)"
+                                                class="d-flex justify-content-end">
+                                                <button type="button" class="btn btn-dark mr-2"><i class="far fa-edit"
+                                                        (click)="editStory(story._id)"></i></button>
+                                                <button type="button" class="btn btn-danger mr-2"
+                                                    (click)="deleteStoryBtn(story)"><i
+                                                        class="far fa-trash-alt"></i></button>
                                             </div>
-                                        </form>                                        
+                                        </div>
                                     </div>
-                                  <div class="card-body">
-                                    
-                                    <form #formRef="ngForm" (submit)="onStoryEditSubmit(formRef, i)">
-                                        <div class="form-group">
-                                            <label for="priority">Priority:</label>
-                                            <select class="form-control" id="priority" name="priority" [(ngModel)]="story.priority">
-                                                <option value="Must have">Must have</option>
-                                                <option value="Could have">Could have</option>
-                                                <option value="Should have">Should have</option>
-                                                <option value="Won't have this time">Won't have this time</option>
-                                            </select>
+
+                                    <div class="card bg-light mt-2" *ngIf="story.isEditing">
+                                        <!--2.............................................-->
+                                        <div class="card-header d-flex justify-content-between">
+                                            <form #formRef="ngForm" (submit)="onStoryEditSubmit(formRef, story._id)">
+                                                <div class="form-group">
+                                                    <label for="storyName">Story name:</label>
+                                                    <input class="form-control" id="storyName" name="storyName"
+                                                        [(ngModel)]="story.name">
+                                                </div>
+                                            </form>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="businessValue">Business value:</label>
-                                            <input type="number" class="form-control" id="businessValue" name="businessValue" [(ngModel)]="story.businessValue" min="0">
+                                        <div class="card-body">
+
+                                            <form #formRef="ngForm" (submit)="onStoryEditSubmit(formRef, story._id)">
+                                                <div class="form-group">
+                                                    <label for="priority">Priority:</label>
+                                                    <select class="form-control" id="priority" name="priority"
+                                                        [(ngModel)]="story.priority">
+                                                        <option value="Must have">Must have</option>
+                                                        <option value="Could have">Could have</option>
+                                                        <option value="Should have">Should have</option>
+                                                        <option value="Won't have this time">Won't have this time
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="businessValue">Business value:</label>
+                                                    <input type="number" class="form-control" id="businessValue"
+                                                        name="businessValue" [(ngModel)]="story.businessValue" min="0">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="acceptanceCriteria">Acceptance criteria:</label>
+                                                    <textarea class="form-control" id="acceptanceCriteria"
+                                                        name="acceptanceCriteria"
+                                                        [(ngModel)]="story.acceptanceCriteria"></textarea>
+                                                </div>
+                                                <div class="d-flex justify-content-center" style="margin-bottom: 10%">
+                                                    <button type="submit" class="btn btn-primary mr-2">Save</button>
+                                                    <button type="button" class="btn btn-secondary"
+                                                        (click)="cancelEditStory(story._id)">Cancel</button>
+                                                </div>
+                                            </form>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="acceptanceCriteria">Acceptance criteria:</label>
-                                            <textarea class="form-control" id="acceptanceCriteria" name="acceptanceCriteria" [(ngModel)]="story.acceptanceCriteria"></textarea>
-                                        </div>
-                                        <div class="d-flex justify-content-center" style="margin-bottom: 10%">
-                                            <button type="submit" class="btn btn-primary mr-2">Save</button>
-                                            <button type="button" class="btn btn-secondary" (click)="cancelEditStory(i)">Cancel</button>
-                                        </div>                                        
-                                    </form>
-                                </div>
-                            </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4 justify-content-center align-items-center">
-                            <button class="btn btn-success w-100" type="button" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                            <button class="btn btn-success w-100" type="button" data-toggle="collapse"
+                                data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
                                 Finished
-                              </button>
+                            </button>
                             <div class="collapse show" id="collapse2">
-                                <div *ngFor="let story of finishedStories" class="col-10"> <!-- *ngFor -->
+                                <div *ngFor="let story of finishedStories" class="col-10">
+                                    <!-- *ngFor -->
                                     <div class="card bg-light mt-2">
                                         <div class="card-header d-flex justify-content-between" [class]="activeSprints[0]._id == story.sprint ? 'bg-success' : ''">
                                             <div>
                                                 <h5 class="card-title">{{story.name}}</h5>
                                             </div>
-                                            <div> <!-- if not already assigned to sprint, if points assigned, if scrum master-->
+                                            <div>
+                                                <!-- if not already assigned to sprint, if points assigned, if scrum master-->
                                                 <p *ngIf="activeSprints[0]._id == story.sprint" class="text-success">current sprint</p>
                                                 <!--<input *ngIf="!story.sprint && story.storyPoints!=-1 && authenticationService.get_current_user()._id == scrum_master_id" class="form-check-input" type="checkbox" value="" (change)="checkStory(story._id, $event.target)">-->
                                             </div>
-                                            
+
                                         </div>
-                                      <div class="card-body">
-                                        <p class="card-text"><b>Priority: </b>{{story.priority}}</p>
-                                        <p class="card-text"><b>Business value: </b>{{story.businessValue}}</p>
-                                        <p class="card-text"><b>Acceptance criteria:</b></p>
-                                          <ol>
-                                              <ng-container *ngFor="let ac of splitNewLine(story.acceptanceCriteria)">
-                                                <li class="card-text">{{ac}}</li>
-                                              </ng-container>
-                                          </ol>
-                                        <form *ngIf="authenticationService.get_current_user()._id == scrum_master_id && !(story.sprint)"> <!-- if not already assigned to sprint, if scrum master-->
-                                            <div class="form-group">
-                                              <label for="card-text example-input"><b>Story points: </b></label>
-                                              <input class="form-control w-50" type="text" id="example-input" name="exampleInput" [value]="story.storyPoints" (change)="editStoryPoints(story, $event.target)">
-                                            </div>
-                                        </form>
-                                        <p *ngIf="story.storyPoints!=-1 && (authenticationService.get_current_user()._id != scrum_master_id || story.sprint)" class="card-text"><b>Story points: </b> {{story.storyPoints}}</p> <!-- if assigned to sprint, if not scrum master-->
-                                        <p *ngIf="story.storyPoints==-1 && authenticationService.get_current_user()._id != scrum_master_id" class="card-text"><b>Story points: </b> </p> <!--  if not scrum master-->
-                                        <p *ngIf="story.sprint" class="card-text"><b>Sprint: </b> {{getSprintDate(story.sprint)[0] | date:'dd.MM'}}-{{getSprintDate(story.sprint)[1] | date:'dd.MM'}}</p>
-                                        <!--<a class="stretched-link" routerLink="/sprint/{{story.sprint}}" style="cursor:pointer"></a>-->
+                                        <div class="card-body">
+                                            <p class="card-text"><b>Priority: </b>{{story.priority}}</p>
+                                            <p class="card-text"><b>Business value: </b>{{story.businessValue}}</p>
+                                            <p class="card-text"><b>Acceptance criteria:</b></p>
+                                            <ol>
+                                                <ng-container *ngFor="let ac of splitNewLine(story.acceptanceCriteria)">
+                                                    <li class="card-text">{{ac}}</li>
+                                                </ng-container>
+                                            </ol>
+                                            <form
+                                                *ngIf="authenticationService.get_current_user()._id == scrum_master_id && !(story.sprint)">
+                                                <!-- if not already assigned to sprint, if scrum master-->
+                                                <div class="form-group">
+                                                    <label for="card-text example-input"><b>Story points: </b></label>
+                                                    <input class="form-control w-50" type="text" id="example-input"
+                                                        name="exampleInput" [value]="story.storyPoints"
+                                                        (change)="editStoryPoints(story, $event.target)">
+                                                </div>
+                                            </form>
+                                            <p *ngIf="story.storyPoints!=-1 && (authenticationService.get_current_user()._id != scrum_master_id || story.sprint)"
+                                                class="card-text"><b>Story points: </b> {{story.storyPoints}}</p>
+                                            <!-- if assigned to sprint, if not scrum master-->
+                                            <p *ngIf="story.storyPoints==-1 && authenticationService.get_current_user()._id != scrum_master_id"
+                                                class="card-text"><b>Story points: </b> </p>
+                                            <!--  if not scrum master-->
+                                            <p *ngIf="story.sprint" class="card-text"><b>Sprint: </b>
+                                                {{getSprintDate(story.sprint)[0] |
+                                                date:'dd.MM'}}-{{getSprintDate(story.sprint)[1] | date:'dd.MM'}}</p>
+                                        </div>
                                     </div>
-                                  </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 justify-content-center align-items-center"> <!-- NO CHECKBOX AND INPUT STORY POINTS BECAUSE THE STORIES ARE WON'T HAVE-->
-                            <button class="btn btn-light w-100" type="button" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                        <div class="col-md-4 justify-content-center align-items-center">
+                            <!-- NO CHECKBOX AND INPUT STORY POINTS BECAUSE THE STORIES ARE WON'T HAVE-->
+                            <button class="btn btn-light w-100" type="button" data-toggle="collapse"
+                                data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
                                 Future releases
-                              </button>
+                            </button>
                             <div class="collapse show" id="collapse3">
-                                <div *ngFor="let story of wontHaveStories" class="col-10"> <!-- *ngFor -->
-                                    <div class="card bg-light mt-2">
+                                <div *ngFor="let story of wontHaveStories; let i = index" class="col-10">
+                                    <!-- *ngFor -->
+                                    <div class="card bg-light mt-2" *ngIf="!story.isEditing">
                                         <div class="card-header d-flex justify-content-between">
                                             <div>
                                                 <h5 class="card-title">{{story.name}}</h5>
-                                            </div>                                            
+                                            </div>
                                         </div>
-                                      <div class="card-body"> 
-                                        <p class="card-text"><b>Priority: </b>{{story.priority}}</p>
-                                        <p class="card-text"><b>Business value: </b>{{story.businessValue}}</p>
-                                        <p class="card-text"><b>Acceptance criteria:</b></p>
-                                          <ol>
-                                              <ng-container *ngFor="let ac of splitNewLine(story.acceptanceCriteria)">
-                                                <li class="card-text">{{ac}}</li>
-                                              </ng-container>
-                                          </ol>
-                                        <p *ngIf="story.storyPoints!=-1" class="card-text"><b>Story points: </b> {{story.storyPoints}}</p> <!-- if assigned to sprint, if not scrum master-->
-                                        <p *ngIf="story.storyPoints==-1" class="card-text"><b>Story points: </b> </p> <!-- if assigned to sprint, if not scrum master-->
-                                        <p *ngIf="story.sprint" class="card-text"><b>Sprint: </b> {{story.sprint}}</p>
+                                        <div class="card-body">
+                                            <p class="card-text"><b>Priority: </b>{{story.priority}}</p>
+                                            <p class="card-text"><b>Business value: </b>{{story.businessValue}}</p>
+                                            <p class="card-text"><b>Acceptance criteria:</b></p>
+                                            <ol>
+                                                <ng-container *ngFor="let ac of splitNewLine(story.acceptanceCriteria)">
+                                                    <li class="card-text">{{ac}}</li>
+                                                </ng-container>
+                                            </ol>
+                                            <p *ngIf="story.storyPoints!=-1" class="card-text"><b>Story points: </b>
+                                                {{story.storyPoints}}</p>
+                                            <!-- if assigned to sprint, if not scrum master-->
+                                            <p *ngIf="story.storyPoints==-1" class="card-text"><b>Story points: </b>
+                                            </p> <!-- if assigned to sprint, if not scrum master-->
+                                            <p *ngIf="story.sprint" class="card-text"><b>Sprint: </b> {{story.sprint}}
+                                            </p>
 
-                                        <div *ngIf="story.status!='Done' && !story.sprint && (authenticationService.get_current_user()._id == scrum_master_id || authenticationService.get_current_user()._id == product_owner_id)" class="d-flex justify-content-end">
-                                            <button type="button" class="btn btn-dark mr-2"><i class="far fa-edit"></i></button>
-                                            <button type="button" class="btn btn-danger mr-2" (click)="deleteStoryBtn(story)"><i class="far fa-trash-alt"></i></button>
+                                            <div *ngIf="story.status!='Done' && !story.sprint && (authenticationService.get_current_user()._id == scrum_master_id || authenticationService.get_current_user()._id == product_owner_id)"
+                                                class="d-flex justify-content-end">
+                                                <button type="button" class="btn btn-dark mr-2"><i class="far fa-edit"
+                                                        (click)="editStory(story._id)"></i></button>
+                                                <button type="button" class="btn btn-danger mr-2"
+                                                    (click)="deleteStoryBtn(story)"><i
+                                                        class="far fa-trash-alt"></i></button>
+                                            </div>
                                         </div>
                                     </div>
-                                  </div>
+                                    <div class="card bg-light mt-2" *ngIf="story.isEditing">
+                                        <!--2.............................................-->
+                                        <div class="card-header d-flex justify-content-between">
+                                            <form #formRef="ngForm" (submit)="onStoryEditSubmit(formRef, story._id)">
+                                                <div class="form-group">
+                                                    <label for="storyName">Story name:</label>
+                                                    <input class="form-control" id="storyName" name="storyName"
+                                                        [(ngModel)]="story.name">
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="card-body">
+
+                                            <form #formRef="ngForm" (submit)="onStoryEditSubmit(formRef, story._id)">
+                                                <div class="form-group">
+                                                    <label for="priority">Priority:</label>
+                                                    <select class="form-control" id="priority" name="priority"
+                                                        [(ngModel)]="story.priority">
+                                                        <option value="Must have">Must have</option>
+                                                        <option value="Could have">Could have</option>
+                                                        <option value="Should have">Should have</option>
+                                                        <option value="Won't have this time">Won't have this time
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="businessValue">Business value:</label>
+                                                    <input type="number" class="form-control" id="businessValue"
+                                                        name="businessValue" [(ngModel)]="story.businessValue" min="0">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="acceptanceCriteria">Acceptance criteria:</label>
+                                                    <textarea class="form-control" id="acceptanceCriteria"
+                                                        name="acceptanceCriteria"
+                                                        [(ngModel)]="story.acceptanceCriteria"></textarea>
+                                                </div>
+                                                <div class="d-flex justify-content-center" style="margin-bottom: 10%">
+                                                    <button type="submit" class="btn btn-primary mr-2">Save</button>
+                                                    <button type="button" class="btn btn-secondary"
+                                                        (click)="cancelEditStory(story._id)">Cancel</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                            
+
                     </div>
                     <div class="row mt-4">
                         <div class="d-flex justify-content-center">
-                            <mat-form-field *ngIf="checkedStories.length>0" class="mr-4" style="background-color: white;">
+                            <mat-form-field *ngIf="checkedStories.length>0" class="mr-4"
+                                style="background-color: white;">
                                 <mat-label>Add to sprint</mat-label>
-                                <mat-select [(ngModel)]="currSprint" panelClass="example-panel-white" >
-                                  <mat-option *ngFor="let sprint of activeSprints" [value]="sprint"> Sprint {{sprint.startDate | date:'dd.MM'}} - {{sprint.endDate | date:'dd.MM'}}</mat-option>
+                                <mat-select [(ngModel)]="currSprint" panelClass="example-panel-white">
+                                    <mat-option *ngFor="let sprint of activeSprints" [value]="sprint"> Sprint
+                                        {{sprint.startDate | date:'dd.MM'}} - {{sprint.endDate | date:'dd.MM'}}
+                                    </mat-option>
                                 </mat-select>
-                              </mat-form-field>
-                           <button *ngIf="checkedStories.length>0" (click)="addStoriesToSprint()" type="button" class="btn btn-success w-25 mr-2">Add stories to sprint</button>
-                           <div *ngIf="checkedStories.length>0">{{getCheckedStoryPoints()}}<span *ngIf="currSprint.velocity!=0" >/{{calculateRemainingVelocity(currSprint)}} (remaining)</span>   </div>
+                            </mat-form-field>
+                            <button *ngIf="checkedStories.length>0" (click)="addStoriesToSprint()" type="button"
+                                class="btn btn-success w-25 mr-2">Add stories to sprint</button>
+                            <div *ngIf="checkedStories.length>0">{{getCheckedStoryPoints()}}<span
+                                    *ngIf="currSprint.velocity!=0">/{{calculateRemainingVelocity(currSprint)}}
+                                    (remaining)</span> </div>
                             <div *ngIf="error" class="alert alert-danger alert-dismissible" role="alert">
                                 {{error}}
                                 <button type="button" class="close" (click)="hide()" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                       
+
                         </div>
                         <div class="row mt-4">
                             <div class="d-flex justify-content-center">
-                                <button *ngIf="!addStoryVisible && (authenticationService.get_current_user()._id == scrum_master_id || authenticationService.get_current_user()._id == product_owner_id)" (click)="showAddStory()" type="button" class="btn btn-dark w-25">Add story</button>
-                                <button *ngIf="addStoryVisible" (click)="hideAddStory()" type="button" class="btn btn-dark w-25">Hide Form</button>
+                                <button
+                                    *ngIf="!addStoryVisible && (authenticationService.get_current_user()._id == scrum_master_id || authenticationService.get_current_user()._id == product_owner_id)"
+                                    (click)="showAddStory()" type="button" class="btn btn-dark w-25">Add story</button>
+                                <button *ngIf="addStoryVisible" (click)="hideAddStory()" type="button"
+                                    class="btn btn-dark w-25">Hide Form</button>
                             </div>
                         </div>
-                        
+
                         <div *ngIf="addStoryVisible">
                             <app-add-story (messageEvent)="update($event)" [project]="project._id"></app-add-story>
                         </div>
@@ -226,81 +337,105 @@
                 </div>
                 <div class="tab-pane fade" id="nav-sprints" role="tabpanel" aria-labelledby="nav-sprints-tab">
                     <div class="row">
-                        <div *ngFor="let sprint of sprints; let i = index;" class="col-md-3 m-4"> <!-- *ngFor -->
+                        <div *ngFor="let sprint of sprints; let i = index;" class="col-md-3 m-4">
+                            <!-- *ngFor -->
                             <div class="card">
-                            <div class="card-header d-flex justify-content-between" [ngClass]="colorSprint(sprint)">
-                                <div>
-                                    <h5 class="card-title">Sprint #{{i+1}}</h5>
+                                <div class="card-header d-flex justify-content-between" [ngClass]="colorSprint(sprint)">
+                                    <div>
+                                        <h5 class="card-title">Sprint #{{i+1}}</h5>
+                                    </div>
+                                    <div
+                                        *ngIf="authenticationService.is_admin() || authenticationService.get_current_user()._id == project.scrum_master.toString()">
+                                        <!-- if admin or scrum master-->
+                                        <button *ngIf="colorSprint(sprint)=='bg-info'" type="button"
+                                            class="close btn btn-danger p-2" (click)="deleteSprint(i,sprint)"
+                                            aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
                                 </div>
-                                <div *ngIf="authenticationService.is_admin() || authenticationService.get_current_user()._id == project.scrum_master.toString()"> <!-- if admin or scrum master-->
-                                    <button *ngIf="colorSprint(sprint)=='bg-info'" type="button" class="close btn btn-danger p-2" (click)="deleteSprint(i,sprint)" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                      </button></div>
-                            </div>
-                            <div class="card-body"  *ngIf="!sprint.isEditing">
-                                <p class="card-text"><b>Start date: </b>{{sprint.startDate | date:'dd.MM'}}</p>
-                                <p class="card-text"><b>End date: </b>{{sprint.endDate | date:'dd.MM'}}</p>
-                                <p class="card-text"><b>Velocity: </b> {{sprint.velocity}} points</p>
-                                <div *ngIf="sprint.updated" class="alert alert-success alert-dismissible" role="alert">
-                                    Sprint successfully updated!
-                                    <button type="button" class="close" (click)="updated_message_hide(i)" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
+                                <div class="card-body" *ngIf="!sprint.isEditing">
+                                    <p class="card-text"><b>Start date: </b>{{sprint.startDate | date:'dd.MM'}}</p>
+                                    <p class="card-text"><b>End date: </b>{{sprint.endDate | date:'dd.MM'}}</p>
+                                    <p class="card-text"><b>Velocity: </b> {{sprint.velocity}} points</p>
+                                    <div *ngIf="sprint.updated" class="alert alert-success alert-dismissible"
+                                        role="alert">
+                                        Sprint successfully updated!
+                                        <button type="button" class="close" (click)="updated_message_hide(i)"
+                                            aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <a *ngIf="colorSprint(sprint)=='bg-success'" class="stretched-link"
+                                        routerLink="/sprint/{{sprint._id}}"></a>
+                                    <!-- can access sprint backlog only if active sprint-->
                                 </div>
-                                <a *ngIf="colorSprint(sprint)=='bg-success'" class="stretched-link" routerLink="/sprint/{{sprint._id}}"></a> <!-- can access sprint backlog only if active sprint-->
-                            </div>
-                            <div class="card-body" *ngIf="sprint.isEditing">
-                                <form #formRef="ngForm" (submit)="onSprintEditSubmit(formRef, i)">
-                                    <div class="form-group">
-                                        <label for="startDate">Start date:</label>
-                                        <input type="date" class="form-control" id="startDate" name="startDate"
-                                               [ngModel]="formatDate(sprint.startDate)" [disabled]="colorSprint(sprint)=='bg-success'"> <!-- can't edit dates for current sprint -->
+                                <div class="card-body" *ngIf="sprint.isEditing">
+                                    <form #formRef="ngForm" (submit)="onSprintEditSubmit(formRef, i)">
+                                        <div class="form-group">
+                                            <label for="startDate">Start date:</label>
+                                            <input type="date" class="form-control" id="startDate" name="startDate"
+                                                [ngModel]="formatDate(sprint.startDate)"
+                                                [disabled]="colorSprint(sprint)=='bg-success'">
+                                            <!-- can't edit dates for current sprint -->
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="endDate">End date:</label>
+                                            <input type="date" class="form-control" id="endDate" name="endDate"
+                                                [ngModel]="formatDate(sprint.endDate)"
+                                                [disabled]="colorSprint(sprint)=='bg-success'">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="velocity">Velocity:</label>
+                                            <input type="number" class="form-control" id="velocity" name="velocity"
+                                                [ngModel]="sprint.velocity">
+                                        </div>
+                                        <div class="d-flex justify-content-center" style="margin-bottom: 10%">
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </form>
+                                    <div *ngIf="sprint.update_error" class="alert alert-danger alert-dismissible"
+                                        role="alert">
+                                        {{sprint.update_error}}
+                                        <button type="button" class="close" (click)="updated_error_hide(i)"
+                                            aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="endDate">End date:</label>
-                                        <input type="date" class="form-control" id="endDate" name="endDate"
-                                               [ngModel]="formatDate(sprint.endDate)" [disabled]="colorSprint(sprint)=='bg-success'">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="velocity">Velocity:</label>
-                                        <input type="number" class="form-control" id="velocity" name="velocity"
-                                               [ngModel]="sprint.velocity">
-                                    </div>
-                                    <div class="d-flex justify-content-center" style="margin-bottom: 10%">
-                                        <button type="submit" class="btn btn-primary">Save</button>
-                                    </div>
-                                </form>
-                                <div *ngIf="sprint.update_error" class="alert alert-danger alert-dismissible" role="alert">
-                                    {{sprint.update_error}}
-                                    <button type="button" class="close" (click)="updated_error_hide(i)" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
                                 </div>
-                            </div>
-                            <div *ngIf="sprint.editable && !sprint.isEditing" class="d-flex justify-content-center" style="margin-bottom: 10%">
-                                <button (click)="editSprint(i)" type="button" class="btn btn-dark w-75" style="position:relative; z-index: 2; cursor:pointer">Edit sprint</button> <!-- put button over sprint link-->
-                            </div>
-                            <div *ngIf="sprint.editable && sprint.isEditing" class="d-flex justify-content-center" style="margin-bottom: 10%">
-                                <button (click)="cancelEditSprint(i)" type="button" class="btn btn-dark w-75">Cancel</button>
-                            </div>
+                                <div *ngIf="sprint.editable && !sprint.isEditing" class="d-flex justify-content-center"
+                                    style="margin-bottom: 10%">
+                                    <button (click)="editSprint(i)" type="button" class="btn btn-dark w-75"
+                                        style="position:relative; z-index: 2; cursor:pointer">Edit sprint</button>
+                                    <!-- put button over sprint link-->
+                                </div>
+                                <div *ngIf="sprint.editable && sprint.isEditing" class="d-flex justify-content-center"
+                                    style="margin-bottom: 10%">
+                                    <button (click)="cancelEditSprint(i)" type="button"
+                                        class="btn btn-dark w-75">Cancel</button>
+                                </div>
                             </div>
                         </div>
-                </div>
-                <div class="row mt-4">
-                    <div class="d-flex justify-content-center">
-                        <button *ngIf="!addSprintVisible && authenticationService.get_current_user()._id == scrum_master_id" (click)="showAddSprint()" type="button" class="btn btn-dark w-25">Add sprint</button>
-                        <button *ngIf="addSprintVisible && authenticationService.get_current_user()._id == scrum_master_id" (click)="hideAddSprint()" type="button" class="btn btn-dark w-25">Hide Form</button>
                     </div>
-                    <div *ngIf="addSprintVisible">
-                        <app-add-sprint (messageEvent)="update($event)" [project]="project._id"></app-add-sprint>
-                    </div>
+                    <div class="row mt-4">
+                        <div class="d-flex justify-content-center">
+                            <button
+                                *ngIf="!addSprintVisible && authenticationService.get_current_user()._id == scrum_master_id"
+                                (click)="showAddSprint()" type="button" class="btn btn-dark w-25">Add sprint</button>
+                            <button
+                                *ngIf="addSprintVisible && authenticationService.get_current_user()._id == scrum_master_id"
+                                (click)="hideAddSprint()" type="button" class="btn btn-dark w-25">Hide Form</button>
+                        </div>
+                        <div *ngIf="addSprintVisible">
+                            <app-add-sprint (messageEvent)="update($event)" [project]="project._id"></app-add-sprint>
+                        </div>
 
-                </div>
+                    </div>
                 </div>
                 <div class="tab-pane fade" id="nav-doc" role="tabpanel" aria-labelledby="nav-doc-tab">
                     <app-documentation (messageEvent)="update($event)" [project]="project._id"></app-documentation>
                 </div>
             </div>
-        </div>       
+        </div>
     </div>
 </div>
