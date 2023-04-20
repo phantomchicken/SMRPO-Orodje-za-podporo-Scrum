@@ -120,7 +120,7 @@ const login = (req, res) => {
 };
 
 const addUser = (req, res) => {
-    console.log(req.body);
+    //console.log(req.body);
     if (req.body === undefined) {
         res.status(500).send('Internal error')
         return;
@@ -157,7 +157,7 @@ const updateUser = (req, res) => {
         } else if (error) {
             return res.status(500).json(error);
         } else {
-            console.log(user)
+            //console.log(user)
             user.firstname = req.body.firstname;
             user.username = req.body.username;
             user.lastname = req.body.lastname;
@@ -279,7 +279,7 @@ const addSprint = (req, res) => {
 const getProject = (req, res) => {
     //console.log(req.params)
     Project.findById(req.params.idProject).exec((error, project) => {
-        console.log(project)
+        //console.log(project)
         if (!project) {
             return res.status(404).json({
                 "message": "Project not found."
@@ -314,7 +314,7 @@ const getSprints = (req, res) => {
                 return sprintObj;
             });
             sprints = sprints.map(sprint => sprint.toObject())
-            console.log(modifiedSprints);
+            //console.log(modifiedSprints);
             res.status(200).json(modifiedSprints);
         }
     });
@@ -323,7 +323,7 @@ const getSprints = (req, res) => {
 const getSprint = (req, res) => {
     //console.log(req.params)
     Sprint.findById(req.params.idSprint).exec((error, sprint) => {
-        console.log(sprint)
+        //console.log(sprint)
         if (!sprint) {
             return res.status(404).json({
                 "message": "Sprint not found."
@@ -335,7 +335,7 @@ const getSprint = (req, res) => {
             sprintObj.editable = false;
             if (sprintObj.endDate.getTime() > Date.now()) // endDate so we can edit current sprints (only velocity)
                 sprintObj.editable = true;
-            console.log(sprintObj)
+            //console.log(sprintObj)
             res.status(200).json(sprintObj);
         }
     });
@@ -429,14 +429,13 @@ const getProjects = (req, res) => {
             return res.status(500).json(error);
         } else {
             //console.log(projects)
-            //console.log(projects)
             res.status(200).json(projects);
         }
     });
 }
 
 const addProject = (req, res) => {
-    console.log(req.body)
+    //console.log(req.body)
     if (req.body === undefined) {
         res.status(500).send('Internal error')
         return;
@@ -480,7 +479,7 @@ const updateProject = (req, res) => {
         } else if (error) {
             return res.status(500).json(error);
         } else {
-            console.log(project)
+            //console.log(project)
             project.name = req.body.name;
             project.description = req.body.description;
             project.scrum_master = req.body.scrum_master;
@@ -560,7 +559,7 @@ const updateStory = (req, res) => {
         } else if (error) {
             return res.status(500).json(error);
         } else {
-            console.log(story)
+            //console.log(story)
             if (req.body.name != "") story.name = req.body.name
             if (req.body.description != "") story.description = req.body.description
             if (req.body.storyPoints != "") story.storyPoints = req.body.storyPoints
@@ -571,7 +570,10 @@ const updateStory = (req, res) => {
             if (req.body.project != "") story.project = req.body.project
             if (req.body.sprint != "") story.sprint = req.body.sprint
             if (req.body.assignee!= "") story.assignee = req.body.assignee
-            if (req.body.comment!= "") story.comment = req.body.comment
+            if (req.body.comment != "")
+                story.comment = req.body.comment
+            else
+                story.comment = "";
 
             story.save((error, updated_story) => {
                 if (error) {
@@ -589,8 +591,6 @@ const getStories = (req, res) => {
         if (error) {
             return res.status(500).json(error);
         } else {
-            //console.log(projects)
-            //console.log(projects)
             res.status(200).json(stories);
         }
     });
@@ -599,7 +599,7 @@ const getStories = (req, res) => {
 const getStory = (req, res) => {
     //console.log(req.params)
     Story.findById(req.params.idStory).exec((error, story) => {
-        console.log(story)
+        //console.log(story)
         if (!story) {
             return res.status(404).json({
                 "message": "Story not found."
@@ -623,7 +623,7 @@ const deleteStory = (req, res) => {
 }
 
 const createTask = (req, res) => {
-        console.log(req.body)
+        //console.log(req.body)
     if (req.body === undefined) {
         res.status(500).send('Internal error')
         return;
@@ -653,39 +653,39 @@ const createTask = (req, res) => {
 }
 
 const updateTask = (req, res) => {
+    console.log(req.body);
     Task.findById(req.params.idTask).exec((error, task) => {
-        if (!task) {
-            return res.status(404).json({
-                "message": "No task found."
-            });
-        } else if (error) {
-            return res.status(500).json(error);
-        } else {
-            if (req.body.name != "") task.name = req.body.name;
-            if (req.body.assignee != "") task.assignee = req.body.assignee;
-            if (req.body.story != "") task.story = req.body.story;
-            if (req.body.done != "") task.done = req.body.done;
-            if (req.body.accepted != "") task.accepted = req.body.accepted;
-            if (req.body.timeEstimate != "") task.timeEstimate = req.body.timeEstimate;
-
-            task.save((error, updated_task) => {
-                if (error) {
-                    res.status(500).json(error);
-                } else {
-                    res.status(200).json(updated_task);
-                }
-            });
-        }
+      if (!task) {
+        return res.status(404).json({
+          "message": "No task found."
+        });
+      } else if (error) {
+        return res.status(500).json(error);
+      } else {
+        if (req.body.name !== "") task.name = req.body.name;
+        if (req.body.assignee !== "") task.assignee = req.body.assignee;
+        if (req.body.story !== "") task.story = req.body.story;
+        if (typeof req.body.done === "boolean") task.done = req.body.done; // update based on boolean value
+        if (typeof req.body.accepted === "boolean") task.accepted = req.body.accepted; // update based on boolean value
+        if (req.body.timeEstimate !== "") task.timeEstimate = req.body.timeEstimate;
+  
+        task.save((error, updated_task) => {
+          if (error) {
+            res.status(500).json(error);
+          } else {
+            res.status(200).json(updated_task);
+          }
+        });
+      }
     });
-}
+  }
+  
 
 const getTasks = (req, res) => {
     Task.find({}, function (error, tasks) {
         if (error) {
             return res.status(500).json(error);
         } else {
-            //console.log(projects)
-            //console.log(projects)
             res.status(200).json(tasks);
         }
     });

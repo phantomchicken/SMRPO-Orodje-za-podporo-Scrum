@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AuthenticationService } from '../authentication.service';
 import { Project } from '../classes/project';
 import { User } from '../classes/user';
 import { ProjectDataService } from '../project.service';
@@ -18,7 +19,8 @@ export class AdminEditProjectComponent implements OnInit {
   constructor(private router: Router,
     private route: ActivatedRoute,
     private projectService: ProjectDataService,
-    private userService: UsersDataService) { }
+    private userService: UsersDataService,
+    protected authenticationService: AuthenticationService) { }
 
 private routeSub!: Subscription
 public error:string =""

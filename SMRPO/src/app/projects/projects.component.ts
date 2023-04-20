@@ -33,13 +33,6 @@ export class ProjectsComponent implements OnInit {
     else return ""
   }
 
-  roleForProject(project:any): boolean {
-    if (project.scrum_master == this.authenticationService.get_current_user()._id ||
-      project.product_owner == this.authenticationService.get_current_user()._id ||
-      project.developers.includes(this.authenticationService.get_current_user()._id)) return true
-    else return false
-  }
-
   public project: any = {
     _id: "",
     name: "",

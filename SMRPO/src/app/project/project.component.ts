@@ -126,6 +126,7 @@ export class ProjectComponent implements OnInit {
       else {
         this.remVel -= +curr_story.storyPoints!
         curr_story.sprint = this.currSprint._id
+        curr_story.status = "Backlog"
         this.storyDataService.updateStory(curr_story)
         this.success = true
       }
@@ -287,7 +288,7 @@ export class ProjectComponent implements OnInit {
 
   getSprintDate(sprintId:string) {
     let res = []
-    let sprint = this.sprints.find((sprint)=>sprint._id=sprintId)
+    let sprint = this.sprints.find((sprint)=> sprint._id == sprintId)
     res[0] = sprint?.startDate, res[1] = sprint?.endDate
     return res
   }

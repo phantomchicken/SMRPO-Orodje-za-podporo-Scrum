@@ -85,6 +85,13 @@ export class AuthenticationService {
       })
   }
 
+  public roleForProject(project:any): boolean {
+    if (project.scrum_master == this.get_current_user()._id ||
+      project.product_owner == this.get_current_user()._id ||
+      project.developers.includes(this.get_current_user()._id) || this.is_admin()) return true
+    else return false
+  }
+
   public logout(): void {
     this.storage.removeItem('SMRPO-token');
   }

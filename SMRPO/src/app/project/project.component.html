@@ -1,4 +1,5 @@
-<div class="container-fluid p-t-md">
+<h3 *ngIf="!authenticationService.roleForProject(project)">User not part of project!</h3>
+<div *ngIf="authenticationService.roleForProject(project)" class="container-fluid p-t-md">
     <div class="row">
         <div class="card col-md-4 mt-4">
             <div class="card-body"  >
@@ -41,14 +42,13 @@
                             <div class="collapse show" id="collapse1">
                                 <div *ngFor="let story of unfinishedStories; let i = index;" class="col-10"> <!-- *ngFor -->
                                     <div class="card bg-light mt-2" *ngIf="!story.isEditing"> <!--1.............................................-->
-                                        <div class="card-header d-flex justify-content-between">
+                                        <div class="card-header d-flex justify-content-between" [class]="activeSprints[0]._id == story.sprint ? 'bg-success' : ''">
                                             <div>
                                                 <h5 class="card-title">{{story.name}}</h5>
                                             </div>
                                             <div> <!-- if not already assigned to sprint, if points assigned, if scrum master-->
+                                                <!--<p *ngIf="activeSprints[0]._id == story.sprint" class="text-success">current sprint</p> -->
                                                 <input *ngIf="!story.sprint && story.storyPoints!=-1 && authenticationService.get_current_user()._id == scrum_master_id" class="form-check-input" type="checkbox" value="" (change)="checkStory(story._id, $event.target)">
-                                                <i *ngIf="story.storyPoints!=-1 && story.sprint && story.status!='Done' && (authenticationService.get_current_user()._id == scrum_master_id || developersString.includes(authenticationService.get_current_user()._id))" class="fas fa-check-square fa-lg" style="color: gray;" (click)="markDone(story)"></i> <!-- story not marked done, has story points and sprint, and part of project but not product owner-->
-                                                <i *ngIf="story.status=='Done'" class="fas fa-check-square fa-lg" style="color: #40f00f;"></i>
                                             </div>
                                             
                                         </div>
@@ -124,12 +124,13 @@
                             <div class="collapse show" id="collapse2">
                                 <div *ngFor="let story of finishedStories" class="col-10"> <!-- *ngFor -->
                                     <div class="card bg-light mt-2">
-                                        <div class="card-header d-flex justify-content-between">
+                                        <div class="card-header d-flex justify-content-between" [class]="activeSprints[0]._id == story.sprint ? 'bg-success' : ''">
                                             <div>
                                                 <h5 class="card-title">{{story.name}}</h5>
                                             </div>
                                             <div> <!-- if not already assigned to sprint, if points assigned, if scrum master-->
-                                                <input *ngIf="!story.sprint && story.storyPoints!=-1 && authenticationService.get_current_user()._id == scrum_master_id" class="form-check-input" type="checkbox" value="" (change)="checkStory(story._id, $event.target)">
+                                                <p *ngIf="activeSprints[0]._id == story.sprint" class="text-success">current sprint</p>
+                                                <!--<input *ngIf="!story.sprint && story.storyPoints!=-1 && authenticationService.get_current_user()._id == scrum_master_id" class="form-check-input" type="checkbox" value="" (change)="checkStory(story._id, $event.target)">-->
                                             </div>
                                             
                                         </div>
@@ -151,6 +152,7 @@
                                         <p *ngIf="story.storyPoints!=-1 && (authenticationService.get_current_user()._id != scrum_master_id || story.sprint)" class="card-text"><b>Story points: </b> {{story.storyPoints}}</p> <!-- if assigned to sprint, if not scrum master-->
                                         <p *ngIf="story.storyPoints==-1 && authenticationService.get_current_user()._id != scrum_master_id" class="card-text"><b>Story points: </b> </p> <!--  if not scrum master-->
                                         <p *ngIf="story.sprint" class="card-text"><b>Sprint: </b> {{getSprintDate(story.sprint)[0] | date:'dd.MM'}}-{{getSprintDate(story.sprint)[1] | date:'dd.MM'}}</p>
+                                        <!--<a class="stretched-link" routerLink="/sprint/{{story.sprint}}" style="cursor:pointer"></a>-->
                                     </div>
                                   </div>
                                 </div>
