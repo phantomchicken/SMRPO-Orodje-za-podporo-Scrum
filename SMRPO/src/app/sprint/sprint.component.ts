@@ -98,13 +98,30 @@ export class SprintComponent implements OnInit {
     }).catch((error) => console.error(error));
   }
 
-
   showAddTask(i:number) {
     this.addTaskVisible[i] = true;
   }
 
   hideAddTask(i:number) {
     this.addTaskVisible[i] = false;
+  }
+
+  allTasksFinishedForStory(story:Story){
+    let tasks: Task[] = this.storyTasksMap.get(story._id)
+    return tasks?.length > 0 && tasks.every(task => task.done)
+  }
+
+  toggleTask(task:Task, story:Story){
+    // TODO if (task.accepted && task.assignee == this.authenticationService.get_current_user()._id) task.done = task.done ? false : true
+    if (this.authenticationService.get_current_user()._id == this.project.product_owner.toString() || story.status=='Accepted' || story.status=='Done') return // can't do as product owner, or when story accepted or done but not accepted
+    task.done = task.done ? false : true
+    this.taskService.updateTask(task).then().catch((error) => console.error(error))
+  }
+
+  markDoneStory(story: Story) {
+    story.status = 'Done'
+    story.comment = '' //??
+    this.storyDataService.updateStory(story)
   }
 
   update($event: string) {
