@@ -81,4 +81,13 @@ router.route('/post/:idPost')
     .delete(authentication, ctrlDb.deletePost)
 
 
+router.route('/workLog')
+    .post(ctrlDb.createWorkLog)
+router.route('/workLogs')
+    .get(ctrlDb.getWorkLogs)
+router.route('/workLog/:idWorkLog')
+    .get(ctrlDb.getWorkLog)
+    .put(authentication, ctrlDb.updateWorkLog)
+    .delete(authentication, ctrlDb.deleteWorkLog)
+
 module.exports = router;
