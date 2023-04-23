@@ -29,6 +29,7 @@ import { DocumentationComponent } from './documentation/documentation.component'
 import { AdminEditProjectComponent } from './admin-edit-project/admin-edit-project.component';
 import { SprintComponent } from './sprint/sprint.component';
 import { PostsComponent } from './posts/posts.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -65,6 +66,7 @@ import { PostsComponent } from './posts/posts.component';
     MatFormFieldModule,
     MatSelectModule,
     ReactiveFormsModule,
+    MatTooltipModule
   ],
   providers: [
     DatePipe
