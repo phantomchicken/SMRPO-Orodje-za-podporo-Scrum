@@ -1,18 +1,45 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 mx-auto">
-            <div class="card mb-3" *ngFor="let post of posts">
-                <div class="card-header">{{ post.title }}</div>
-                <div class="card-body">
-                    <p class="card-text">{{ post.content }}</p>
+            <div class="card mb-3" *ngFor="let post of posts; let i = index;">
+                <div *ngIf="!post.isEditing">
+                    <div class="card-header">{{ post.title }}</div>
+                    <div class="card-body">
+                        <p class="card-text">{{ post.content }}</p>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between align-items-center">
+                        <div *ngIf="!post.user.archived">
+                            <small>Posted by {{post.user.firstname}} {{post.user.lastname}} on {{ post.date | date }}</small>
+                        </div>
+                        <div *ngIf="post.user.archived">
+                            <small>Posted by {{post.user.firstname}} {{post.user.lastname}} (deleted) on {{ post.date | date }}</small>
+                        </div>
+                        <div class="justify-content-center">
+                            <button (click)="editPost(i)" type="button" class="btn btn-dark">Edit post</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-footer">
-                    <div *ngIf="!post.user.archived">
-                        <small>Posted by {{post.user.firstname}} {{post.user.lastname}} on {{ post.date | date }}</small>
-                    </div>
-                    <div *ngIf="post.user.archived">
-                        <small>Posted by {{post.user.firstname}} {{post.user.lastname}} (deleted) on {{ post.date | date }}</small>
-                    </div>
+                <div *ngIf="post.isEditing">
+                    <form #postForm="ngForm" (ngSubmit)="onSavePost(postForm, i)">
+                        <div class="card-header">
+                            <input type="text" [(ngModel)]="post.title" name="title" class="form-control" placeholder="Title">
+                        </div>
+                        <div class="card-body">
+                            <textarea [(ngModel)]="post.content" name="content" class="form-control" placeholder="Content"></textarea>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between align-items-center">
+                            <div *ngIf="!post.user.archived">
+                                <small>Posted by {{post.user.firstname}} {{post.user.lastname}} on {{ post.date | date }}</small>
+                            </div>
+                            <div *ngIf="post.user.archived">
+                                <small>Posted by {{post.user.firstname}} {{post.user.lastname}} (deleted) on {{ post.date | date }}</small>
+                            </div>
+                            <div>
+                                <button (click)="cancel(i)" type="button" class="btn btn-dark ml-auto" style="margin-right: 1px">Cancel</button>
+                                <button type="submit" class="btn btn-dark ml-auto">Save</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
