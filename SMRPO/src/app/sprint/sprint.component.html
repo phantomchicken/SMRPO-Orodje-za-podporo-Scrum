@@ -15,6 +15,51 @@
       
     </div>
     <div class="col-md-9 mt-4">
+      <div class="modal" tabindex="-1" role="dialog" [ngClass]="{'d-block': showTaskEditModalFlag, 'd-none': !showTaskEditModalFlag}">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Edit Task</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="editTaskHide()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form (ngSubmit)="commitEditTask(selectedTask)">
+                <div class="form-group">
+                  <div class="form-row align-items-center mt-3">
+                    <label class="sr-only" for="inlineFormInputGroup1">Task description</label>
+                    <div class="form-group">
+                        <label for="inlineFormInputGroup1">Task description</label>
+                        <input [(ngModel)]="selectedTask.name" type="text" class="form-control"
+                               id="inlineFormInputGroup1" placeholder="Task description" name="name">
+                    </div>
+                </div>
+                <div class="form-row align-items-center justify-content-center mt-2"></div>
+                <div class="form-group">
+                    <label for="inlineFormInputGroup2">Time estimate (hour)</label>
+                    <input [(ngModel)]="selectedTask.timeEstimate" type="text" class="form-control"
+                           id="inlineFormInputGroup2" placeholder="Time estimate" name="business value">
+                </div>
+                <div class="form-row align-items-center mt-3">
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text bg-primary text-white">Assignee</div>
+                        </div>
+                        <select [(ngModel)]="selectedTask.assignee" class="form-control" name="assignee">
+                            <option *ngFor="let developer of developers" [ngValue]="developer._id">{{developer.firstname}} {{developer.lastname}}</option>
+                        </select>
+                    </div>
+                </div>
+                </div>
+                <div class="form-group text-center">
+                  <button type="submit" class="btn btn-primary w-50">Save changes</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
       <ng-container *ngFor="let story of stories; let i = index;">
         <div class="modal" tabindex="-1" role="dialog" [ngClass]="{'d-block': showRejectModalFlag, 'd-none': !showRejectModalFlag}">
           <div class="modal-dialog modal-dialog-centered" role="document">
@@ -129,6 +174,10 @@
                   <th mat-header-cell *matHeaderCellDef class="text-center">Hours remaining</th>
                   <td mat-cell *matCellDef="let task">{{task.timeEstimate}}</td>
               </ng-container>
+              <ng-container matColumnDef="editTask">
+                <th mat-header-cell *matHeaderCellDef class="text-center"></th>
+                <td mat-cell *matCellDef="let task"><button type="button" class='btn btn-secondary' (click)="editTask(task)"><i class="fas fa-edit"></i></button></td>
+            </ng-container>
     
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

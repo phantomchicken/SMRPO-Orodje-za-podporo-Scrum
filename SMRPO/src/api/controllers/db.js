@@ -9,6 +9,7 @@ const Sprint = require('../models/sprints')
 const Story = require('../models/stories')
 const Task = require('../models/tasks')
 const Post = require('../models/posts')
+const WorkLog = require('../models/workLogs')
 
 const usersData = require('../../../users.json');
 const projectsData = require('../../../projects.json');
@@ -724,6 +725,97 @@ const deleteTask = (req, res) => {
     });
 }
 
+
+
+const createWorkLog = (req, res) => {
+if (req.body === undefined) {
+    res.status(500).send('Internal error')
+    return;
+}
+
+if (!('task' in req.body 
+    && 'assignee' in req.body 
+    && 'startTime' in req.body
+)) {
+    res.status(500).send('Missing argument')
+    return;
+}
+
+const new_workLog = new WorkLog();
+new_workLog.task = req.body.task;
+new_workLog.assignee = req.body.assignee;
+new_workLog.startTime = req.body.startTime;
+if (req.body.stopTime !== "") new_workLog.stopTime = req.body.stopTime;
+
+new_workLog.save(error => {
+    console.log(error)
+    if (error) {
+        res.status(500).json(error);
+    } else {
+        res.status(201).json(new_workLog);
+    }
+});
+}
+
+const updateWorkLog = (req, res) => {
+WorkLog.findById(req.params.idTask).exec((error, workLog) => {
+  if (!workLog) {
+    return res.status(404).json({
+      "message": "No work log found."
+    });
+  } else if (error) {
+    return res.status(500).json(error);
+  } else {
+    if (req.body.task !== "") workLog.task = req.body.task;
+    if (req.body.assignee !== "") workLog.assignee = req.body.assignee;
+    if (req.body.startTime !== "") workLog.startTime = req.body.startTime;
+    if (req.body.stopTime !== "") workLog.stopTime = req.body.stopTime;
+
+    workLog.save((error, updated_workLog) => {
+      if (error) {
+        res.status(500).json(error);
+      } else {
+        res.status(200).json(updated_workLog);
+      }
+    });
+  }
+});
+}
+
+const getWorkLogs = (req, res) => {
+    WorkLog.find({}, function (error, workLogs) {
+    if (error) {
+        return res.status(500).json(error);
+    } else {
+        res.status(200).json(workLogs);
+    }
+});
+}
+
+const getWorkLog = (req, res) => {
+WorkLog.findById(req.params.idWorkLog).exec((error, workLog) => {
+    if (!workLog) {
+        return res.status(404).json({
+            "message": "Work Log not found."
+        });
+    } else if (error) {
+        return res.status(500).json(error);
+    } else {
+        res.status(200).json(workLog);
+    }
+});
+}
+
+const deleteWorkLog = (req, res) => {
+WorkLog.findByIdAndRemove(req.params.idWorkLog).exec((error) => {
+    if (error) {
+        return res.status(500).json(error);
+    } else {
+        return res.status(204).json(null);
+    }
+});
+}
+
 function Latch(limit) {
     this.limit = limit;
     this.count = 0;
@@ -1135,5 +1227,10 @@ module.exports =
     updatePost: updatePost,
     deletePost: deletePost,
     deleteAllData: deleteAllData,
-    addSampleData: addSampleData
+    addSampleData: addSampleData,
+    createWorkLog: createWorkLog,
+    getWorkLogs: getWorkLogs,
+    getWorkLog: getWorkLog,
+    updateWorkLog : updateWorkLog,
+    deleteWorkLog: deleteWorkLog,
 }
