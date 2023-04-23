@@ -13,6 +13,7 @@ import { UsersDataService } from '../user.service';
 import { TasksDataService } from '../task.service';
 import { Project } from '../classes/project';
 import { User } from '../classes/user';
+import { UnauthorizedError } from 'express-jwt';
 
 @Component({
   selector: 'app-sprint',
@@ -23,8 +24,10 @@ import { User } from '../classes/user';
 export class SprintComponent implements OnInit {
   public addTaskVisible: boolean[] = [];
   showRejectModalFlag: boolean = false
+  showTaskEditModalFlag: boolean = false
   rejectionComment: string = ""
   selectedStory: Story = new Story()
+  selectedTask: Task = new Task();
 
   constructor(private route: ActivatedRoute, private taskService: TasksDataService, private sprintService: SprintDataService, private projectDataService: ProjectDataService, private usersDataService: UsersDataService, protected authenticationService: AuthenticationService,
     private storyDataService: StoryDataService) { }
@@ -32,7 +35,7 @@ export class SprintComponent implements OnInit {
     public project: Project = new Project()
     public sprint:Sprint = new Sprint()
     public stories:Story[] = []
-    public displayedColumns = ['#','description', 'assignee', 'done', 'accepted', 'timeEstimate']; //id
+    public displayedColumns = ['#','description', 'assignee', 'done', 'accepted', 'timeEstimate', 'editTask']; //id
     public task:Task = new Task()
     public storyTasksMap = new Map()
     public developerIds:string[] = []
@@ -67,6 +70,48 @@ export class SprintComponent implements OnInit {
     if (this.developerIds.includes(currentUser) && task.assignee == currentUser) { // assigned and sameuser
       task.accepted = true
     }
+  }
+
+  editTask(task:Task){
+    this.selectedTask = task;
+    this.showTaskEditModalFlag = true;
+  }
+
+  commitEditTask(task:Task){
+    this.error =""
+    if (!task.name || task.timeEstimate === undefined || task.timeEstimate === null || task.timeEstimate.toString() == '') {
+      this.error = "Please enter name and time!"
+    } else if (isNaN(+task.timeEstimate) || task.timeEstimate < 0 || task.timeEstimate > 100) {
+      this.error = "Time estimate should be a number between 0 and 100!"
+    } else {
+      let overlap = false
+      this.taskService.getTasks().then((tasks:Task []) => { // get all stories and check for same name only for those concerning the same project
+        for (var i=0;i<tasks.length;i++) {
+          if (tasks[i].story == task.story) {
+            if (tasks[i].name == task.name) {
+              this.error = "Task with this name already exists!"
+              overlap = true
+              break
+            }
+          }
+        }
+        if (!overlap) {
+          this.taskService.updateTask(task)
+        .then((task: Task) => {
+          this.error = ""
+          this.editTaskHide();
+        })
+        .catch((error) => {
+          if (error.error.code==11000) this.error = "Task with this name already exists!";
+          else console.error(error);
+        })
+        }
+      })
+    }
+  }
+
+  editTaskHide(){
+    this.showTaskEditModalFlag = false;
   }
 
   toggleAssign(task:Task){
