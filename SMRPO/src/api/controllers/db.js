@@ -8,18 +8,21 @@ const Project = require('../models/projects')
 const Sprint = require('../models/sprints')
 const Story = require('../models/stories')
 const Task = require('../models/tasks')
+const Post = require('../models/posts')
 
 const usersData = require('../../../users.json');
 const projectsData = require('../../../projects.json');
 const sprintsData = require('../../../sprints.json');
 const storiesData = require('../../../stories.json');
 const tasksData = require('../../../tasks.json');
+const postsData = require('../../../posts.json');
 
 var userArray = new Array();
 var projectArray = new Array();
 var sprintArray = new Array();
 var storyArray = new Array();
 var taskArray = new Array();
+var postArray = new Array();
 
 const getUser = (req, res) => {
     //console.log(req.params)
@@ -746,6 +749,7 @@ const deleteAllData = (req, res) => {
     projectArray.splice(0, projectArray.length)
     sprintArray.splice(0, sprintArray.length)
     storyArray.splice(0, storyArray.length)
+    Post.collection.drop();
     Project.collection.drop();
     Sprint.collection.drop();
     Story.collection.drop();
@@ -840,6 +844,7 @@ const addProjectData = () => {
         addSprintData();
         addStoryData()
         addTaskData()
+        addPostData()
     });
 };
 
@@ -907,6 +912,42 @@ const addStoryData = () => {
     });
 };
 
+const addPostData = () => {
+    var barrier = new Latch(postsData.length);
+    barrier.async(function (end) {
+        for (var postData of postsData) {
+            const post = new Post();
+            post.title = postData.title
+            post.content = postData.content
+            post.date = postData.date
+            // console.log(post)
+            var projectQuery = projectArray
+                .filter(project => (project.name == postData.project))
+                .map(project => project._id)
+
+            var userQuery = userArray
+                .filter(user => (user.username == postData.user))
+                .map(user => user._id)
+            console.log(userQuery)
+            post.project = projectQuery[0]
+            post.user = userQuery[0]
+            console.log(post)
+            post.save(post, (error, pst) => {
+                if (error)
+                    message = error;
+                else
+                    postArray.push(pst);
+                end();
+            });
+            console.log(message);
+        }
+    });
+
+    barrier.await(function () {
+        console.log('DONE4');
+    });
+};
+
 //TODO link to project and sprint!
 const addTaskData = () => {
     var barrier = new Latch(tasksData.length);
@@ -940,6 +981,119 @@ const addTaskData = () => {
     });
 };
 
+const getPosts = (req, res) => {
+    Post.find({}, function (error, posts) {
+        if (error) {
+            return res.status(500).json(error);
+        } else {
+            //console.log(posts)
+            res.status(200).json(posts);
+        }
+    });
+}
+
+const getPostsByProjectId = (req, res) => {
+    const idProject = req.params.idProject; //
+
+    Post.find({ project: idProject }, function (error, posts) {
+        if (error) {
+            return res.status(500).json(error);
+        } else {
+            res.status(200).json(posts);
+        }
+    });
+}
+
+const getPost = (req, res) => {
+    console.log(req.params)
+    Post.findById(req.params.idPost).exec((error, post) => {
+        // console.log(post)
+        if (!post) {
+            return res.status(404).json({
+                "message": "Post not found."
+            });
+        } else if (error) {
+            return res.status(500).json(error);
+        } else {
+            res.status(200).json(post);
+        }
+    });
+}
+
+
+const addPost = (req, res) => {
+    console.log(req.body)
+    if (req.body === undefined) {
+        res.status(500).send('Internal error')
+        return;
+    }
+
+    if (!('title' in req.body
+        && 'content' in req.body
+        && 'project' in req.body
+        && 'user' in req.body
+        && 'date' in req.body
+    )) {
+        res.status(500).send('Missing argument')
+        return;
+    }
+
+    const post = new Post();
+    post.title = req.body.title;
+    post.content = req.body.content;
+    post.project = req.body.project;
+    post.user = req.body.user;
+    post.date = req.body.date;
+
+    post.save(error => {
+        console.log(error)
+        if (error) {
+            res.status(500).json(error);
+        } else {
+            res.status(201).json(post);
+        }
+    });
+}
+
+const updatePost = (req, res) => {
+    //console.log(req.body)
+    //console.log(req.params)
+    Post.findById(req.params.idPost).exec((error, post) => {
+        if (!post) {
+            return res.status(404).json({
+                "message": "No post found."
+            });
+        } else if (error) {
+            return res.status(500).json(error);
+        } else {
+            //console.log(post)
+            post.title = req.body.title;
+            post.content = req.body.content;
+            // post.project = req.body.project;
+            // post.user = req.body.user;
+            post.date = req.body.date;
+
+            post.save((error, updated_post) => {
+                if (error) {
+                    res.status(500).json(error);
+                } else {
+                    res.status(200).json(updated_post);
+                }
+            });
+        }
+    });
+}
+
+const deletePost = (req, res) => {
+    Post.findByIdAndRemove(req.params.idPost).exec((error) => {
+        if (error) {
+            return res.status(500).json(error);
+        } else {
+            return res.status(204).json(null);
+        }
+    });
+}
+
 module.exports =
 {
     getUser: getUser,
@@ -970,6 +1124,12 @@ module.exports =
     getTask: getTask,
     updateTask : updateTask,
     deleteTask: deleteTask,
+    getPosts: getPosts,
+    getPostsByProjectId: getPostsByProjectId,
+    getPost: getPost,
+    addPost: addPost,
+    updatePost: updatePost,
+    deletePost: deletePost,
     deleteAllData: deleteAllData,
     addSampleData: addSampleData
 }

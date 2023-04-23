@@ -69,4 +69,16 @@ router.route('/task/:idTask')
     .put(authentication, ctrlDb.updateTask)
     .delete(authentication, ctrlDb.deleteTask)
 
+router.route('/post')
+    .post(ctrlDb.addPost)
+router.route('/posts')
+    .get(ctrlDb.getPosts)
+router.route('/posts/project/:idProject')
+    .get(ctrlDb.getPostsByProjectId)
+router.route('/post/:idPost')
+    .get(ctrlDb.getPost)
+    .put(authentication, ctrlDb.updatePost)
+    .delete(authentication, ctrlDb.deletePost)
+
+
 module.exports = router;
