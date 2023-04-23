@@ -644,7 +644,7 @@ const createTask = (req, res) => {
     new_task.name = req.body.name;
     new_task.story = req.body.story;
     new_task.timeEstimate = req.body.timeEstimate;
-    new_task.assignee = req.body.assignee;
+    if (req.body.assignee !== "") new_task.assignee = req.body.assignee;
 
     new_task.save(error => {
         console.log(error)
@@ -657,7 +657,7 @@ const createTask = (req, res) => {
 }
 
 const updateTask = (req, res) => {
-    console.log(req.body);
+    //console.log(req.body);
     Task.findById(req.params.idTask).exec((error, task) => {
       if (!task) {
         return res.status(404).json({

@@ -1,5 +1,5 @@
-<h1 *ngIf="!authenticationService.is_admin()">Sorry, this page is for admin users only!</h1>
-<div *ngIf="authenticationService.is_admin()" class="container">
+<h1 *ngIf="!authenticationService.is_admin() && authenticationService.get_current_user()._id != scrum_master_id">Sorry, this page is for scrum master or admin users only!</h1>
+<div *ngIf="authenticationService.is_admin() || authenticationService.get_current_user()._id == scrum_master_id" class="container">
     <div class="row mt-5 justify-content-center">
         <div class="col-sm-10 col-md-8 col-lg-6">
             <div class="card text-white bg-dark">

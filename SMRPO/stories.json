@@ -5,7 +5,7 @@
         "description": "Tough to describe.",
         "storyPoints": -1,
         "priority": "Won't have this time",
-        "acceptanceCriteria": "program\n???\nprofit",
+        "acceptanceCriteria": "program&~???&~profit",
         "businessValue": 3,
         "project": "Sample Project #1"
     },
@@ -15,7 +15,7 @@
         "description": "Tricky to describe.",
         "storyPoints": 3,
         "priority": "Must have",
-        "acceptanceCriteria": "buy pet whale\n???\nprofit",
+        "acceptanceCriteria": "buy pet whale&~???&~profit",
         "businessValue": 4,
         "project": "Sample Project #1"
     },
@@ -25,7 +25,7 @@
         "description": "Needs no description",
         "storyPoints": -1,
         "priority": "Could have",
-        "acceptanceCriteria": "git pull\ngit push",
+        "acceptanceCriteria": "git pull&~git push",
         "businessValue": 2,
         "project": "Sample Project #1"
     },{
@@ -34,7 +34,7 @@
         "description": "Tough to describe.",
         "storyPoints": -1,
         "priority": "Won't have this time",
-        "acceptanceCriteria": "program\n???\nprofit",
+        "acceptanceCriteria": "program&~???&~profit",
         "businessValue": 3,
         "project": "Sample Project #2"
     },
@@ -44,7 +44,7 @@
         "description": "Tricky to describe.",
         "storyPoints": 3,
         "priority": "Must have",
-        "acceptanceCriteria": "buy pet whale\n???\nprofit",
+        "acceptanceCriteria": "buy pet whale&~???&~profit",
         "businessValue": 4,
         "project": "Sample Project #2"
     },
@@ -54,7 +54,7 @@
         "description": "Needs no description",
         "storyPoints": -1,
         "priority": "Could have",
-        "acceptanceCriteria": "git pull\ngit push",
+        "acceptanceCriteria": "git pull&~git push",
         "businessValue": 2,
         "project": "Sample Project #2"
     },{
@@ -63,7 +63,7 @@
         "description": "Tough to describe.",
         "storyPoints": -1,
         "priority": "Won't have this time",
-        "acceptanceCriteria": "program\n???\nprofit",
+        "acceptanceCriteria": "program&~???&~profit",
         "businessValue": 3,
         "project": "Sample Project #3"
     },
@@ -73,7 +73,7 @@
         "description": "Tricky to describe.",
         "storyPoints": 3,
         "priority": "Must have",
-        "acceptanceCriteria": "buy pet whale\n???\nprofit",
+        "acceptanceCriteria": "buy pet whale&~???&~profit",
         "businessValue": 4,
         "project": "Sample Project #3"
     },
@@ -83,7 +83,7 @@
         "description": "Needs no description",
         "storyPoints": -1,
         "priority": "Could have",
-        "acceptanceCriteria": "git pull\ngit push",
+        "acceptanceCriteria": "git pull&~git push",
         "businessValue": 2,
         "project": "Sample Project #3"
     },{
@@ -92,7 +92,7 @@
         "description": "Tough to describe.",
         "storyPoints": -1,
         "priority": "Won't have this time",
-        "acceptanceCriteria": "program\n???\nprofit",
+        "acceptanceCriteria": "program&~???&~profit",
         "businessValue": 3,
         "project": "Sample Project #4"
     },
@@ -102,7 +102,7 @@
         "description": "Tricky to describe.",
         "storyPoints": 3,
         "priority": "Must have",
-        "acceptanceCriteria": "buy pet whale\n???\nprofit",
+        "acceptanceCriteria": "buy pet whale&~???&~profit",
         "businessValue": 4,
         "project": "Sample Project #4"
     },
@@ -112,7 +112,7 @@
         "description": "Needs no description",
         "storyPoints": -1,
         "priority": "Could have",
-        "acceptanceCriteria": "git pull\ngit push",
+        "acceptanceCriteria": "git pull&~git push",
         "businessValue": 2,
         "project": "Sample Project #4"
     }
