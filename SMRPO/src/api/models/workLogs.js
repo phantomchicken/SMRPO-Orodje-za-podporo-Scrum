@@ -3,12 +3,12 @@ const workLogSchema = new mongoose.Schema({
     task: {
         type: mongoose.Types.ObjectId,
         ref: "Task",
-        required: True
+        required: true
     },
     assignee: {
         type: mongoose.Types.ObjectId,
         ref: "User",
-        required: True
+        required: true
     },
     startTime: {
         type: Date,
