@@ -28,6 +28,7 @@ import {DatePipe} from "@angular/common";
 import { DocumentationComponent } from './documentation/documentation.component';
 import { AdminEditProjectComponent } from './admin-edit-project/admin-edit-project.component';
 import { SprintComponent } from './sprint/sprint.component';
+import { PostsComponent } from './posts/posts.component';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import { SprintComponent } from './sprint/sprint.component';
     AdminEditUserComponent,
     DocumentationComponent,
     AdminEditProjectComponent,
-    SprintComponent
+    SprintComponent,
+    PostsComponent
   ],
   imports: [
     BrowserModule,
