@@ -7,7 +7,12 @@
                     <p class="card-text">{{ post.content }}</p>
                 </div>
                 <div class="card-footer">
-                    <small>Posted by {{post.user.firstname}} {{post.user.lastname}} on {{ post.date | date }}</small>
+                    <div *ngIf="!post.user.archived">
+                        <small>Posted by {{post.user.firstname}} {{post.user.lastname}} on {{ post.date | date }}</small>
+                    </div>
+                    <div *ngIf="post.user.archived">
+                        <small>Posted by {{post.user.firstname}} {{post.user.lastname}} (deleted) on {{ post.date | date }}</small>
+                    </div>
                 </div>
             </div>
         </div>
