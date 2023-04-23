@@ -180,17 +180,21 @@ const updateUser = (req, res) => {
 }
 
 const deleteUser = (req, res) => {
-    User.findByIdAndUpdate(req.params.idUser).exec((error, user) => {
-        if (!user) {
-            return res.status(404).json({
-                "message": "No user found."
-            });
-        } else if (error) {
-            return res.status(500).json(error);
-        } else {
-            user.archived = true;
+    User.findOneAndUpdate(
+        { _id: req.params.idUser },
+        { archived: true },
+        { new: true },
+        (error, user) => {
+            if (!user) {
+                return res.status(404).json({ message: "No user found." });
+            } else if (error) {
+                return res.status(500).json(error);
+            } else {
+                console.log(user);
+                return res.json(user);
+            }
         }
-    });
+    );
 }
 
 const checkPassword = (req, res) => {
