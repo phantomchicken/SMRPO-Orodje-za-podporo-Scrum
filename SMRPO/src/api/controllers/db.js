@@ -668,7 +668,10 @@ const updateTask = (req, res) => {
         return res.status(500).json(error);
       } else {
         if (req.body.name !== "") task.name = req.body.name;
-        if (req.body.assignee !== "") task.assignee = req.body.assignee;
+        if (req.body.assignee === "") // so we can reject assigned - unset assignee
+            task.assignee = null
+        else 
+            task.assignee = req.body.assignee
         if (req.body.story !== "") task.story = req.body.story;
         if (typeof req.body.done === "boolean") task.done = req.body.done; // update based on boolean value
         if (typeof req.body.accepted === "boolean") task.accepted = req.body.accepted; // update based on boolean value

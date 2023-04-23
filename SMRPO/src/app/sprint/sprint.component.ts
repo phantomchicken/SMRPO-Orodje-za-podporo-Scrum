@@ -84,18 +84,6 @@ export class SprintComponent implements OnInit {
     } else if (isNaN(+task.timeEstimate) || task.timeEstimate < 0 || task.timeEstimate > 100) {
       this.error = "Time estimate should be a number between 0 and 100!"
     } else {
-      let overlap = false
-      this.taskService.getTasks().then((tasks:Task []) => { // get all stories and check for same name only for those concerning the same project
-        for (var i=0;i<tasks.length;i++) {
-          if (tasks[i].story == task.story) {
-            if (tasks[i].name == task.name) {
-              this.error = "Task with this name already exists!"
-              overlap = true
-              break
-            }
-          }
-        }
-        if (!overlap) {
           this.taskService.updateTask(task)
         .then((task: Task) => {
           this.error = ""
@@ -106,16 +94,15 @@ export class SprintComponent implements OnInit {
           else console.error(error);
         })
         }
-      })
-    }
   }
 
   editTaskHide(){
     this.showTaskEditModalFlag = false;
   }
 
-  toggleAssign(task:Task){
+  toggleAssign(task:Task, story:Story){
     let currentUser = this.authenticationService.get_current_user()._id
+    if (story.status=='Accepted') return
     if (this.developerIds.includes(currentUser)) { // must be developers
       if (task.assignee!='' && currentUser == task.assignee){ // if already assigned check if same user and then toggle
         task.assignee = ''
@@ -215,6 +202,7 @@ export class SprintComponent implements OnInit {
     // TODO if (task.accepted && task.assignee == this.authenticationService.get_current_user()._id) task.done = task.done ? false : true
     if (this.authenticationService.get_current_user()._id == this.project.product_owner.toString() || story.status=='Accepted' || story.status=='Done') return // can't do as product owner, or when story accepted or done but not accepted
     if (task.assignee != this.authenticationService.get_current_user()._id && !this.authenticationService.is_admin()) return // if not assigned or admin
+    if (!task.accepted) return // if not accepted
     task.done = task.done ? false : true
     this.taskService.updateTask(task).then().catch((error) => console.error(error))
   }
