@@ -12,8 +12,23 @@ export class ProjectDataService {
 
   private apiUrl = environment.apiUrl;
 
-  public addProject(data:any): Promise<Project> {
+  public addDocs(id_of_project:any, data:any): Promise<any> {
     console.log(data)
+    const url: string = `${this.apiUrl}/db/project/${id_of_project}/docs`;
+    const httpLastnosti = {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.storage.getItem('SMRPO-token')}`
+      })
+    };
+    return this.http
+      .post(url, data, httpLastnosti)
+      .toPromise()
+      .then(response => response as any)
+      .catch(this.processError);
+  }
+  
+  public addProject(data:any): Promise<Project> {
+    //console.log(data)
     const url: string = `${this.apiUrl}/db/project/`;
     return this.http
       .post(url, data)

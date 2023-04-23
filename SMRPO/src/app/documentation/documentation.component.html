@@ -1,1 +1,6 @@
-<div>doc works!</div>
+<!-- Component.html -->
+<form (submit)="uploadFile()">
+    <input type="file" (change)="onFileSelected($event)">
+    <button class="btn btn-primary" type="submit">Upload</button>
+</form>
+  

@@ -10,6 +10,19 @@ const authentication = jwt({
     algorithms: ['HS256']
 });
 
+const multer = require('multer');
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'assets');
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
+    }
+});
+var upload = multer({
+    storage: storage
+});
+
 router.route('/')
     .get(ctrlDb.getUsers)
     .post(ctrlDb.addUser)
@@ -49,6 +62,10 @@ router.route('/project/:idProject')
     .get(ctrlDb.getProject)
     .put(authentication, ctrlDb.updateProject)
     .delete(authentication, ctrlDb.deleteProject)
+//router.route('/project/:idProject/docs')
+//    .post(ctrlDb.addDocs)
+
+router.post('/project/:idProject/docs', authentication, upload.single('file'), ctrlDb.addDocs);    
 
 
 router.route('/story')

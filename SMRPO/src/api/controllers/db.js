@@ -25,6 +25,10 @@ var storyArray = new Array();
 var taskArray = new Array();
 var postArray = new Array();
 
+const fs = require('fs');
+const path = require('path');
+const multer = require('multer');
+
 const getUser = (req, res) => {
     //console.log(req.params)
     User.findById(req.params.idUser).exec((error, user) => {
@@ -1193,6 +1197,17 @@ const deletePost = (req, res) => {
     });
 }
 
+const addDocs = (req, res) => {
+    if (!req.file) {
+        return res.status(404).json({
+            "message": "No file found"
+        });
+
+    } else {
+        return res.status(201).json(req.file.filename);
+    }
+};
+
 module.exports =
 {
     getUser: getUser,
@@ -1236,4 +1251,6 @@ module.exports =
     getWorkLog: getWorkLog,
     updateWorkLog : updateWorkLog,
     deleteWorkLog: deleteWorkLog,
+    addDocs: addDocs,
+    addDocs2: addDocs2
 }
