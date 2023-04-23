@@ -19,7 +19,7 @@
                     {{product_owner.firstname}} {{product_owner.lastname}}</p>
                 <p *ngIf="product_owner.archived" class="card-text font-weight-bold text-error">Missing</p>
                 <h6 class="card-subtitle mt-4 mb-2 text-muted">Developers</h6>
-                <p *ngFor="let developer of developers" class="card-text"
+                <p *ngFor="let developer of developers" class="card-text mb-0"
                     [ngClass]="authenticationService.get_current_user()._id == developer._id ? 'font-weight-bold' : ''">
                     {{developer.firstname}} {{developer.lastname}}</p>
             </div>
@@ -51,13 +51,11 @@
                                 <div *ngFor="let story of unfinishedStories; let i = index;" class="col-10">
                                     <!-- *ngFor -->
                                     <div class="card bg-light mt-2" *ngIf="!story.isEditing"> <!--1.............................................-->
-                                        <div class="card-header d-flex justify-content-between" [class]="activeSprints[0]._id == story.sprint ? 'bg-success' : ''">
+                                        <div class="card-header d-flex justify-content-between" [class]="activeSprint && activeSprint._id == story.sprint ? 'bg-success' : ''">
                                             <div>
                                                 <h5 class="card-title">{{story.name}}</h5>
                                             </div>
                                             <div>
-                                                <!-- if not already assigned to sprint, if points assigned, if scrum master-->
-                                                <!--<p *ngIf="activeSprints[0]._id == story.sprint" class="text-success">current sprint</p> -->
                                                 <input *ngIf="!story.sprint && story.storyPoints!=-1 && authenticationService.get_current_user()._id == scrum_master_id" class="form-check-input" type="checkbox" value="" (change)="checkStory(story._id, $event.target)">
                                             </div>
 
@@ -65,11 +63,12 @@
                                         <div class="card-body">
                                             <p class="card-text"><b>Priority: </b>{{story.priority}}</p>
                                             <p class="card-text"><b>Business value: </b>{{story.businessValue}}</p>
-                                            <p class="card-text"><b>Acceptance criteria:</b></p>
+                                            <p class="card-text"><b>Description: </b>{{story.description.length > 200 ? story.description.slice(0, 200) + '...' : story.description}}</p>                                              
+                                            <p class="card-text mb-0"><b>Acceptance criteria:</b></p>
                                             <ol>
-                                                <ng-container *ngFor="let ac of splitNewLine(story.acceptanceCriteria)">
-                                                    <li class="card-text">{{ac}}</li>
-                                                </ng-container>
+                                            <ng-container *ngFor="let ac of story.acceptanceCriteria.split('&~')">
+                                                <li class="card-text">{{ac}}</li>
+                                            </ng-container>
                                             </ol>
                                             <form
                                                 *ngIf="authenticationService.get_current_user()._id == scrum_master_id && !(story.sprint)">
@@ -91,8 +90,9 @@
                                             <p *ngIf="story.sprint" class="card-text"><b>Sprint: </b>
                                                 {{getSprintDate(story.sprint)[0] |
                                                 date:'dd.MM'}}-{{getSprintDate(story.sprint)[1] | date:'dd.MM'}}</p>
-                                            <p *ngIf="story.comment" class="card-text"><b class="text-danger">Rejected:
-                                                </b>{{story.comment}}</p>
+                                            <p *ngIf="story.comment" class="card-text" style="white-space: pre-line;">
+                                                <b class="text-danger">Rejected:</b>
+                                                {{story.comment}}</p>                                                  
                                             <div *ngIf="story.status!='Done' && !story.sprint && (authenticationService.get_current_user()._id == scrum_master_id || authenticationService.get_current_user()._id == product_owner_id)"
                                                 class="d-flex justify-content-end">
                                                 <button type="button" class="btn btn-dark mr-2"><i class="far fa-edit"
@@ -135,6 +135,12 @@
                                                         name="businessValue" [(ngModel)]="story.businessValue" min="0">
                                                 </div>
                                                 <div class="form-group">
+                                                    <label for="description">Description:</label>
+                                                    <textarea class="form-control" id="description"
+                                                        name="description"
+                                                        [(ngModel)]="story.description"></textarea>
+                                                </div>
+                                                <div class="form-group">
                                                     <label for="acceptanceCriteria">Acceptance criteria:</label>
                                                     <textarea class="form-control" id="acceptanceCriteria"
                                                         name="acceptanceCriteria"
@@ -160,23 +166,18 @@
                                 <div *ngFor="let story of finishedStories" class="col-10">
                                     <!-- *ngFor -->
                                     <div class="card bg-light mt-2">
-                                        <div class="card-header d-flex justify-content-between" [class]="activeSprints[0]._id == story.sprint ? 'bg-success' : ''">
+                                        <div class="card-header d-flex justify-content-between" [class]="activeSprint && activeSprint._id == story.sprint ? 'bg-success' : ''">
                                             <div>
                                                 <h5 class="card-title">{{story.name}}</h5>
                                             </div>
-                                            <div>
-                                                <!-- if not already assigned to sprint, if points assigned, if scrum master-->
-                                                <p *ngIf="activeSprints[0]._id == story.sprint" class="text-success">current sprint</p>
-                                                <!--<input *ngIf="!story.sprint && story.storyPoints!=-1 && authenticationService.get_current_user()._id == scrum_master_id" class="form-check-input" type="checkbox" value="" (change)="checkStory(story._id, $event.target)">-->
-                                            </div>
-
                                         </div>
                                         <div class="card-body">
                                             <p class="card-text"><b>Priority: </b>{{story.priority}}</p>
                                             <p class="card-text"><b>Business value: </b>{{story.businessValue}}</p>
-                                            <p class="card-text"><b>Acceptance criteria:</b></p>
+                                            <p class="card-text"><b>Description: </b>{{story.description.length > 200 ? story.description.slice(0, 200) + '...' : story.description}}</p> 
+                                            <p class="card-text mb-0"><b>Acceptance criteria:</b></p>
                                             <ol>
-                                                <ng-container *ngFor="let ac of splitNewLine(story.acceptanceCriteria)">
+                                                <ng-container *ngFor="let ac of story.acceptanceCriteria.split('&~')">
                                                     <li class="card-text">{{ac}}</li>
                                                 </ng-container>
                                             </ol>
@@ -222,9 +223,10 @@
                                         <div class="card-body">
                                             <p class="card-text"><b>Priority: </b>{{story.priority}}</p>
                                             <p class="card-text"><b>Business value: </b>{{story.businessValue}}</p>
-                                            <p class="card-text"><b>Acceptance criteria:</b></p>
+                                            <p class="card-text"><b>Description: </b>{{story.description.length > 200 ? story.description.slice(0, 200) + '...' : story.description}}</p> 
+                                            <p class="card-text mb-0"><b>Acceptance criteria:</b></p>
                                             <ol>
-                                                <ng-container *ngFor="let ac of splitNewLine(story.acceptanceCriteria)">
+                                                <ng-container *ngFor="let ac of story.acceptanceCriteria.split('&~')">
                                                     <li class="card-text">{{ac}}</li>
                                                 </ng-container>
                                             </ol>
@@ -277,6 +279,12 @@
                                                         name="businessValue" [(ngModel)]="story.businessValue" min="0">
                                                 </div>
                                                 <div class="form-group">
+                                                    <label for="description">Description:</label>
+                                                    <textarea class="form-control" id="description"
+                                                        name="description"
+                                                        [(ngModel)]="story.description"></textarea>
+                                                </div>
+                                                <div class="form-group">
                                                     <label for="acceptanceCriteria">Acceptance criteria:</label>
                                                     <textarea class="form-control" id="acceptanceCriteria"
                                                         name="acceptanceCriteria"
@@ -301,7 +309,7 @@
                                 style="background-color: white;">
                                 <mat-label>Add to sprint</mat-label>
                                 <mat-select [(ngModel)]="currSprint" panelClass="example-panel-white">
-                                    <mat-option *ngFor="let sprint of activeSprints" [value]="sprint"> Sprint
+                                    <mat-option *ngFor="let sprint of [activeSprint]" [value]="sprint"> Sprint
                                         {{sprint.startDate | date:'dd.MM'}} - {{sprint.endDate | date:'dd.MM'}}
                                     </mat-option>
                                 </mat-select>

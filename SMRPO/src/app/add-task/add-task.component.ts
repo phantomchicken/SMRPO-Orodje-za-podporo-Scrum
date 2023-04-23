@@ -41,10 +41,11 @@ export class AddTaskComponent implements OnInit {
   addTask() {
     this.error =""
     this.success=false
-    if (!this.task.name || !this.task.timeEstimate) {
+    console.log(this.task);
+    if (!this.task.name || this.task.timeEstimate === undefined || this.task.timeEstimate === null || this.task.timeEstimate.toString() == '') {
       this.error = "Please enter name and time!"
     } else if (isNaN(+this.task.timeEstimate) || this.task.timeEstimate < 0 || this.task.timeEstimate > 100) {
-      this.error = "Time estimate should be a number between 1 and 100!"
+      this.error = "Time estimate should be a number between 0 and 100!"
     } else {
       let overlap = false
       this.taskService.getTasks().then((tasks:Task []) => { // get all stories and check for same name only for those concerning the same project
@@ -87,7 +88,7 @@ export class AddTaskComponent implements OnInit {
     story: '',
     done: false,
     accepted: false,
-    timeEstimate: -1
+    timeEstimate: 0
   }
   public success:boolean = false;
 }

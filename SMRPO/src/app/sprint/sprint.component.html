@@ -126,7 +126,7 @@
                     <td mat-cell *matCellDef="let task"><button type="button" [ngClass]="task.accepted ? 'btn-sm btn-success' : ' btn-sm btn-danger'" (click)="acceptTask(task)"><i [ngClass]="task.accepted ? 'fas fa-check' : ' fas fa-times'"></i></button></td>
                 </ng-container>
                 <ng-container matColumnDef="timeEstimate">
-                  <th mat-header-cell *matHeaderCellDef class="text-center">Time</th>
+                  <th mat-header-cell *matHeaderCellDef class="text-center">Hours remaining</th>
                   <td mat-cell *matCellDef="let task">{{task.timeEstimate}}</td>
               </ng-container>
     
