@@ -1,4 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Post} from "../classes/post";
+import {User} from "../classes/user";
 
 @Component({
   selector: 'app-posts',
@@ -14,6 +16,7 @@ export class PostsComponent implements OnInit {
 
 
   @Output() messageEvent = new EventEmitter<string>();
+  posts: Post[];
 
   ngOnInit(): void {
   }
