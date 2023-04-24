@@ -1,22 +1,24 @@
 <div class="container">
     <div class="row">
-        <div class="row mt-4" style="margin-bottom: 10px">
-            <div class="d-flex justify-content-center">
-                <button
-                        *ngIf="!addPostVisible"
-                        (click)="showAddPost()" type="button" class="btn btn-dark w-25">Add post</button>
-                <button
-                        *ngIf="addPostVisible"
-                        (click)="hideAddPost()" type="button" class="btn btn-dark w-25">Hide Form</button>
-            </div>
-            <div *ngIf="addPostVisible">
-                <app-add-post (messageEvent)="update($event)" [project]="project"></app-add-post>
-            </div>
-            <div *ngIf="success" class="alert alert-success alert-dismissible" role="alert">
-                Story successfully added!
-                <button type="button" class="close" (click)="hide()" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+        <div *ngIf="!authenticationService.is_admin">
+            <div class="row mt-4" style="margin-bottom: 10px">
+                <div class="d-flex justify-content-center">
+                    <button
+                            *ngIf="!addPostVisible"
+                            (click)="showAddPost()" type="button" class="btn btn-dark w-25">Add post</button>
+                    <button
+                            *ngIf="addPostVisible"
+                            (click)="hideAddPost()" type="button" class="btn btn-dark w-25">Hide Form</button>
+                </div>
+                <div *ngIf="addPostVisible">
+                    <app-add-post (messageEvent)="update($event)" [project]="project"></app-add-post>
+                </div>
+                <div *ngIf="success" class="alert alert-success alert-dismissible" role="alert">
+                    Story successfully added!
+                    <button type="button" class="close" (click)="hide()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
             </div>
         </div>
         <div class="col-md-8 mx-auto">
