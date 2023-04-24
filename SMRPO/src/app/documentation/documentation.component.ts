@@ -11,7 +11,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class DocumentationComponent implements OnInit {
   public error: string = "";
-  public success: boolean = false;
+  public success: string = "";
+  public content?: string | null
+  public selectedDoc: string = '';
 
   constructor(private projectService:ProjectDataService, private http: HttpClient) { }
 
@@ -35,37 +37,49 @@ export class DocumentationComponent implements OnInit {
       this.projectService.addDocs(this.project._id,formData).then(()=>{
         this.project.documentation.push(this.selectedFile!.name)
         this.projectService.updateProject(this.project).then(()=> {
-          this.success = true
+          this.success = "Documentation successfully uploaded!"
           this.error=""
         }).catch((error)=>console.error(error))       
       }).catch((error)=>console.error(error))
     } else {
       this.error ="Please upload a file!"
-      this.success = false
+      this.success = ""
     }
   }
 
-  downloadFile() {
-    this.projectService.readDocs(this.project._id,"test.txt")
+  removeFile(filename:string){
+    this.hide()
+    this.project.documentation = this.project.documentation.filter(doc => doc !== filename);
+    this.projectService.deleteDocs(this.project._id, filename).then(()=>{
+      this.projectService.updateProject(this.project).then(()=> {
+        this.content = null
+        this.success = "Documentation successfully deleted!"
+      }).catch((error)=>console.error(error)) 
+    }).catch((error)=>console.error(error)) 
+    
   }
   
-  public downloadFile2() {
-    let link = document.createElement('a');
-    link.style.display = 'none';
-    link.href = 'http://localhost:3000/api/assets/test.txt'; // Use the absolute path to the assets folder in your Angular project
-    link.download = 'test.txt'; // Update with the desired filename for the downloaded file
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  readFile(filename:string) {
+    this.hide()
+    this.projectService.fetchFileContent('./assets/'+filename).subscribe(data => {
+      // Do something with the content, such as storing it in a variable or displaying it in the template
+      this.content = data
+    });
   }
 
-  f1() {
-    window.open('http://localhost:3000/api/assets/test.txt', '_blank');
- }
-  
+  editFile(filename:string){
+    this.hide()
+    const formData = new FormData();
+    formData.append('file', new Blob([this.content!], { type: 'text/plain' }), filename)
+    this.projectService.updateDocs(this.project._id, formData).then(()=>{
+      this.success = "Documentation successfully updated!"
+      this.error=""
+    }).catch((error)=>console.error(error)) 
+  }
+
 
   hide() {
     this.error=""
-    this.success=false
+    this.success=""
   }
 }

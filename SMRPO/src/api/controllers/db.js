@@ -27,7 +27,7 @@ var postArray = new Array();
 
 const fs = require('fs');
 const path = require('path');
-// const multer = require('multer');
+const multer = require('multer');
 
 const getUser = (req, res) => {
     //console.log(req.params)
@@ -1203,27 +1203,34 @@ const addDocs = (req, res) => {
     if (!req.file) {
         return res.status(404).json({
             "message": "No file found"
-        });
-
+        })
     } else {
         return res.status(201).json(req.file.filename);
     }
 };
 
-const readDocs =  (req, res) => {
-    const fileName = 'test.txt'; // Replace with the name of your file in the assets folder
-    const filePath = path.join( 'assets/', fileName);
-    res.download(filePath, (err) => {
-        if (err) {
-            // Handle error while downloading file
-            console.error('Failed to download file:', err);
-            res.status(500).json({ message: 'Failed to download file' });
-        } else {
-            // File download successful
-            console.log('File downloaded successfully');
-        }
-    });
-};
+const deleteDocs =  (req, res) => {
+  const filename = req.body.filename;
+  fs.unlink(`src/assets/${filename}`, (err) => {
+    if (err) {
+      //console.error('Failed to delete file:', err);
+      res.status(500).json({ error: 'Failed to delete file' });
+    } else {
+      //console.log('File deleted successfully');
+      res.json({ message: 'File deleted successfully' });
+    }
+  });
+}
+
+const updateDocs =  (req, res) => {
+    if (!req.file) {
+        return res.status(404).json({
+            "message": "No file found"
+        })
+    } else {
+        return res.status(200).json(req.file.filename);
+    }
+  }
 
 module.exports =
 {
@@ -1269,5 +1276,6 @@ module.exports =
     updateWorkLog : updateWorkLog,
     deleteWorkLog: deleteWorkLog,
     addDocs: addDocs,
-    readDocs: readDocs
+    deleteDocs: deleteDocs,
+    updateDocs: updateDocs
 }

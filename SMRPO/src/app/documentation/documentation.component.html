@@ -1,25 +1,38 @@
-<!-- Component.html -->
 <div class="row">
-    <div class="col-12 d-flex align-items-center justify-content-center">
+    <div class="col-12 align-items-center justify-content-center text-center">
         <div>
+            <h6 class="card-subtitle mt-4 mb-2 text-muted">Import</h6> 
             <form (submit)="uploadFile()">
                 <input type="file" (change)="onFileSelected($event)">
                 <button class="btn btn-primary" type="submit">Upload</button>
             </form>
         </div>
+        
     </div>
-
-    <div *ngIf="project.documentation.length>0">
-        <h6 class="card-subtitle mt-4 mb-2 text-muted">Documentation</h6> 
-        <p *ngFor="let doc of project.documentation">
-            {{doc}}
-        </p>
-    </div>
+    <div class="col-12 align-items-center justify-content-center text-center" *ngIf="project.documentation.length > 0">
+        <h6 class="card-subtitle mt-4 mb-2 text-muted">Export</h6>
+        <div *ngFor="let doc of project.documentation" class="d-flex justify-content-center align-items-center">
+            <div class="col-lg-8">
+                <p>
+                  {{doc}}
+                </p>
+              </div>
+            <div class="col-lg-4">
+                <a href="./assets/{{doc}}" download><button type="button" class='btn-sm btn-primary mx-1'><i class="fa-solid fa-download"></i></button></a>
+                <button type="button" class='btn-sm btn-secondary mx-1' (click)="readFile(doc); selectedDoc = doc;"><i class="fas fa-edit"></i></button>
+                <button type="button" class='btn-sm btn-danger mx-1' (click)="removeFile(doc)"><i class="fas fa-times"></i></button>
+          </div>       
+        </div>
+      </div>  
 </div>
-<div class="row mt-2">
-    <div class="col-12 d-flex align-items-center justify-content-center">
+<div class="row align-items-center justify-content-center">
+    <form *ngIf="selectedDoc!=''" class="col-12 col-sm-8 align-items-center justify-content-center text-center mt-4" (submit)="editFile(selectedDoc)">
+        <textarea class="form-control" style="height: 250px" [(ngModel)]="content" name="content">{{content}}</textarea>
+        <button class="btn btn-primary mt-4" type="submit">Edit documentation</button>
+    </form>
+    <div class="col-12 d-flex align-items-center justify-content-center mt-4">
         <div *ngIf="success" class="alert alert-success alert-dismissible w-25" role="alert">
-            Documentation successfully uploaded!
+            {{success}}
             <button type="button" class="close" (click)="hide()" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -32,4 +45,3 @@
         </div>
     </div> 
 </div>
-<button (click)="downloadFile2()">Download File</button>

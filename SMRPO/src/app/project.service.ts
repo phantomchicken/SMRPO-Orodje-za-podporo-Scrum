@@ -12,17 +12,26 @@ export class ProjectDataService {
 
   private apiUrl = environment.apiUrl;
 
-  public readDocs(id_of_project:any, filename:any): Promise<any> {
-    const url: string = `${this.apiUrl}/db/project/${id_of_project}/docs`;
-    return this.http
-      .get(url)
-      .toPromise()
-      .then(response => response as any)
-      .catch(this.processError);
+  fetchFileContent(filePath: string) {
+    return this.http.get(filePath, { responseType: 'text' });
   }
 
+  public deleteDocs(id_of_project:string, filename: string): Promise<void> {
+    const url: string = `${this.apiUrl}/db/project/${id_of_project}/docs`; //http://localhost:4200/assets/${filename}`;
+    const httpLastnosti = {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.storage.getItem('SMRPO-token')}`
+      }),
+      body: { filename: filename }
+    };
+    return this.http
+      .delete(url, httpLastnosti)
+      .toPromise()
+      .then()
+      .catch(this.processError);
+  }
+  
   public addDocs(id_of_project:any, data:any): Promise<any> {
-    console.log(data)
     const url: string = `${this.apiUrl}/db/project/${id_of_project}/docs`;
     const httpLastnosti = {
       headers: new HttpHeaders({
@@ -31,6 +40,20 @@ export class ProjectDataService {
     };
     return this.http
       .post(url, data, httpLastnosti)
+      .toPromise()
+      .then(response => response as any)
+      .catch(this.processError);
+  }
+
+  public updateDocs(id_of_project:any, data:any): Promise<any> {
+    const url: string = `${this.apiUrl}/db/project/${id_of_project}/docs`;
+    const httpLastnosti = {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.storage.getItem('SMRPO-token')}`
+      })
+    };
+    return this.http
+      .put(url, data, httpLastnosti)
       .toPromise()
       .then(response => response as any)
       .catch(this.processError);
