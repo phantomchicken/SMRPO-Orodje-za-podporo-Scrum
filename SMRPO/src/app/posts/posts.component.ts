@@ -16,6 +16,7 @@ import {AuthenticationService} from "../authentication.service";
 export class PostsComponent implements OnInit {
   private editPostError: string = "";
   postsCopy: Post[];
+  success: boolean;
 
   constructor(protected authenticationService: AuthenticationService, private postService: PostService, private userDataService: UsersDataService) { }
 
@@ -26,6 +27,7 @@ export class PostsComponent implements OnInit {
   posts: Post[];
 
   error: string = ""
+  addPostVisible: boolean = false;
 
   ngOnInit(): void {
     this.getProjectPosts();
@@ -98,4 +100,25 @@ export class PostsComponent implements OnInit {
   sortPostsByDate(posts: Post[]): Post[] {
     return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   }
+
+  showAddPost() {
+    this.addPostVisible = true
+  }
+
+  hideAddPost() {
+    this.addPostVisible = false
+  }
+
+  update($event: string) {
+    if ($event == "post"){
+      this.success = true;
+      this.getProjectPosts();
+      this.hideAddPost()
+    }
+  }
+
+  hide() {
+    this.success = false
+  }
+
 }

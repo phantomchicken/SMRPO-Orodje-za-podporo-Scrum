@@ -27,7 +27,7 @@ var postArray = new Array();
 
 const fs = require('fs');
 const path = require('path');
-const multer = require('multer');
+// const multer = require('multer');
 
 const getUser = (req, res) => {
     //console.log(req.params)

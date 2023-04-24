@@ -30,6 +30,7 @@ import { AdminEditProjectComponent } from './admin-edit-project/admin-edit-proje
 import { SprintComponent } from './sprint/sprint.component';
 import { PostsComponent } from './posts/posts.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { AddPostComponent } from './add-post/add-post.component';
 
 
 @NgModule({
@@ -51,7 +52,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     DocumentationComponent,
     AdminEditProjectComponent,
     SprintComponent,
-    PostsComponent
+    PostsComponent,
+    AddPostComponent
   ],
   imports: [
     BrowserModule,
