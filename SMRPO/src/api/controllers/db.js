@@ -1189,6 +1189,7 @@ const updatePost = (req, res) => {
 }
 
 const deletePost = (req, res) => {
+    console.log(req)
     Post.findByIdAndRemove(req.params.idPost).exec((error) => {
         if (error) {
             return res.status(500).json(error);

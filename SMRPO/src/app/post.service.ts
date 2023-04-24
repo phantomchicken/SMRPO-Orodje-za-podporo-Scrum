@@ -65,8 +65,8 @@ export class PostService {
         .catch(this.processError);
   }
 
-  public deleteProject(post: Post): Promise<void> {
-    const url: string = `${this.apiUrl}/db/project/${post._id}`;
+  public deletePost(post: Post): Promise<void> {
+    const url: string = `${this.apiUrl}/db/post/${post._id}`;
     const httpLastnosti = {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${this.storage.getItem('SMRPO-token')}`
