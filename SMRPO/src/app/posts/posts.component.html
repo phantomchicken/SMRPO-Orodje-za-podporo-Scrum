@@ -5,7 +5,7 @@
                 <div *ngIf="!post.isEditing">
                     <div class="card-header">{{ post.title }}</div>
                     <div class="card-body">
-                        <p class="card-text">{{ post.content }}</p>
+                        <p class="card-text" style="white-space: pre-wrap;">{{ post.content }}</p>
                     </div>
                     <div class="card-footer d-flex justify-content-between align-items-center">
                         <div *ngIf="!post.user.archived">
@@ -14,18 +14,21 @@
                         <div *ngIf="post.user.archived">
                             <small>Posted by {{post.user.firstname}} {{post.user.lastname}} (deleted) on {{ post.date | date }}</small>
                         </div>
-                        <div class="justify-content-center">
-                            <button (click)="editPost(i)" type="button" class="btn btn-dark">Edit post</button>
+                        <div *ngIf="authenticationService.get_current_user()._id == post.user._id">
+                            <div class="justify-content-center">
+                                <button (click)="editPost(i)" type="button" class="btn btn-dark">Edit post</button>
+                                <button (click)="deletePost(i)" type="button" class="btn btn-dark" style="margin-left: 1px">Delete post</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div *ngIf="post.isEditing">
+                <div *ngIf="post.isEditing && authenticationService.get_current_user()._id == post.user._id">
                     <form #postForm="ngForm" (ngSubmit)="onSavePost(postForm, i)">
                         <div class="card-header">
                             <input type="text" [(ngModel)]="post.title" name="title" class="form-control" placeholder="Title">
                         </div>
                         <div class="card-body">
-                            <textarea [(ngModel)]="post.content" name="content" class="form-control" placeholder="Content"></textarea>
+                            <textarea [(ngModel)]="post.content" name="content" class="form-control" placeholder="Content" style="white-space: pre-wrap;"></textarea>
                         </div>
                         <div class="card-footer d-flex justify-content-between align-items-center">
                             <div *ngIf="!post.user.archived">

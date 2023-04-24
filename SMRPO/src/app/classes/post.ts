@@ -8,8 +8,10 @@ export class Post {
     date: Date = new Date();
 
     isEditing: boolean = false;
+    deleteError: string = "";
 //     updated: boolean = false;
 //     update_error: string = "";
 //     userFirstName: string;
 //     userLastName: string;
+//     deleteError: string = "";
 }

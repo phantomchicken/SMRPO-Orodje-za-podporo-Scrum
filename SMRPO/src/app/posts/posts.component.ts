@@ -5,6 +5,7 @@ import {Project} from "../classes/project";
 import {UsersDataService} from "../user.service";
 import {User} from "../classes/user";
 import {NgForm} from "@angular/forms";
+import {AuthenticationService} from "../authentication.service";
 
 @Component({
   selector: 'app-posts',
@@ -16,7 +17,7 @@ export class PostsComponent implements OnInit {
   private editPostError: string = "";
   postsCopy: Post[];
 
-  constructor(private postService: PostService, private userDataService: UsersDataService) { }
+  constructor(protected authenticationService: AuthenticationService, private postService: PostService, private userDataService: UsersDataService) { }
 
   @Input() project:Project = new Project();
 
@@ -27,21 +28,34 @@ export class PostsComponent implements OnInit {
   error: string = ""
 
   ngOnInit(): void {
-    this.postService.getPostsByProjectId(this.project).then((posts: Post[]) =>{
-      console.log(this.posts)
-      posts.forEach(async post => {
-        this.userDataService.getUser(post.user).then((user:User) => {
-            // post.userFirstName = user.firstname
-            // post.userLastName = user.lastname
-          post.user = user
-          }
-        ).catch((error) => {this.error = error})
+    this.getProjectPosts();
+  }
+
+  private getProjectPosts() {
+    this.postService.getPostsByProjectId(this.project).then((posts: Post[]) => {
+      this.posts = posts.map(p => ({...p}));
+      this.postsCopy = posts.map(p => ({...p}));
+      this.posts.forEach(post => {
+        this.getUser(post)
       })
-      this.posts = posts
-      // this.posts = posts.map(p => ({...p}));
-      // this.postsCopy = posts.map(p => ({...p}));
+      this.postsCopy.forEach(post => {
+        this.getUser(post)
+      })
+      this.sortPostsByDate(this.posts)
+      this.sortPostsByDate(this.postsCopy)
       console.log(this.posts)
-    }).catch((error) => {this.error = error})
+    }).catch((error) => {
+      this.error = error
+    })
+  }
+
+  getUser(post: Post) {
+    this.userDataService.getUser(post.user).then((user: User) => {
+          post.user = user
+        }
+    ).catch((error) => {
+      this.error = error
+    })
   }
 
   editPost(index: number) {
@@ -57,12 +71,31 @@ export class PostsComponent implements OnInit {
     post.date = new Date()
     this.postService.updatePost(post).then((up_post: Post) => {
       this.posts[index] = up_post
+      this.getUser(this.posts[index])
       this.postsCopy[index] = up_post
+      this.getUser(this.postsCopy[index])
+      this.sortPostsByDate(this.posts)
+      this.sortPostsByDate(this.postsCopy)
     }).catch((error) => {this.editPostError = error})
   }
 
   cancel(index: number) {
     this.posts[index].isEditing = false;
-    // this.posts = this.postsCopy.map(p => ({...p}));
+    this.getProjectPosts();
+  }
+
+  deletePost(i: number) {
+    console.log(this.posts[i])
+    this.postService.deletePost(this.posts[i]).then(() => {
+      this.getProjectPosts();
+    }).catch((error) =>{
+          console.log(error);
+          this.posts[i].deleteError = error;
+      }
+    )
+  }
+
+  sortPostsByDate(posts: Post[]): Post[] {
+    return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   }
 }
