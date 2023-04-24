@@ -1,5 +1,5 @@
 <h3 *ngIf="!authenticationService.roleForProject(project)">User not part of project!</h3>
-<div *ngIf="authenticationService.roleForProject(project)" class="container">
+<div *ngIf="authenticationService.roleForProject(project)" class="container-fluid mx-2">
   <div class="row">
     <div class="card col-md-3 mt-4">
       <div class="card-body">
@@ -138,8 +138,8 @@
             </ol>
               </div>
 
-              <div *ngIf="storyTasksMap.get(story._id)!=null && storyTasksMap.get(story._id).length>0" class="user-table-container text-center">
-                <table class="table-hover table-responsive" mat-table [dataSource]="storyTasksMap.get(story._id)">
+              <div *ngIf="storyTasksMap.get(story._id)!=null && storyTasksMap.get(story._id).length>0" class="user-table-container text-center mx-auto">
+                <table class="table-hover table-responsive  justify-content-center align-items-center" mat-table [dataSource]="storyTasksMap.get(story._id)">
                     <ng-container matColumnDef="#">
                         <th mat-header-cell *matHeaderCellDef class="text-center">#</th>
                         <td mat-cell *matCellDef="let element; let i = index;"> {{i+1}} </td>
@@ -169,25 +169,28 @@
                   <ng-container matColumnDef="accepted">
                     <th mat-header-cell *matHeaderCellDef class="text-center">Accepted</th>
                     <td mat-cell *matCellDef="let task"><button type="button" [ngClass]="task.accepted ? 'btn-sm btn-success' : ' btn-sm btn-danger'" (click)="acceptTask(task)"><i [ngClass]="task.accepted ? 'fas fa-check' : ' fas fa-times'"></i></button></td>
-                </ng-container>
-                <ng-container matColumnDef="timeEstimate">
-                  <th mat-header-cell *matHeaderCellDef class="text-center">Hours remaining</th>
-                  <td mat-cell *matCellDef="let task">{{task.timeEstimate}}</td>
-              </ng-container>
-              <ng-container matColumnDef="logWork">
-                <th mat-header-cell *matHeaderCellDef class="text-center">Work log</th>
-                <td mat-cell *matCellDef="let task"><button type="button" [ngClass]="task.assignee == authenticationService.get_current_user()._id ? (taskLogsMap.get(task._id) != null && taskLogsMap.get(task._id).active != null ? 'btn-sm btn-warning' : 'btn-sm btn-success') : ' btn-sm btn-disabled'" (click)="logWork(task)"><i [ngClass]="taskLogsMap.get(task._id) != null && taskLogsMap.get(task._id).active != null ? 'fas fa-pause' : 'fas fa-play'"></i></button></td>
-            </ng-container>
-              <ng-container matColumnDef="editTask">
-                <th mat-header-cell *matHeaderCellDef class="text-center"></th>
-                <td mat-cell *matCellDef="let task"><button *ngIf="story.status!='Accepted' && story.status!='Rejected' " type="button" class='btn-sm btn-secondary' (click)="editTask(task)"><i class="fas fa-edit"></i></button>
-                  <button *ngIf="story.status!='Accepted' && story.status!='Rejected' " type="button" class='btn-sm btn-danger' (click)="deleteTask(task,story)"><i class="fas fa-times"></i></button></td>
-            </ng-container>
-    
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  </ng-container>
+                  <ng-container matColumnDef="timeEstimate">
+                    <th mat-header-cell *matHeaderCellDef class="text-center">Hours remaining</th>
+                    <td mat-cell *matCellDef="let task">{{task.timeEstimate}}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="logWork">
+                    <th mat-header-cell *matHeaderCellDef class="text-center">Work log</th>
+                    <td mat-cell *matCellDef="let task"><button type="button" [ngClass]="task.assignee == authenticationService.get_current_user()._id ? (taskLogsMap.get(task._id) != null && taskLogsMap.get(task._id).active != null ? 'btn-sm btn-warning' : 'btn-sm btn-success') : ' btn-sm btn-disabled'" (click)="logWork(task)"><i [ngClass]="taskLogsMap.get(task._id) != null && taskLogsMap.get(task._id).active != null ? 'fas fa-pause' : 'fas fa-play'"></i></button></td>
+                  </ng-container>
+                  <!--<ng-container matColumnDef="timeSpent">
+                    <th mat-header-cell *matHeaderCellDef class="text-center">Hours spent</th>
+                    <td mat-cell *matCellDef="let task">{{ (timeSpent(task) | async) }} seconds</td>
+                  </ng-container>-->
+                  <ng-container matColumnDef="editTask">
+                    <th mat-header-cell *matHeaderCellDef class="text-center"></th>
+                    <td mat-cell *matCellDef="let task"><button *ngIf="story.status!='Accepted' && story.status!='Rejected' " type="button" class='btn-sm btn-secondary' (click)="editTask(task)"><i class="fas fa-edit"></i></button>
+                      <button *ngIf="story.status!='Accepted' && story.status!='Rejected' " type="button" class='btn-sm btn-danger' (click)="deleteTask(task,story)"><i class="fas fa-times"></i></button></td>
+                  </ng-container>  
+                      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                 </table>
-            </div>
+              </div>
             <div *ngIf="story.comment" class="col-12 mt-3">
               <h6 class="card-subtitle mb-2 text-danger ">Rejected: {{story.comment}}</h6>
             </div>

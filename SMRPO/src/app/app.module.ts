@@ -37,7 +37,6 @@ import { AddPostComponent } from './add-post/add-post.component';
   declarations: [
     AppComponent,
     TemplateComponent,
-    HomeComponent,
     RegisterComponent,
     LoginComponent,
     AdminViewComponent,
