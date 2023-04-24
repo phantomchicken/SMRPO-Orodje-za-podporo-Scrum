@@ -760,13 +760,14 @@ new_workLog.save(error => {
     if (error) {
         res.status(500).json(error);
     } else {
+        console.log(new_workLog)
         res.status(201).json(new_workLog);
     }
 });
 }
 
 const updateWorkLog = (req, res) => {
-WorkLog.findById(req.params.idTask).exec((error, workLog) => {
+WorkLog.findById(req.params.idWorkLog).exec((error, workLog) => {
   if (!workLog) {
     return res.status(404).json({
       "message": "No work log found."
@@ -813,6 +814,29 @@ WorkLog.findById(req.params.idWorkLog).exec((error, workLog) => {
     }
 });
 }
+
+const getActiveWorkLog = (req, res) => {
+    Task.findById(req.params.idTask).exec((error, task) => {
+        if (!task) {
+            return res.status(404).json({
+                "message": "Task not found."
+            });
+        } else if (error) {
+            return res.status(500).json(error);
+        } else {
+            WorkLog.findOne({stopTime: { $exists: false }}).exec((error, workLog) => {
+                if(!workLog){
+                    return res.status(200).json(undefined);
+                } else if (error){
+                    return res.status(500).json(error);
+                }
+                else{
+                    return res.status(200).json(workLog);
+                }
+            })
+        }
+    });
+    }
 
 const deleteWorkLog = (req, res) => {
 WorkLog.findByIdAndRemove(req.params.idWorkLog).exec((error) => {
@@ -1273,6 +1297,7 @@ module.exports =
     createWorkLog: createWorkLog,
     getWorkLogs: getWorkLogs,
     getWorkLog: getWorkLog,
+    getActiveWorkLog: getActiveWorkLog,
     updateWorkLog : updateWorkLog,
     deleteWorkLog: deleteWorkLog,
     addDocs: addDocs,

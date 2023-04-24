@@ -6,11 +6,13 @@ import { AuthenticationService } from '../authentication.service';
 import { Sprint } from '../classes/sprint';
 import { Story } from '../classes/story';
 import { Task } from '../classes/task';
+import { WorkLog } from '../classes/workLog';
 import { ProjectDataService } from '../project.service';
 import { SprintDataService } from '../sprint.service';
 import { StoryDataService } from '../story.service';
 import { UsersDataService } from '../user.service';
 import { TasksDataService } from '../task.service';
+import { WorkLogDataService } from '../workLog.service';
 import { Project } from '../classes/project';
 import { User } from '../classes/user';
 import { UnauthorizedError } from 'express-jwt';
@@ -29,15 +31,16 @@ export class SprintComponent implements OnInit {
   selectedStory: Story = new Story()
   selectedTask: Task = new Task();
 
-  constructor(private route: ActivatedRoute, private taskService: TasksDataService, private sprintService: SprintDataService, private projectDataService: ProjectDataService, private usersDataService: UsersDataService, protected authenticationService: AuthenticationService,
+  constructor(private route: ActivatedRoute, private workLogService: WorkLogDataService, private taskService: TasksDataService, private sprintService: SprintDataService, private projectDataService: ProjectDataService, private usersDataService: UsersDataService, protected authenticationService: AuthenticationService,
     private storyDataService: StoryDataService) { }
     private routeSub!: Subscription
     public project: Project = new Project()
     public sprint:Sprint = new Sprint()
     public stories:Story[] = []
-    public displayedColumns = ['#','description', 'assignee', 'done', 'accepted', 'timeEstimate', 'editTask']; //id
+    public displayedColumns = ['#','description', 'assignee', 'done', 'accepted', 'timeEstimate', 'logWork', 'editTask']; //id
     public task:Task = new Task()
     public storyTasksMap = new Map()
+    public taskLogsMap = new Map()
     public developerIds:string[] = []
     public developers:User[] = []
     public error:string = ""
@@ -77,6 +80,28 @@ export class SprintComponent implements OnInit {
     this.storyTasksMap.set(story._id, this.storyTasksMap.get(story._id).filter((t: Task) => t._id !== task._id));
   }
 
+  logWork(task: Task){
+    let currentUser = this.authenticationService.get_current_user()._id
+    if (this.developerIds.includes(currentUser) && task.assignee == currentUser && !task.done && task.accepted) { // assigned and sameuser
+      this.workLogService.getActiveWorkLog(task._id).then( workLog => {
+        console.log(workLog)
+        if(workLog != null){
+          workLog.stopTime = new Date();
+          this.workLogService.updateWorkLog(workLog).then().catch((error) => console.error(error));
+          this.update('task');
+        }
+        else{
+          var workLog = new WorkLog();
+          workLog.assignee = currentUser;
+          workLog.task = task._id;
+          workLog.startTime = new Date();
+          this.workLogService.createWorkLog(workLog).then().catch((error) => console.error(error));
+          this.update('task');
+        }
+      });
+    }
+  }
+
   editTask(task:Task){
     this.selectedTask = task;
     this.showTaskEditModalFlag = true;
@@ -89,6 +114,13 @@ export class SprintComponent implements OnInit {
     } else if (isNaN(+task.timeEstimate) || task.timeEstimate < 0 || task.timeEstimate > 100) {
       this.error = "Time estimate should be a number between 0 and 100!"
     } else {
+        this.workLogService.getActiveWorkLog(task._id).then(workLog => {
+          if(workLog == null)
+            return;
+          workLog.stopTime = new Date();
+          this.workLogService.updateWorkLog(workLog).then().catch((error) => console.error(error));
+          this.update('task')
+        })
           this.taskService.updateTask(task)
         .then((task: Task) => {
           this.error = ""
@@ -115,6 +147,15 @@ export class SprintComponent implements OnInit {
       } else if (!task.assignee || task.assignee==''){ // if nothing assigned yet
         task.assignee = task.assignee=='' ||!task.assignee ? currentUser : ''
         task.accepted = true
+      }
+      if(!task.accepted){
+        this.workLogService.getActiveWorkLog(task._id).then(workLog => {
+          if(workLog == null)
+            return;
+          workLog.stopTime = new Date();
+          this.workLogService.updateWorkLog(workLog).then().catch((error) => console.error(error));
+          this.update('task')
+        })
       }
       this.taskService.updateTask(task).then().catch((error) => console.error(error))
     }    
@@ -149,10 +190,21 @@ export class SprintComponent implements OnInit {
     let tasksForStory: Task[] = []
     this.taskService.getTasks().then((data:Task[]) => {
       tasksForStory = data.filter(task => task.story === story._id);
-      console.log(tasksForStory);
       this.storyTasksMap.set(story._id,tasksForStory)
-      console.log(this.storyTasksMap.get(this.stories[0]._id));
+      data.forEach(task => {
+        this.getWorkLogsForTask(task);
+      });
     })
+  }
+
+  getWorkLogsForTask(task:Task): void {
+    let workLogsForTask: WorkLog[] = [];
+    this.workLogService.getWorkLogs().then((data:WorkLog[]) => {
+      workLogsForTask = data.filter(workLog => workLog.task === task._id);
+      this.workLogService.getActiveWorkLog(task._id).then(workLog => {
+        this.taskLogsMap.set(task._id, {items: workLogsForTask, active: workLog});
+      })
+    });
   }
 
   splitNewLine(str:String){
@@ -209,6 +261,15 @@ export class SprintComponent implements OnInit {
     if (task.assignee != this.authenticationService.get_current_user()._id && !this.authenticationService.is_admin()) return // if not assigned or admin
     if (!task.accepted) return // if not accepted
     task.done = task.done ? false : true
+    if(task.done){
+      this.workLogService.getActiveWorkLog(task._id).then(workLog => {
+        if(workLog == null)
+          return;
+        workLog.stopTime = new Date();
+        this.workLogService.updateWorkLog(workLog).then().catch((error) => console.error(error));
+        this.update('task')
+      })
+    }
     this.taskService.updateTask(task).then().catch((error) => console.error(error))
   }
 

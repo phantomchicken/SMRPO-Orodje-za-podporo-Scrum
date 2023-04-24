@@ -30,6 +30,17 @@ export class WorkLogDataService {
       .catch(this.processError);
   }
 
+  
+
+  public getActiveWorkLog(id_of_task:any): Promise<WorkLog> {
+    const url: string = `${this.apiUrl}/db/workLog/active/${id_of_task}`;
+    return this.http
+      .get(url)
+      .toPromise()
+      .then(response => response as WorkLog)
+      .catch(this.processError);
+  }
+
 
   public updateWorkLog(workLog: WorkLog): Promise<WorkLog> {
     const url: string = `${this.apiUrl}/db/workLog/${workLog._id}`;

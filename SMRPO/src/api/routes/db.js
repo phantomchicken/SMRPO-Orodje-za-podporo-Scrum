@@ -108,4 +108,7 @@ router.route('/workLog/:idWorkLog')
     .put(authentication, ctrlDb.updateWorkLog)
     .delete(authentication, ctrlDb.deleteWorkLog)
 
+router.route('/workLog/active/:idTask')
+    .get(ctrlDb.getActiveWorkLog)
+
 module.exports = router;

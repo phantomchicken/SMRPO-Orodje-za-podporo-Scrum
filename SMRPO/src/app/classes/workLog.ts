@@ -3,5 +3,5 @@ export class WorkLog {
     task: string = "";
     assignee: string = "";
     startTime: Date = new Date();
-    stopTime: Date = new Date();
+    stopTime: Date | undefined;
 }
