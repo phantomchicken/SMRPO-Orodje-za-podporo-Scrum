@@ -7,4 +7,5 @@ export class Project {
     developers: Array<User> = [] ;
     scrum_master: User = new User;
     product_owner: User = new User;
+    documentation: string [] = []
 }

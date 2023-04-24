@@ -12,6 +12,15 @@ export class ProjectDataService {
 
   private apiUrl = environment.apiUrl;
 
+  public readDocs(id_of_project:any, filename:any): Promise<any> {
+    const url: string = `${this.apiUrl}/db/project/${id_of_project}/docs`;
+    return this.http
+      .get(url)
+      .toPromise()
+      .then(response => response as any)
+      .catch(this.processError);
+  }
+
   public addDocs(id_of_project:any, data:any): Promise<any> {
     console.log(data)
     const url: string = `${this.apiUrl}/db/project/${id_of_project}/docs`;

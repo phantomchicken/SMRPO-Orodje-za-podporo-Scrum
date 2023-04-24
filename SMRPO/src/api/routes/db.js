@@ -13,7 +13,7 @@ const authentication = jwt({
 const multer = require('multer');
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'assets');
+        cb(null, 'src/api/assets');
     },
     filename: function (req, file, cb) {
         cb(null, file.originalname);
@@ -62,10 +62,10 @@ router.route('/project/:idProject')
     .get(ctrlDb.getProject)
     .put(authentication, ctrlDb.updateProject)
     .delete(authentication, ctrlDb.deleteProject)
-//router.route('/project/:idProject/docs')
-//    .post(ctrlDb.addDocs)
 
-router.post('/project/:idProject/docs', authentication, upload.single('file'), ctrlDb.addDocs);    
+router.route('/project/:idProject/docs')
+    .get(ctrlDb.readDocs)
+    .post(authentication, upload.single('file'), ctrlDb.addDocs); 
 
 
 router.route('/story')

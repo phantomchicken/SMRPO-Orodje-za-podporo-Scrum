@@ -115,7 +115,8 @@ public showWarning(): void {
     description: "",
     developers: [], // can have more!
     scrum_master: new User,
-    product_owner: new User
+    product_owner: new User,
+    documentation: []
   };
 
 }

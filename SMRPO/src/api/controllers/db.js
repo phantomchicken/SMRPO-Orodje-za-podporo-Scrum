@@ -497,6 +497,7 @@ const updateProject = (req, res) => {
             project.scrum_master = req.body.scrum_master;
             project.product_owner = req.body.product_owner;
             project.developers = req.body.developers
+            if (req.body.documentation) project.documentation = req.body.documentation
 
             project.save((error, updated_project) => {
                 if (error) {
@@ -1208,6 +1209,21 @@ const addDocs = (req, res) => {
     }
 };
 
+const readDocs =  (req, res) => {
+    const fileName = 'test.txt'; // Replace with the name of your file in the assets folder
+    const filePath = path.join( 'assets/', fileName);
+    res.download(filePath, (err) => {
+        if (err) {
+            // Handle error while downloading file
+            console.error('Failed to download file:', err);
+            res.status(500).json({ message: 'Failed to download file' });
+        } else {
+            // File download successful
+            console.log('File downloaded successfully');
+        }
+    });
+};
+
 module.exports =
 {
     getUser: getUser,
@@ -1252,5 +1268,5 @@ module.exports =
     updateWorkLog : updateWorkLog,
     deleteWorkLog: deleteWorkLog,
     addDocs: addDocs,
-    addDocs2: addDocs2
+    readDocs: readDocs
 }

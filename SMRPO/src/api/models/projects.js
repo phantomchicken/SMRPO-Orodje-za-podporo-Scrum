@@ -23,7 +23,10 @@ const projectSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "User",
         required: true
-    }
+    },
+    documentation: [{  // Add documentation field as an array of file names
+        type: String
+    }]
 });
 
 var Project = mongoose.model('Project', projectSchema, "Projects");

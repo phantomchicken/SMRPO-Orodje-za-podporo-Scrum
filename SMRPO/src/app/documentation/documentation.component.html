@@ -1,6 +1,35 @@
 <!-- Component.html -->
-<form (submit)="uploadFile()">
-    <input type="file" (change)="onFileSelected($event)">
-    <button class="btn btn-primary" type="submit">Upload</button>
-</form>
-  
+<div class="row">
+    <div class="col-12 d-flex align-items-center justify-content-center">
+        <div>
+            <form (submit)="uploadFile()">
+                <input type="file" (change)="onFileSelected($event)">
+                <button class="btn btn-primary" type="submit">Upload</button>
+            </form>
+        </div>
+    </div>
+
+    <div *ngIf="project.documentation.length>0">
+        <h6 class="card-subtitle mt-4 mb-2 text-muted">Documentation</h6> 
+        <p *ngFor="let doc of project.documentation">
+            {{doc}}
+        </p>
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col-12 d-flex align-items-center justify-content-center">
+        <div *ngIf="success" class="alert alert-success alert-dismissible w-25" role="alert">
+            Documentation successfully uploaded!
+            <button type="button" class="close" (click)="hide()" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div *ngIf="error" class="alert alert-danger alert-dismissible w-25" role="alert">
+            {{error}}
+            <button type="button" class="close" (click)="hide()" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div> 
+</div>
+<button (click)="downloadFile2()">Download File</button>
