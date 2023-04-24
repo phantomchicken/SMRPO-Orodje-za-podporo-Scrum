@@ -72,6 +72,11 @@ export class SprintComponent implements OnInit {
     }
   }
 
+  deleteTask(task:Task, story:Story){
+    this.taskService.deleteTask(task).then(()=>{}).catch((error)=>console.error(error))
+    this.storyTasksMap.set(story._id, this.storyTasksMap.get(story._id).filter((t: Task) => t._id !== task._id));
+  }
+
   editTask(task:Task){
     this.selectedTask = task;
     this.showTaskEditModalFlag = true;
