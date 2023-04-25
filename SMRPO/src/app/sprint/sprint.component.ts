@@ -20,7 +20,7 @@ import { UnauthorizedError } from 'express-jwt';
 @Component({
   selector: 'app-sprint',
   templateUrl: `sprint.component.html`,
-  styles: ['.accepted {background-color: #DFFFE9}', '.rejected {background-color: #FFCCCB}'
+  styles: ['.accepted {background-color: #DFFFE9}', '.rejected {background-color: #FFCCCB}' ,'th.mat-header-cell, td.mat-cell, td.mat-footer-cell {min-width: 130px;}'
   ]
 })
 export class SprintComponent implements OnInit {
@@ -37,7 +37,7 @@ export class SprintComponent implements OnInit {
     public project: Project = new Project()
     public sprint:Sprint = new Sprint()
     public stories:Story[] = []
-    public displayedColumns = ['#','description', 'assignee', 'done', 'accepted', 'timeEstimate', 'logWork', 'editTask']; //id
+    public displayedColumns = ['#','description', 'assignee', 'done', 'accepted', 'timeEstimate', 'timeSpent', 'logWork' ]; //'editTask'
     public task:Task = new Task()
     public storyTasksMap = new Map()
     public taskLogsMap = new Map()
@@ -78,6 +78,41 @@ export class SprintComponent implements OnInit {
   deleteTask(task:Task, story:Story){
     this.taskService.deleteTask(task).then(()=>{}).catch((error)=>console.error(error))
     this.storyTasksMap.set(story._id, this.storyTasksMap.get(story._id).filter((t: Task) => t._id !== task._id));
+  }
+
+  timeSpent(task: Task): Promise<number> { //infiniteloop???
+    return new Promise<number>((resolve, reject) => {
+        let time = 0;
+        this.workLogService.getWorkLogs().then((data) => {
+            let worklogs = data;
+            worklogs = worklogs.filter((worklog: WorkLog) => worklog.task == task._id && task.assignee == this.authenticationService.get_current_user()._id);
+            for (var i = 0; i < worklogs.length; i++) {
+                time += this.calculateTimeDifference(worklogs[i].startTime, worklogs[i].stopTime!);
+            }
+            resolve(time);
+        }).catch((error) => {
+            console.error(error);
+            reject(0);
+        });
+    });
+}
+
+
+  calculateTimeDifference(startTime:Date, stopTime:Date){
+    const date1 = new Date(startTime);
+    const date2 = new Date(stopTime);
+
+    // Convert to UTC dates
+    const utcDate1 = Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate(), date1.getHours(), date1.getMinutes(), date1.getSeconds());
+    const utcDate2 = Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate(), date2.getHours(), date2.getMinutes(), date2.getSeconds());
+
+    // Calculate the time difference in milliseconds
+    const timeDifferenceMs = utcDate2 - utcDate1;
+
+    // Calculate the difference in seconds
+    const timeDifferenceSeconds = Math.floor(timeDifferenceMs / (1000));
+    //console.log(`Time difference in seconds: ${timeDifferenceDays}`);
+    return timeDifferenceSeconds
   }
 
   logWork(task: Task){

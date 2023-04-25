@@ -756,11 +756,9 @@ new_workLog.startTime = req.body.startTime;
 if (req.body.stopTime !== "") new_workLog.stopTime = req.body.stopTime;
 
 new_workLog.save(error => {
-    console.log(error)
     if (error) {
         res.status(500).json(error);
     } else {
-        console.log(new_workLog)
         res.status(201).json(new_workLog);
     }
 });
@@ -826,7 +824,7 @@ const getActiveWorkLog = (req, res) => {
         } else if (error) {
             return res.status(500).json(error);
         } else {
-            WorkLog.findOne({stopTime: { $exists: false }}).exec((error, workLog) => {
+            WorkLog.findOne({stopTime: { $exists: false }, task: task._id}).exec((error, workLog) => {
                 if(!workLog){
                     return res.status(200).json(undefined);
                 } else if (error){
