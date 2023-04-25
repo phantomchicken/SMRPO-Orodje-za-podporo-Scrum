@@ -767,28 +767,30 @@ new_workLog.save(error => {
 }
 
 const updateWorkLog = (req, res) => {
-WorkLog.findById(req.params.idWorkLog).exec((error, workLog) => {
-  if (!workLog) {
-    return res.status(404).json({
-      "message": "No work log found."
-    });
-  } else if (error) {
-    return res.status(500).json(error);
-  } else {
-    if (req.body.task !== "") workLog.task = req.body.task;
-    if (req.body.assignee !== "") workLog.assignee = req.body.assignee;
-    if (req.body.startTime !== "") workLog.startTime = req.body.startTime;
-    if (req.body.stopTime !== "") workLog.stopTime = req.body.stopTime;
-
-    workLog.save((error, updated_workLog) => {
-      if (error) {
-        res.status(500).json(error);
+    console.log(req.body)
+    WorkLog.findById(req.params.idWorkLog).exec((error, workLog) => {
+      if (!workLog) {
+        return res.status(404).json({
+          "message": "No work log found."
+        });
+      } else if (error) {
+        return res.status(500).json(error);
       } else {
-        res.status(200).json(updated_workLog);
+        if (req.body.task !== "") workLog.task = req.body.task;
+        if (req.body.assignee !== "") workLog.assignee = req.body.assignee;
+        if (req.body.startTime !== "") workLog.startTime = req.body.startTime;
+        if (req.body.stopTime !== "") workLog.stopTime = req.body.stopTime;
+        if (req.body.myEstimation !== "") workLog.myEstimation = req.body.myEstimation;
+
+        workLog.save((error, updated_workLog) => {
+          if (error) {
+            res.status(500).json(error);
+          } else {
+            res.status(200).json(updated_workLog);
+          }
+        });
       }
     });
-  }
-});
 }
 
 const getWorkLogs = (req, res) => {

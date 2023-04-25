@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Enter Estimated Time</h2>
+<div mat-dialog-content>
+    <div class="form-group">
+        <label for="taskName">Task Name:</label>
+        <p id="taskName">{{ taskName }}</p>
+    </div>
+    <div class="form-group">
+        <label for="estimatedTime">Estimated Time:</label>
+        <input type="text" class="form-control" id="estimatedTime" [(ngModel)]="estimatedTime" name="estimatedTime" placeholder="1h 1m 1s">
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="cancel()">Cancel</button>
+    <button mat-button (click)="submit()" cdkFocusInitial>Save</button>
+</div>

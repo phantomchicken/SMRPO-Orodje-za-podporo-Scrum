@@ -31,6 +31,10 @@ import { SprintComponent } from './sprint/sprint.component';
 import { PostsComponent } from './posts/posts.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AddPostComponent } from './add-post/add-post.component';
+import { TimeComponent } from './time/time.component';
+import { LoggedHoursDialogComponent } from './logged-hours-dialog/logged-hours-dialog.component';
+import { EstimatedHoursDialogComponent } from './estimated-hours-dialog/estimated-hours-dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 
 @NgModule({
@@ -53,7 +57,10 @@ import { AddPostComponent } from './add-post/add-post.component';
     AdminEditProjectComponent,
     SprintComponent,
     PostsComponent,
-    AddPostComponent
+    AddPostComponent,
+    TimeComponent,
+    LoggedHoursDialogComponent,
+    EstimatedHoursDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -68,7 +75,8 @@ import { AddPostComponent } from './add-post/add-post.component';
     MatFormFieldModule,
     MatSelectModule,
     ReactiveFormsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDialogModule
   ],
   providers: [
     DatePipe

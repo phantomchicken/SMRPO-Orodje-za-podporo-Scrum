@@ -18,6 +18,10 @@ const workLogSchema = new mongoose.Schema({
         type: Date,
         default: undefined
     },
+    myEstimation: {
+        type: Number,
+        default: undefined
+    }
 });
 
 var WorkLog = mongoose.model('WorkLog', workLogSchema, "WorkLogs");

@@ -1,0 +1,46 @@
+<div *ngFor="let day of dayTasks" class="user-table-container text-center">
+    <label class="card-header">{{formatDate(day.dateString)}}</label>
+    <mat-table [dataSource]="day.tasks">
+
+    <!-- Define the columns -->
+    <ng-container matColumnDef="taskNumber">
+        <mat-header-cell *matHeaderCellDef>Task</mat-header-cell>
+        <mat-cell *matCellDef="let element; let i = index;"> {{element.task_data.name}} </mat-cell>
+<!--        <mat-footer-cell *matFooterCellDef></mat-footer-cell>-->
+    </ng-container>
+
+    <ng-container matColumnDef="loggedHours">
+        <mat-header-cell *matHeaderCellDef>Logged</mat-header-cell>
+        <mat-cell *matCellDef="let element; let i = index;" (click)="openLoggedHoursDialog(element)"> {{getDurationString(element.stopTime, element.startTime)}} </mat-cell>
+<!--        <mat-footer-cell *matFooterCellDef></mat-footer-cell>-->
+    </ng-container>
+
+    <ng-container matColumnDef="remainingHours">
+        <mat-header-cell *matHeaderCellDef>Remaining</mat-header-cell>
+        <mat-cell *matCellDef="let element; let i = index;"> {{millisToTime(tasksRemaining.get(element.task))}} </mat-cell>
+<!--        <mat-footer-cell *matFooterCellDef></mat-footer-cell>-->
+    </ng-container>
+
+    <ng-container matColumnDef="estimatedHours">
+        <mat-header-cell *matHeaderCellDef>Estimated</mat-header-cell>
+        <mat-cell *matCellDef="let element; let i = index;"> {{element.task_data.timeEstimate}}h 0m 0s </mat-cell>
+        <!--        <mat-footer-cell *matFooterCellDef></mat-footer-cell>-->
+    </ng-container>
+
+    <ng-container matColumnDef="myEstimation">
+        <mat-header-cell *matHeaderCellDef>My estimation</mat-header-cell>
+        <mat-cell *matCellDef="let element; let i = index;" (click)="openEstimatedHoursDialog(element)"> {{millisToTime(element.myEstimation)}} </mat-cell>
+<!--        <mat-footer-cell *matFooterCellDef></mat-footer-cell>-->
+    </ng-container>
+
+    <!-- Define the table header -->
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+    <!-- Define the table row -->
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    <!-- Define the table footer -->
+<!--    <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row>-->
+
+    </mat-table>
+</div>
