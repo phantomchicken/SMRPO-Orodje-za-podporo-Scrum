@@ -72,6 +72,7 @@ export class SprintComponent implements OnInit {
     let currentUser = this.authenticationService.get_current_user()._id
     if (this.developerIds.includes(currentUser) && task.assignee == currentUser) { // assigned and sameuser
       task.accepted = true
+      this.taskService.updateTask(task).then().catch((error) => console.error(error))
     }
   }
 
