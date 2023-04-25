@@ -41,6 +41,7 @@ import {MatDialogModule} from "@angular/material/dialog";
   declarations: [
     AppComponent,
     TemplateComponent,
+    HomeComponent,
     RegisterComponent,
     LoginComponent,
     AdminViewComponent,
