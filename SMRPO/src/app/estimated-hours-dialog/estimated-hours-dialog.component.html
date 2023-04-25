@@ -9,7 +9,7 @@
         <input type="text" class="form-control" id="estimatedTime" [(ngModel)]="estimatedTime" name="estimatedTime" placeholder="1h 1m 1s">
     </div>
 </div>
-<div mat-dialog-actions>
-    <button mat-button (click)="cancel()">Cancel</button>
-    <button mat-button (click)="submit()" cdkFocusInitial>Save</button>
+<div mat-dialog-actions class="justify-content-center align-items-center">
+    <button mat-button class="btn btn-danger mx-2" (click)="cancel()">Cancel</button>
+    <button mat-button class="btn btn-primary mx-2" (click)="submit()" cdkFocusInitial>Save</button>
 </div>

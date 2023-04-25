@@ -10,6 +10,8 @@ import { ProjectDataService } from '../project.service';
 import { SprintDataService } from '../sprint.service';
 import { StoryDataService } from '../story.service';
 import { UsersDataService } from '../user.service';
+import { TasksDataService } from '../task.service';
+import { WorkLogDataService } from '../workLog.service';
 import {NgForm} from "@angular/forms";
 import {DatePipe} from "@angular/common";
 
@@ -24,7 +26,7 @@ export class ProjectComponent implements OnInit {
   public addSprintVisible: boolean = false;
 
   constructor(private route: ActivatedRoute, private sprintService: SprintDataService, private projectDataService: ProjectDataService, private usersDataService: UsersDataService, protected authenticationService: AuthenticationService,
-    private storyDataService: StoryDataService, private sprintDataService: SprintDataService, private datePipe: DatePipe) { }
+    private taskDataService: TasksDataService, private workLogDataService: WorkLogDataService, private storyDataService: StoryDataService, private sprintDataService: SprintDataService, private datePipe: DatePipe) { }
   private routeSub!: Subscription;
   public product_owner_id: string = "" //
   public scrum_master_id: string = ""
@@ -154,8 +156,14 @@ export class ProjectComponent implements OnInit {
 
   deleteStoryBtn(story:Story){
     console.log("deleting story")
-    this.storyDataService.deleteStory(story).then(()=> this.update("story")).catch((error) => {console.log(error)})
-    
+   // this.taskDataService.getTasks().then(tasks => {
+    //  tasks.filter(task => task.story == story._id).forEach(task => {
+     //   this.workLogDataService.getWorkLogs().then(worklogs => {
+          //if (worklogs.filter(worklog => worklog.task == task._id).length <= 0)
+            this.storyDataService.deleteStory(story).then(()=> this.update("story")).catch((error) => {console.log(error)})
+        //})
+      //});
+    //})
   }
 
   editStoryPoints(story:Story, newStoryPoints:any){

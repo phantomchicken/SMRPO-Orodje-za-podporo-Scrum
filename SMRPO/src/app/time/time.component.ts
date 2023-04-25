@@ -18,7 +18,7 @@ export class TimeComponent implements OnInit {
   dayTasksMap: Map<any, any> = new Map<any, any>();
   dayTasks: any[] = [];
 
-  tasks: WorkLog[]
+  worklogs: WorkLog[]
 
   tasksRemaining: Map<string, number>;
 
@@ -47,7 +47,7 @@ export class TimeComponent implements OnInit {
         new_task.task_data = undefined
         this.WorkLog.updateWorkLog(new_task).then((up_task) =>{
           task.stopTime = up_task.stopTime
-          this.tasksRemaining = this.calculateTaskDifferences(this.tasks)
+          this.tasksRemaining = this.calculateTaskDifferences(this.worklogs)
         }).catch((error) => {
           console.log(error)
         })
@@ -97,6 +97,7 @@ export class TimeComponent implements OnInit {
   }
 
   getRemainingTime(startDate: string, endDate: string, estimatedTime: number) {
+    console.log(startDate + "|||" + endDate);
     const diff = this.getLoggedTime(startDate, endDate)
     const remaining = estimatedTime*1000*3600 - diff
     const hours = Math.floor(remaining / (1000 * 60 * 60));
@@ -134,8 +135,9 @@ export class TimeComponent implements OnInit {
       const { task, startTime, stopTime } = item;
       const diffInMs = new Date(stopTime).getTime() - new Date(startTime).getTime();
       const estimatedTimeInMs = item.task_data.timeEstimate * 60 * 60 * 1000;
-      const currentSum = taskDifferences.get(task) || 0;
-      taskDifferences.set(task, estimatedTimeInMs - (currentSum + diffInMs));
+      const currentSum = taskDifferences.get(task) || estimatedTimeInMs;
+      console.log(currentSum)
+      taskDifferences.set(task, currentSum - diffInMs);
     });
     return taskDifferences;
   }
@@ -149,20 +151,20 @@ export class TimeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.WorkLog.getWorkLogs().then((tasks) => {
-      this.tasks = this.filterObjectsWithStopTime(this.filterByAssignee(tasks, this.AuthenticationService.get_current_user()._id));
-      console.log(this.tasks);
+    this.WorkLog.getWorkLogs().then((worklogs) => {
+      this.worklogs = this.filterObjectsWithStopTime(this.filterByAssignee(worklogs, this.AuthenticationService.get_current_user()._id));
+      console.log(this.worklogs);
       // Use Promise.all to wait for all promises to resolve
-      Promise.all(this.tasks.map((task) => {
-        return this.taskService.getTask(task.task).then((task_data) => {
-          console.log(task_data);
-          task.task_data = task_data;
-          this.tasksRemaining = this.calculateTaskDifferences(this.tasks)
+      Promise.all(this.worklogs.map((worklog) => {
+        return this.taskService.getTask(worklog.task).then((task_data) => {
+          console.log(this.worklogs);
+          worklog.task_data = task_data;
+          this.tasksRemaining = this.calculateTaskDifferences(this.worklogs)
         }).catch((error) => console.log(error));
       })).then(() => {
         // Once all promises have resolved, continue with the rest of the code
-        console.log(this.tasks);
-        this.dayTasks = Object.values(this.tasks.reduce((acc: { [key: string]: any }, task) => {
+        console.log(this.worklogs);
+        this.dayTasks = Object.values(this.worklogs.reduce((acc: { [key: string]: any }, task) => {
           const date = new Date(task.startTime);
           const dateString = date.toISOString().substring(0, 10);
           if (!acc[dateString]) {

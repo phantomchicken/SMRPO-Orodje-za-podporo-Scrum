@@ -19,7 +19,7 @@ import {TimeComponent} from "../time/time.component";
 const paths: Routes = [
   {
     path: '',
-    component: HomeComponent
+    component: ProjectsComponent
   }, 
   {
     path: 'register',

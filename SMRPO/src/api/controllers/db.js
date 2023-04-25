@@ -882,6 +882,7 @@ const deleteAllData = (req, res) => {
     Sprint.collection.drop();
     Story.collection.drop();
     User.collection.deleteMany( { privilege : "normal" });
+    WorkLog.collection.drop();
     res.status(200).json({"message": "Contents on DB hard deleted!"});
 };
 
