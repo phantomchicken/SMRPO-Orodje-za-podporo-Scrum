@@ -7,7 +7,7 @@ The app is a Scrum, Kanban board mix, built using:
 - **E**xpress
 - **AN**gular
 
-Set up instructions are in [SETUP.md](./setup.md) \
+Set up instructions are in [SETUP.md](./SETUP.md) \
 User documentation is given below, in the form of story descriptions and screenshots (in Slovene):
 
 ## \#0 \- Prijava v sistem
